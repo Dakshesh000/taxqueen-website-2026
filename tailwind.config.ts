@@ -59,7 +59,6 @@ export default {
         },
         // Section backgrounds
         "section-blue": "hsl(var(--section-blue-light))",
-        "section-teal": "hsl(var(--section-teal-light))",
       },
       borderRadius: {
         lg: "var(--radius)",

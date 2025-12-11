@@ -75,7 +75,7 @@ const ServicesSection = () => {
         className={cn(
           "w-[300px] md:w-[340px] bg-background rounded-2xl p-6 transition-all duration-500 ease-out flex-shrink-0",
           getCardStyle(position),
-          isCenter ? "shadow-lift-lg border border-primary/20" : "shadow-md"
+          isCenter ? "shadow-lift-lg border-2 border-primary" : "shadow-md"
         )}
       >
         {/* Icon */}
@@ -95,7 +95,7 @@ const ServicesSection = () => {
         <ul className="space-y-2 mb-6">
           {service.features.map((feature, idx) => (
             <li key={idx} className="flex items-center gap-2 text-sm">
-              <span className="w-1.5 h-1.5 rounded-full bg-accent flex-shrink-0" />
+              <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
               <span className="text-foreground font-medium">{feature}</span>
             </li>
           ))}
@@ -103,7 +103,7 @@ const ServicesSection = () => {
 
         {/* CTA Button */}
         <Button variant="outline" className="w-full">
-          Learn More
+          Get Started
         </Button>
       </div>
     );
