@@ -25,18 +25,18 @@ const stats = [
 
 const SocialProofSection = () => {
   return (
-    <section className="relative z-20 bg-primary py-8">
+    <section className="relative z-20 -mt-16 py-12 md:py-16">
       <div className="container mx-auto px-4">
-        <div className="flex flex-wrap justify-center items-center gap-8 md:gap-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:gap-16 justify-items-center">
           {stats.map((stat, index) => (
             <div 
               key={index} 
-              className="flex items-center gap-3 text-primary-foreground"
+              className="flex items-center gap-3 text-primary"
             >
-              <stat.icon className="w-6 h-6 opacity-80" />
+              <stat.icon className="w-5 h-5 md:w-6 md:h-6 opacity-80" />
               <div className="flex flex-col">
-                <span className="text-2xl font-bold">{stat.value}</span>
-                <span className="text-sm opacity-80">{stat.label}</span>
+                <span className="text-xl md:text-2xl font-bold">{stat.value}</span>
+                <span className="text-xs md:text-sm text-muted-foreground">{stat.label}</span>
               </div>
             </div>
           ))}

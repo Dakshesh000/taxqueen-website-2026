@@ -5,13 +5,24 @@ import { ChevronDown } from "lucide-react";
 
 const HeroSection = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [isLocked, setIsLocked] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
+      const navbarHeight = 64;
+      // Lock when image would reach navbar (around 280px scroll based on translateY calc)
+      const lockPoint = 280;
       const maxScroll = window.innerHeight * 0.5;
-      const progress = Math.min(scrollY / maxScroll, 1);
-      setScrollProgress(progress);
+      
+      if (scrollY >= lockPoint) {
+        setIsLocked(true);
+        setScrollProgress(1);
+      } else {
+        setIsLocked(false);
+        const progress = Math.min(scrollY / maxScroll, 1);
+        setScrollProgress(progress);
+      }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -19,13 +30,15 @@ const HeroSection = () => {
   }, []);
 
   // Calculate dynamic values based on scroll
-  const videoPadding = 40 - scrollProgress * 32; // 40px -> 8px
-  const videoTranslateY = -scrollProgress * 280; // Move up behind text
+  const videoPadding = isLocked ? 8 : 40 - scrollProgress * 32;
+  const videoTranslateY = isLocked ? -280 : -scrollProgress * 280;
 
   return (
-    <section className="relative min-h-[150vh] bg-white">
-      {/* Text Content Section - Fixed position with high z-index */}
-      <div className="sticky top-0 z-20 pt-32 pb-12">
+    <section className="relative min-h-[140vh] bg-white">
+      {/* Text Content Section */}
+      <div 
+        className={`${isLocked ? 'relative' : 'sticky top-0'} z-20 pt-32 pb-12`}
+      >
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             {/* Optional Text / Badge */}
@@ -33,14 +46,39 @@ const HeroSection = () => {
               For Nomads With US Tax Obligations
             </p>
 
-            {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight uppercase">
+            {/* Headline with white border for visibility over image */}
+            <h1 
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight uppercase"
+              style={{
+                textShadow: scrollProgress > 0.3 
+                  ? '-1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white, 0 0 8px rgba(255,255,255,0.8)'
+                  : 'none',
+                transition: 'text-shadow 0.3s ease'
+              }}
+            >
               TAXES FOR DIGITAL NOMADS.{" "}
-              <span className="text-primary">SIMPLIFIED.</span>
+              <span 
+                className="text-primary"
+                style={{
+                  textShadow: scrollProgress > 0.3 
+                    ? '-1px -1px 0 white, 1px -1px 0 white, -1px 1px 0 white, 1px 1px 0 white, 0 0 8px rgba(255,255,255,0.8)'
+                    : 'none'
+                }}
+              >
+                SIMPLIFIED.
+              </span>
             </h1>
 
             {/* Tagline */}
-            <p className="text-lg sm:text-xl text-foreground max-w-2xl mx-auto">
+            <p 
+              className="text-lg sm:text-xl text-foreground max-w-2xl mx-auto"
+              style={{
+                textShadow: scrollProgress > 0.3 
+                  ? '0 0 8px rgba(255,255,255,0.9), 0 0 16px rgba(255,255,255,0.7)'
+                  : 'none',
+                transition: 'text-shadow 0.3s ease'
+              }}
+            >
               Your life is on the Road. Your Taxes shouldn't feel like a detour.
             </p>
 
@@ -57,9 +95,9 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Video/Image Frame - Expands on scroll */}
+      {/* Video/Image Frame - Expands on scroll until locked */}
       <div 
-        className="relative z-10 mx-auto transition-all duration-100 ease-out"
+        className={`${isLocked ? 'relative' : 'relative'} z-10 mx-auto transition-all duration-100 ease-out`}
         style={{
           padding: `${videoPadding}px`,
           transform: `translateY(${videoTranslateY}px)`,
@@ -82,7 +120,7 @@ const HeroSection = () => {
       {/* Scroll Indicator */}
       <div 
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 transition-opacity duration-300"
-        style={{ opacity: 1 - scrollProgress * 2 }}
+        style={{ opacity: isLocked ? 0 : 1 - scrollProgress * 2 }}
       >
         <a 
           href="#about" 
