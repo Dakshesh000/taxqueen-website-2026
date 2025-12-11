@@ -1,6 +1,4 @@
-import { useRef } from "react";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
-import Autoplay from "embla-carousel-autoplay";
 import { 
   workingAtBeach, 
   rvTopView3, 
@@ -39,10 +37,6 @@ const blogPosts = [
 ];
 
 const BlogSection = () => {
-  const autoplayPlugin = useRef(
-    Autoplay({ delay: 4000, stopOnInteraction: true })
-  );
-
   return (
     <section className="w-full py-20 lg:py-28 bg-background">
       <div className="container mx-auto px-4 flex flex-col gap-14">
@@ -59,7 +53,6 @@ const BlogSection = () => {
             loop: true,
             align: "start",
           }}
-          plugins={[autoplayPlugin.current]}
           className="w-full"
         >
           <CarouselContent className="-ml-4">
