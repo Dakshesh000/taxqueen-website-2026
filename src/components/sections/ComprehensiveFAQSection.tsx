@@ -298,6 +298,7 @@ const faqsByCategory: Record<string, FAQ[]> = {
 const ComprehensiveFAQSection = () => {
   const [selectedCategory, setSelectedCategory] = useState("nomad");
   const faqs = faqsByCategory[selectedCategory] || [];
+  const selectedCategoryData = categories.find(c => c.id === selectedCategory);
 
   return (
     <section id="full-faq" className="py-20 bg-background">
@@ -312,47 +313,65 @@ const ComprehensiveFAQSection = () => {
           </p>
         </div>
 
-        {/* Category Pills */}
-        <div className="flex flex-wrap justify-center gap-3 mb-12">
-          {categories.map((category) => {
-            const Icon = category.icon;
-            return (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={cn(
-                  "flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-300",
-                  selectedCategory === category.id
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-foreground hover:bg-muted/80"
-                )}
-              >
-                <Icon className="w-4 h-4" />
-                <span className="hidden sm:inline">{category.label}</span>
-                <span className="sm:hidden">{category.label.split(" ")[0]}</span>
-              </button>
-            );
-          })}
-        </div>
+        {/* Two Column Layout */}
+        <div className="flex flex-col lg:flex-row gap-8">
+          {/* Left Column - Categories (25%) */}
+          <div className="lg:w-1/4 flex-shrink-0">
+            <div className="lg:sticky lg:top-24 space-y-2">
+              {categories.map((category) => {
+                const Icon = category.icon;
+                return (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={cn(
+                      "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left font-medium transition-all duration-300",
+                      selectedCategory === category.id
+                        ? "bg-primary text-primary-foreground"
+                        : "bg-muted/50 text-foreground hover:bg-muted"
+                    )}
+                  >
+                    <Icon className="w-5 h-5 flex-shrink-0" />
+                    <span>{category.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
-        {/* FAQ Accordion */}
-        <div className="max-w-3xl mx-auto">
-          <Accordion type="single" collapsible className="space-y-3">
-            {faqs.map((faq, index) => (
-              <AccordionItem
-                key={`${selectedCategory}-${index}`}
-                value={`item-${index}`}
-                className="bg-muted/30 rounded-lg px-6 border border-border/50"
-              >
-                <AccordionTrigger className="text-left hover:no-underline py-5">
-                  <span className="font-medium text-foreground pr-4">{faq.question}</span>
-                </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground pb-5 leading-relaxed">
-                  {faq.answer}
-                </AccordionContent>
-              </AccordionItem>
-            ))}
-          </Accordion>
+          {/* Right Column - Questions (75%) */}
+          <div className="lg:w-3/4">
+            {/* Category Title */}
+            {selectedCategoryData && (
+              <div className="flex items-center gap-3 mb-6">
+                <selectedCategoryData.icon className="w-6 h-6 text-primary" />
+                <h3 className="text-xl font-semibold text-foreground">
+                  {selectedCategoryData.label}
+                </h3>
+                <span className="text-sm text-muted-foreground">
+                  ({faqs.length} questions)
+                </span>
+              </div>
+            )}
+
+            {/* FAQ Accordion */}
+            <Accordion type="single" collapsible className="space-y-3">
+              {faqs.map((faq, index) => (
+                <AccordionItem
+                  key={`${selectedCategory}-${index}`}
+                  value={`item-${index}`}
+                  className="bg-muted/30 rounded-lg px-6 border border-border/50"
+                >
+                  <AccordionTrigger className="text-left hover:no-underline py-5">
+                    <span className="font-medium text-foreground pr-4">{faq.question}</span>
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground pb-5 leading-relaxed">
+                    {faq.answer}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
         </div>
 
         {/* Bottom CTA */}
