@@ -406,19 +406,6 @@ const ComprehensiveFAQSection = () => {
             )}
           </div>
         </div>
-
-        {/* Bottom CTA */}
-        <div className="text-center mt-12">
-          <p className="text-muted-foreground">
-            Still have questions?{" "}
-            <a 
-              href="#contact" 
-              className="text-primary hover:underline font-medium"
-            >
-              Book a consultation →
-            </a>
-          </p>
-        </div>
       </div>
     </section>
   );

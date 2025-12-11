@@ -3,6 +3,7 @@ import { HeroSection, SocialProofSection, FAQSection, ServicesSection } from "@/
 import AboutSection from "@/components/sections/AboutSection";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import ComprehensiveFAQSection from "@/components/sections/ComprehensiveFAQSection";
+import BlogSection from "@/components/sections/BlogSection";
 import CompassChatButton from "@/components/CompassChatButton";
 
 const Index = () => {
@@ -17,6 +18,7 @@ const Index = () => {
         <ServicesSection />
         <TestimonialsSection />
         <ComprehensiveFAQSection />
+        <BlogSection />
       </main>
       <CompassChatButton />
     </div>

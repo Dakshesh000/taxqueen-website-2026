@@ -21,3 +21,12 @@ export { default as truckStormySky } from './lifestyle/truck-stormy-sky.jpeg';
 export { default as droneRvsCamping } from './lifestyle/drone-rvs-camping.jpg';
 export { default as freedomNomad } from './lifestyle/freedom-nomad.jpg';
 export { default as sunsetRvReflection } from './lifestyle/sunset-rv-reflection.png';
+
+// Blog/Resources Photos
+export { default as workingAtBeach } from './lifestyle/working-at-beach.jpg';
+export { default as rvTopView3 } from './lifestyle/rv-top-view-3.png';
+export { default as heatherHikingNature } from './lifestyle/heather-hiking-nature.jpg';
+export { default as rvCoastalDrive } from './lifestyle/rv-coastal-drive.png';
+export { default as campingByRiver } from './lifestyle/camping-by-river.jpg';
+export { default as heatherWhaleBaja } from './lifestyle/heather-whale-baja.png';
+export { default as freedomNomad2 } from './lifestyle/freedom-nomad-2.jpg';

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { Play } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 import { heatherPortrait } from '@/assets';
 
 const AboutSection = () => {
@@ -114,10 +115,10 @@ const AboutSection = () => {
               </div>
             </div>
 
-            {/* CTA Text */}
-            <p className="text-muted-foreground text-sm">
-              Click to watch my story
-            </p>
+            {/* CTA Button */}
+            <Button variant="cta" size="lg">
+              Get Started
+            </Button>
           </div>
         </div>
       </section>
