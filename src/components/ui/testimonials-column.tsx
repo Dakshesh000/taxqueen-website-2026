@@ -7,6 +7,7 @@ export type TestimonialItem = {
   text: string;
   name: string;
   role?: string;
+  avatar?: string;
 };
 
 export type ImageItem = {
@@ -49,11 +50,19 @@ export const TestimonialsColumn = (props: {
                       "{item.text}"
                     </p>
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
-                        <span className="text-primary font-bold text-sm">
-                          {item.name.charAt(0)}
-                        </span>
-                      </div>
+                      {item.avatar ? (
+                        <img 
+                          src={item.avatar} 
+                          alt={item.name}
+                          className="w-10 h-10 rounded-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                          <span className="text-primary font-bold text-sm">
+                            {item.name.charAt(0)}
+                          </span>
+                        </div>
+                      )}
                       <div className="flex flex-col">
                         <span className="font-semibold text-foreground text-sm tracking-tight">
                           {item.name}
