@@ -1,45 +1,61 @@
 import { useState } from 'react';
 import { Play } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { heatherPortrait, heatherInVan } from '@/assets';
+import { heatherPortrait } from '@/assets';
 
 const AboutSection = () => {
   const [isVideoOpen, setIsVideoOpen] = useState(false);
 
+  // Credentials with random positioning and varied sizes
   const credentials = [
-    'Enrolled Agent (EA)',
-    'Digital Nomad Since 2018',
-    'Specialized in Expat & Nomad Taxes',
-    '200+ Nomads Served',
+    { text: 'Enrolled Agent (EA)', top: '8%', left: '5%', size: 'text-sm' },
+    { text: 'IRS Certified', top: '15%', right: '8%', size: 'text-base' },
+    { text: '200+ Nomads Served', top: '25%', left: '2%', size: 'text-xs' },
+    { text: 'Digital Nomad Since 2018', bottom: '30%', right: '3%', size: 'text-sm' },
+    { text: 'Expat Tax Specialist', bottom: '15%', left: '8%', size: 'text-base' },
+    { text: '50 States Covered', bottom: '8%', right: '12%', size: 'text-xs' },
+    { text: 'Tax Consultant', top: '40%', left: '3%', size: 'text-lg' },
+    { text: 'Enrolled Agent', bottom: '45%', right: '5%', size: 'text-xs' },
+    { text: 'IRS Certified Tax Pro', top: '55%', right: '2%', size: 'text-sm' },
+    { text: '200+ Clients', top: '70%', left: '5%', size: 'text-xs' },
+    { text: 'Nomad Tax Expert', bottom: '55%', left: '1%', size: 'text-sm' },
+    { text: 'Digital Nomad', top: '5%', left: '40%', size: 'text-xs' },
+    { text: 'Tax Specialist', bottom: '5%', left: '35%', size: 'text-xs' },
   ];
 
   return (
     <>
-      {/* Part 1: Circular Portrait with Video */}
-      <section id="about" className="py-20 bg-section-teal">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col items-center text-center space-y-6">
-            {/* Heading */}
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-primary uppercase tracking-wider">
-                Meet
-              </p>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground">
-                Heather
-              </h2>
-              <p className="text-lg text-muted-foreground">
-                The Tax Queen
-              </p>
-            </div>
+      <section id="about" className="py-20 bg-background relative overflow-hidden group">
+        {/* Scattered Credential Text - Hover Reveal */}
+        {credentials.map((cred, index) => (
+          <span
+            key={index}
+            className={`absolute ${cred.size} font-medium text-gray-200 group-hover:text-gray-400 transition-colors duration-500 pointer-events-none select-none`}
+            style={{
+              top: cred.top,
+              bottom: cred.bottom,
+              left: cred.left,
+              right: cred.right,
+            }}
+          >
+            {cred.text}
+          </span>
+        ))}
 
-            {/* Circular Portrait with Play Button */}
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col items-center text-center space-y-6 relative z-10">
+            {/* Heading */}
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
+              Hi, I'm Heather, your Tax Queen
+            </h2>
+
+            {/* Circular Portrait with Play Button - Both Float Together */}
             <div 
-              className="relative cursor-pointer group"
+              className="relative cursor-pointer group/video animate-float"
               onClick={() => setIsVideoOpen(true)}
             >
               {/* Portrait Circle */}
-              <div className="w-[280px] h-[280px] md:w-[320px] md:h-[320px] lg:w-[350px] lg:h-[350px] rounded-full overflow-hidden shadow-lift-lg animate-float">
+              <div className="w-[280px] h-[280px] md:w-[320px] md:h-[320px] lg:w-[350px] lg:h-[350px] rounded-full overflow-hidden shadow-lift-lg">
                 <img 
                   src={heatherPortrait} 
                   alt="Heather - The Tax Queen"
@@ -48,8 +64,8 @@ const AboutSection = () => {
               </div>
 
               {/* Play Button Overlay */}
-              <div className="absolute inset-0 rounded-full bg-foreground/0 group-hover:bg-foreground/30 transition-all duration-300 flex items-center justify-center">
-                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-primary/90 flex items-center justify-center transform scale-90 group-hover:scale-100 transition-transform duration-300 shadow-lg">
+              <div className="absolute inset-0 rounded-full bg-foreground/0 group-hover/video:bg-foreground/30 transition-all duration-300 flex items-center justify-center">
+                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-primary/90 flex items-center justify-center transform scale-90 group-hover/video:scale-100 transition-transform duration-300 shadow-lg">
                   <Play className="w-8 h-8 md:w-10 md:h-10 text-primary-foreground ml-1" fill="currentColor" />
                 </div>
               </div>
@@ -59,68 +75,6 @@ const AboutSection = () => {
             <p className="text-muted-foreground text-sm">
               Click to watch my story
             </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Part 2: Split-Screen Bio */}
-      <section className="py-20 bg-background">
-        <div className="container mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12 items-center">
-            {/* Left: Image */}
-            <div className="relative overflow-hidden rounded-2xl shadow-lift group">
-              <img 
-                src={heatherInVan} 
-                alt="Heather working from her van"
-                className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-            </div>
-
-            {/* Right: Bio Content */}
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <p className="text-sm font-medium text-primary uppercase tracking-wider">
-                  Why Trust Me?
-                </p>
-                <h3 className="text-3xl md:text-4xl font-bold text-foreground">
-                  I've Walked in Your Shoes
-                </h3>
-              </div>
-
-              <div className="space-y-4 text-muted-foreground leading-relaxed">
-                <p>
-                  I know the panic of realizing you owe taxes in multiple states. 
-                  The confusion of "wait, do I even have a home base anymore?" 
-                  The frustration of CPAs who just don't get the nomad lifestyle.
-                </p>
-                <p>
-                  As a full-time digital nomad myself, I've navigated every tax 
-                  curveball the road can throw at you. Now I help fellow nomads 
-                  stay compliant, minimize their tax burden, and get back to 
-                  what matters—living life on their own terms.
-                </p>
-              </div>
-
-              {/* Credentials */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {credentials.map((credential, index) => (
-                  <div 
-                    key={index}
-                    className="flex items-center gap-2 text-sm text-foreground"
-                  >
-                    <span className="w-5 h-5 rounded-full bg-accent/20 text-accent flex items-center justify-center text-xs font-bold">
-                      ✓
-                    </span>
-                    {credential}
-                  </div>
-                ))}
-              </div>
-
-              {/* CTA Button */}
-              <Button variant="cta" size="lg" className="mt-4">
-                Book a Free Consultation
-              </Button>
-            </div>
           </div>
         </div>
       </section>
