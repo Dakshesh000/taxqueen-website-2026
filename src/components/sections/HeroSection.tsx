@@ -34,7 +34,7 @@ const HeroSection = () => {
   const videoTranslateY = isLocked ? -280 : -scrollProgress * 280;
 
   return (
-    <section className="relative min-h-[140vh] bg-white">
+    <section className="relative min-h-[110vh] bg-white">
       {/* Text Content Section */}
       <div 
         className={`${isLocked ? 'relative' : 'sticky top-0'} z-20 pt-32 pb-12`}
