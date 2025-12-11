@@ -72,14 +72,14 @@ const HeroSection = () => {
 
       {/* Video/Image Frame - Expands on scroll until locked */}
       <div 
-        className={`${isLocked ? 'relative' : 'relative'} z-10 mx-auto transition-all duration-100 ease-out`}
+        className="relative z-10 mx-auto transition-all duration-300 ease-out will-change-transform"
         style={{
           padding: `${videoPadding}px`,
           transform: `translateY(${videoTranslateY}px)`,
           maxWidth: `calc(100% - ${videoPadding * 2}px)`,
         }}
       >
-        <div className="relative w-full h-[60vh] sm:h-[70vh] rounded-2xl overflow-hidden shadow-lift-lg">
+        <div className="relative w-full h-[70vh] sm:h-[80vh] rounded-2xl overflow-hidden shadow-lift-lg">
           {/* Hero Image */}
           <img
             src={vanSnowMountains}

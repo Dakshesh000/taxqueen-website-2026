@@ -84,12 +84,22 @@ export default {
           "0%, 100%": { transform: "translateY(0)" },
           "50%": { transform: "translateY(-5px)" },
         },
+        "needle-wiggle": {
+          "0%": { transform: "rotate(0deg)" },
+          "15%": { transform: "rotate(12deg)" },
+          "30%": { transform: "rotate(-8deg)" },
+          "45%": { transform: "rotate(6deg)" },
+          "60%": { transform: "rotate(-4deg)" },
+          "75%": { transform: "rotate(2deg)" },
+          "100%": { transform: "rotate(0deg)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "fade-in-up": "fade-in-up 0.6s ease-out forwards",
         float: "float 3s ease-in-out infinite",
+        "needle-wiggle": "needle-wiggle 1.2s ease-in-out",
       },
       boxShadow: {
         "lift": "0 10px 40px -10px rgba(0, 0, 0, 0.2)",

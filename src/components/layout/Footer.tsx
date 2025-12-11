@@ -3,6 +3,7 @@ import { brand, navigation } from "@/config/brand";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { logoTaxQueen } from "@/assets";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -32,9 +33,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
           {/* Brand Column */}
           <div className="space-y-4">
-            <span className="text-xl font-bold uppercase tracking-wide">
-              {brand.name}
-            </span>
+            <img 
+              src={logoTaxQueen} 
+              alt="Tax Queen Logo" 
+              className="h-12 w-auto brightness-0 invert"
+            />
             <p className="text-sm text-primary-foreground/80 max-w-xs">
               {brand.description}
             </p>
@@ -78,12 +81,11 @@ const Footer = () => {
                 placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="bg-primary-foreground text-foreground placeholder:text-muted-foreground border-none"
+                className="bg-primary-foreground text-foreground placeholder:text-muted-foreground border-none h-11"
               />
               <Button
                 type="submit"
-                variant="outline"
-                className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary"
+                className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold"
               >
                 Subscribe
               </Button>
