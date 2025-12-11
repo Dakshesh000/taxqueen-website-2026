@@ -1,6 +1,7 @@
 import Navbar from "@/components/layout/Navbar";
 import { HeroSection, SocialProofSection, FAQSection, ServicesSection } from "@/components/sections";
 import AboutSection from "@/components/sections/AboutSection";
+import CompassChatButton from "@/components/CompassChatButton";
 
 const Index = () => {
   return (
@@ -13,6 +14,7 @@ const Index = () => {
         <FAQSection />
         <ServicesSection />
       </main>
+      <CompassChatButton />
     </div>
   );
 };
