@@ -49,7 +49,7 @@ const HeroSection = () => {
             {/* Headline */}
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight uppercase">
               TAXES FOR DIGITAL NOMADS.{" "}
-              <span className="text-primary">SIMPLIFIED.</span>
+              <span className="text-foreground">SIMPLIFIED.</span>
             </h1>
 
             {/* Tagline */}

@@ -82,7 +82,7 @@ const FAQSection = () => {
           </div>
 
           {/* Right Side - Answer (Primary Blue) */}
-          <div className="bg-primary p-8 lg:p-12 pt-6">
+          <div className="bg-primary p-8 lg:p-12 pt-6 pr-12 lg:pr-16">
             <div
               key={selectedIndex}
               className="animate-fade-in"

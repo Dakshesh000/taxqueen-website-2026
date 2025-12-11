@@ -102,7 +102,7 @@ const ServicesSection = () => {
         </ul>
 
         {/* CTA Button */}
-        <Button variant="outline" className="w-full">
+        <Button variant="cta" className="w-full rounded-xl">
           Get Started
         </Button>
       </div>
