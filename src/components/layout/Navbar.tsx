@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Menu, X } from "lucide-react";
-import { brand, navigation } from "@/config/brand";
+import { navigation } from "@/config/brand";
 import { Button } from "@/components/ui/button";
+import { logoTaxQueen } from "@/assets";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +12,11 @@ const Navbar = () => {
       <nav className="container mx-auto px-4 h-16 flex items-center justify-between">
         {/* Logo */}
         <a href="/" className="flex items-center gap-2">
-          <span className="text-xl font-bold text-primary">{brand.name}</span>
+          <img 
+            src={logoTaxQueen} 
+            alt="Tax Queen" 
+            className="h-10 w-auto"
+          />
         </a>
 
         {/* Desktop Navigation */}
@@ -20,7 +25,7 @@ const Navbar = () => {
             <li key={item.href}>
               <a
                 href={item.href}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
               >
                 {item.label}
               </a>
@@ -30,7 +35,7 @@ const Navbar = () => {
 
         {/* CTA Button */}
         <div className="hidden md:block">
-          <Button>Book a Call</Button>
+          <Button variant="cta">Get Started</Button>
         </div>
 
         {/* Mobile Menu Button */}
@@ -51,7 +56,7 @@ const Navbar = () => {
               <li key={item.href}>
                 <a
                   href={item.href}
-                  className="block text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                  className="block text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.label}
@@ -59,7 +64,7 @@ const Navbar = () => {
               </li>
             ))}
             <li>
-              <Button className="w-full">Book a Call</Button>
+              <Button variant="cta" className="w-full">Get Started</Button>
             </li>
           </ul>
         </div>
