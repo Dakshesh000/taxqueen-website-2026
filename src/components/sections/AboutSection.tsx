@@ -84,10 +84,10 @@ const AboutSection = () => {
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col items-center text-center space-y-6 relative z-10">
+          <div className="flex flex-col items-center text-center space-y-10 relative z-10">
             {/* Heading */}
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground">
-              Hi, I'm Heather, your Tax Queen
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground uppercase">
+              Hi, I'm Heather, your <span className="text-primary">Tax Queen</span>
             </h2>
 
             {/* Circular Portrait with Play Button - Both Float Together */}

@@ -41,12 +41,12 @@ const FAQSection = () => {
         {/* Headings Row */}
         <div className="grid grid-cols-2">
           <div className="bg-background p-8 lg:p-12 pb-6">
-            <h2 className="text-3xl lg:text-4xl font-bold text-foreground text-right">
+            <h2 className="text-3xl lg:text-4xl font-bold text-foreground text-right uppercase">
               You've got questions.
             </h2>
           </div>
           <div className="bg-primary p-8 lg:p-12 pb-6">
-            <h2 className="text-3xl lg:text-4xl font-bold text-primary-foreground">
+            <h2 className="text-3xl lg:text-4xl font-bold text-primary-foreground uppercase">
               I have the answers.
             </h2>
           </div>
@@ -100,7 +100,7 @@ const FAQSection = () => {
 
       {/* Mobile: Accordion Layout */}
       <div className="md:hidden container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-foreground mb-8">
+        <h2 className="text-3xl font-bold text-foreground mb-8 uppercase">
           You've got questions.<br />
           <span className="text-primary">I have the answers.</span>
         </h2>
