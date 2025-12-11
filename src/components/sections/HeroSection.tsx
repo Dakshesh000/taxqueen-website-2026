@@ -21,37 +21,26 @@ const HeroSection = () => {
   // Calculate dynamic values based on scroll
   const videoPadding = 40 - scrollProgress * 32; // 40px -> 8px
   const videoTranslateY = -scrollProgress * 280; // Move up behind text
-  const textBackdropOpacity = scrollProgress > 0.1 ? Math.min((scrollProgress - 0.1) * 1.5, 0.9) : 0;
 
   return (
     <section className="relative min-h-[150vh] bg-white">
       {/* Text Content Section - Fixed position with high z-index */}
       <div className="sticky top-0 z-20 pt-24 pb-12">
-        <div 
-          className="container mx-auto px-4 transition-all duration-100"
-          style={{
-            backgroundColor: textBackdropOpacity > 0 ? `rgba(255, 255, 255, ${textBackdropOpacity})` : 'transparent',
-            backdropFilter: textBackdropOpacity > 0 ? `blur(${textBackdropOpacity * 8}px)` : 'none',
-            borderRadius: '24px',
-            padding: '2rem',
-            margin: '0 auto',
-            maxWidth: '56rem',
-          }}
-        >
+        <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             {/* Optional Text / Badge */}
-            <p className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
+            <p className="text-sm font-medium text-foreground uppercase tracking-wider">
               For Nomads With US Tax Obligations
             </p>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-              Taxes for Digital Nomads.{" "}
-              <span className="text-primary">Simplified.</span>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight uppercase">
+              TAXES FOR DIGITAL NOMADS.{" "}
+              <span className="text-primary">SIMPLIFIED.</span>
             </h1>
 
             {/* Tagline */}
-            <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg sm:text-xl text-foreground max-w-2xl mx-auto">
               Your life is on the Road. Your Taxes shouldn't feel like a detour.
             </p>
 
@@ -60,7 +49,7 @@ const HeroSection = () => {
               <Button variant="cta" size="xl">
                 Get Started
               </Button>
-              <Button variant="outline" size="xl">
+              <Button variant="outline-cta" size="xl">
                 Learn More
               </Button>
             </div>
