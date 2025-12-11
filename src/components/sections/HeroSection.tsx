@@ -25,7 +25,7 @@ const HeroSection = () => {
   return (
     <section className="relative min-h-[150vh] bg-white">
       {/* Text Content Section - Fixed position with high z-index */}
-      <div className="sticky top-0 z-20 pt-24 pb-12">
+      <div className="sticky top-0 z-20 pt-32 pb-12">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             {/* Optional Text / Badge */}
