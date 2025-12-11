@@ -2,6 +2,7 @@ import Navbar from "@/components/layout/Navbar";
 import { HeroSection, SocialProofSection, FAQSection, ServicesSection } from "@/components/sections";
 import AboutSection from "@/components/sections/AboutSection";
 import TestimonialsSection from "@/components/sections/TestimonialsSection";
+import ComprehensiveFAQSection from "@/components/sections/ComprehensiveFAQSection";
 import CompassChatButton from "@/components/CompassChatButton";
 
 const Index = () => {
@@ -15,6 +16,7 @@ const Index = () => {
         <FAQSection />
         <ServicesSection />
         <TestimonialsSection />
+        <ComprehensiveFAQSection />
       </main>
       <CompassChatButton />
     </div>
