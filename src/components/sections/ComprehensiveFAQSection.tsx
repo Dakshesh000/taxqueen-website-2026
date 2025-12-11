@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import {
   Accordion,
@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Input } from "@/components/ui/input";
 import { 
   Caravan, 
   Building2, 
@@ -14,6 +15,7 @@ import {
   UserCheck, 
   PiggyBank, 
   HelpCircle,
+  Search,
   type LucideIcon
 } from "lucide-react";
 
@@ -297,8 +299,23 @@ const faqsByCategory: Record<string, FAQ[]> = {
 
 const ComprehensiveFAQSection = () => {
   const [selectedCategory, setSelectedCategory] = useState("nomad");
-  const faqs = faqsByCategory[selectedCategory] || [];
-  const selectedCategoryData = categories.find(c => c.id === selectedCategory);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Filter FAQs based on search query
+  const filteredFaqs = useMemo(() => {
+    const categoryFaqs = faqsByCategory[selectedCategory] || [];
+    
+    if (!searchQuery.trim()) {
+      return categoryFaqs;
+    }
+
+    const query = searchQuery.toLowerCase().trim();
+    return categoryFaqs.filter(
+      (faq) =>
+        faq.question.toLowerCase().includes(query) ||
+        faq.answer.toLowerCase().includes(query)
+    );
+  }, [selectedCategory, searchQuery]);
 
   return (
     <section id="full-faq" className="py-20 bg-background">
@@ -323,7 +340,10 @@ const ComprehensiveFAQSection = () => {
                 return (
                   <button
                     key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
+                    onClick={() => {
+                      setSelectedCategory(category.id);
+                      setSearchQuery("");
+                    }}
                     className={cn(
                       "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-left font-medium transition-all duration-300",
                       selectedCategory === category.id
@@ -341,22 +361,22 @@ const ComprehensiveFAQSection = () => {
 
           {/* Right Column - Questions (75%) */}
           <div className="lg:w-3/4">
-            {/* Category Title */}
-            {selectedCategoryData && (
-              <div className="flex items-center gap-3 mb-6">
-                <selectedCategoryData.icon className="w-6 h-6 text-primary" />
-                <h3 className="text-xl font-semibold text-foreground">
-                  {selectedCategoryData.label}
-                </h3>
-                <span className="text-sm text-muted-foreground">
-                  ({faqs.length} questions)
-                </span>
-              </div>
-            )}
+            {/* Search Bar */}
+            <div className="relative mb-6">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+              <Input
+                type="text"
+                placeholder="Search questions..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="pl-12 py-6 text-base bg-muted/30 border-border/50"
+                maxLength={100}
+              />
+            </div>
 
             {/* FAQ Accordion */}
             <Accordion type="single" collapsible className="space-y-3">
-              {faqs.map((faq, index) => (
+              {filteredFaqs.map((faq, index) => (
                 <AccordionItem
                   key={`${selectedCategory}-${index}`}
                   value={`item-${index}`}
@@ -371,6 +391,19 @@ const ComprehensiveFAQSection = () => {
                 </AccordionItem>
               ))}
             </Accordion>
+
+            {/* No Results */}
+            {filteredFaqs.length === 0 && (
+              <div className="text-center py-12 text-muted-foreground">
+                <p>No questions found matching "{searchQuery}"</p>
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="text-primary hover:underline mt-2"
+                >
+                  Clear search
+                </button>
+              </div>
+            )}
           </div>
         </div>
 
