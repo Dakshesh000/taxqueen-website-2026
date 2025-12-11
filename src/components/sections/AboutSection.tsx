@@ -51,7 +51,7 @@ const AboutSection = () => {
     const maxDistance = 180;
     if (distance > maxDistance) return 0.05;
 
-    return 0.05 + (1 - distance / maxDistance) * 0.4;
+    return 0.05 + (1 - distance / maxDistance) * 0.5;
   };
 
   return (
