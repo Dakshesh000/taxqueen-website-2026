@@ -27,7 +27,7 @@ const SocialProofSection = () => {
   return (
     <section className="relative z-20 -mt-48 py-8 md:py-12">
       <div className="container mx-auto px-4">
-        <div className="flex flex-wrap justify-center gap-4 md:gap-6">
+        <div className="flex flex-wrap justify-center gap-6 md:gap-8 lg:gap-10">
           {stats.map((stat, index) => (
             <div 
               key={index} 

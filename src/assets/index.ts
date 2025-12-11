@@ -11,3 +11,13 @@ export { default as womanWorkingViews } from './lifestyle/woman-working-views.jp
 export { default as rvTopView } from './lifestyle/rv-top-view.png';
 export { default as rvAutumnLeaves } from './lifestyle/rv-autumn-leaves.jpg';
 export { default as truckDesert } from './lifestyle/truck-desert.jpeg';
+
+// New Lifestyle Photos for Testimonials
+export { default as womenWorkingViews2 } from './lifestyle/women-working-views-2.jpg';
+export { default as rvTopView2 } from './lifestyle/rv-top-view-2.png';
+export { default as rvMountainsBackground } from './lifestyle/rv-mountains-background.jpg';
+export { default as rvAutumnLeaves2 } from './lifestyle/rv-autumn-leaves-2.jpg';
+export { default as truckStormySky } from './lifestyle/truck-stormy-sky.jpeg';
+export { default as droneRvsCamping } from './lifestyle/drone-rvs-camping.jpg';
+export { default as freedomNomad } from './lifestyle/freedom-nomad.jpg';
+export { default as sunsetRvReflection } from './lifestyle/sunset-rv-reflection.png';
