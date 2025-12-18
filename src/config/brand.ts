@@ -55,10 +55,10 @@ export const sections = {
  * Navigation Items
  */
 export const navigation = [
-  { label: "About", href: "#about" },
+  { label: "Home", href: "/" },
   { label: "Services", href: "#services" },
-  { label: "How It Works", href: "#process" },
-  { label: "Testimonials", href: "#testimonials" },
-  { label: "FAQ", href: "#faq" },
+  { label: "About", href: "#about" },
+  { label: "Articles", href: "#articles" },
+  { label: "Portal", href: "https://portal.tax-queen.com/login", external: true },
   { label: "Contact", href: "#contact" },
 ] as const;

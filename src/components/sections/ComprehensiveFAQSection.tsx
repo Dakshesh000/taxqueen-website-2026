@@ -300,6 +300,7 @@ const faqsByCategory: Record<string, FAQ[]> = {
 const ComprehensiveFAQSection = () => {
   const [selectedCategory, setSelectedCategory] = useState("nomad");
   const [searchQuery, setSearchQuery] = useState("");
+  const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
 
   // Filter FAQs based on search query
   const filteredFaqs = useMemo(() => {
@@ -316,6 +317,22 @@ const ComprehensiveFAQSection = () => {
         faq.answer.toLowerCase().includes(query)
     );
   }, [selectedCategory, searchQuery]);
+
+  const isExpanded = expandedCategories.has(selectedCategory);
+  const displayedFaqs = isExpanded ? filteredFaqs : filteredFaqs.slice(0, 5);
+  const remainingCount = filteredFaqs.length - 5;
+
+  const toggleExpanded = () => {
+    setExpandedCategories(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(selectedCategory)) {
+        newSet.delete(selectedCategory);
+      } else {
+        newSet.add(selectedCategory);
+      }
+      return newSet;
+    });
+  };
 
   return (
     <section id="full-faq" className="py-20 bg-background">
@@ -376,7 +393,7 @@ const ComprehensiveFAQSection = () => {
 
             {/* FAQ Accordion */}
             <Accordion type="single" collapsible className="space-y-3">
-              {filteredFaqs.map((faq, index) => (
+              {displayedFaqs.map((faq, index) => (
                 <AccordionItem
                   key={`${selectedCategory}-${index}`}
                   value={`item-${index}`}
@@ -391,6 +408,16 @@ const ComprehensiveFAQSection = () => {
                 </AccordionItem>
               ))}
             </Accordion>
+
+            {/* See More / Show Less Button */}
+            {filteredFaqs.length > 5 && !searchQuery && (
+              <button
+                onClick={toggleExpanded}
+                className="mt-6 text-primary font-medium hover:underline transition-colors"
+              >
+                {isExpanded ? "Show Less" : `See More (${remainingCount} more questions)`}
+              </button>
+            )}
 
             {/* No Results */}
             {filteredFaqs.length === 0 && (

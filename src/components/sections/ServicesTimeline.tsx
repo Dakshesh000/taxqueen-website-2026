@@ -3,12 +3,15 @@ import { Timeline } from "@/components/ui/timeline";
 import { FileText, Sparkles, Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-import womanWorkingViews from "@/assets/lifestyle/woman-working-views.jpg";
-import rvCoastalDrive from "@/assets/lifestyle/rv-coastal-drive.png";
-import heatherHikingNature from "@/assets/lifestyle/heather-hiking-nature.jpg";
-import campingByRiver from "@/assets/lifestyle/camping-by-river.jpg";
-import workingAtBeach from "@/assets/lifestyle/working-at-beach.jpg";
-import vanSnowMountains from "@/assets/lifestyle/van-snow-mountains.jpg";
+// Tax Preparation images
+import taxPrep1 from "@/assets/services/tax-preparation-1.jpg";
+import taxPrep2 from "@/assets/services/tax-preparation-2.jpg";
+// Tax Strategy images
+import taxStrategy1 from "@/assets/services/tax-strategy-1.jpg";
+import taxStrategy2 from "@/assets/services/tax-strategy-2.jpg";
+// Mini Session images
+import miniSession1 from "@/assets/services/mini-session-1.jpg";
+import miniSession2 from "@/assets/services/mini-session-2.jpg";
 
 const BulletItem = ({ children }: { children: React.ReactNode }) => (
   <li className="flex items-start gap-2 text-foreground text-base md:text-lg">
@@ -20,7 +23,7 @@ const BulletItem = ({ children }: { children: React.ReactNode }) => (
 const ServicesTimeline = () => {
   const data = [
     {
-      title: "Tax Preparation",
+      title: "1. Tax Preparation",
       content: (
         <div>
           <p className="text-foreground text-base md:text-lg font-medium mb-4">
@@ -49,13 +52,13 @@ const ServicesTimeline = () => {
 
           <div className="grid grid-cols-2 gap-4 mb-6">
             <img
-              src={womanWorkingViews}
-              alt="Woman working with scenic views"
+              src={taxPrep1}
+              alt="Tax preparation documents and calculator"
               className="rounded-lg object-cover h-32 md:h-48 w-full shadow-md"
             />
             <img
-              src={rvCoastalDrive}
-              alt="RV on coastal drive"
+              src={taxPrep2}
+              alt="Organized tax paperwork"
               className="rounded-lg object-cover h-32 md:h-48 w-full shadow-md"
             />
           </div>
@@ -67,7 +70,7 @@ const ServicesTimeline = () => {
       ),
     },
     {
-      title: "Tax Strategy & Planning",
+      title: "2. Tax Strategy & Planning",
       content: (
         <div>
           <p className="text-foreground text-base md:text-lg font-medium mb-4">
@@ -92,13 +95,13 @@ const ServicesTimeline = () => {
 
           <div className="grid grid-cols-2 gap-4 mb-6">
             <img
-              src={heatherHikingNature}
-              alt="Heather hiking in nature"
+              src={taxStrategy1}
+              alt="Financial charts and planning"
               className="rounded-lg object-cover h-32 md:h-48 w-full shadow-md"
             />
             <img
-              src={campingByRiver}
-              alt="Camping by river"
+              src={taxStrategy2}
+              alt="Calendar and planning documents"
               className="rounded-lg object-cover h-32 md:h-48 w-full shadow-md"
             />
           </div>
@@ -110,7 +113,7 @@ const ServicesTimeline = () => {
       ),
     },
     {
-      title: "Mini Tax Planning Session",
+      title: "3. Mini Tax Planning Session",
       content: (
         <div>
           <p className="text-foreground text-base md:text-lg font-medium mb-4">
@@ -138,13 +141,13 @@ const ServicesTimeline = () => {
 
           <div className="grid grid-cols-2 gap-4 mb-6">
             <img
-              src={workingAtBeach}
-              alt="Working at beach"
+              src={miniSession1}
+              alt="Quick consultation checklist"
               className="rounded-lg object-cover h-32 md:h-48 w-full shadow-md"
             />
             <img
-              src={vanSnowMountains}
-              alt="Van in snowy mountains"
+              src={miniSession2}
+              alt="Virtual meeting setup"
               className="rounded-lg object-cover h-32 md:h-48 w-full shadow-md"
             />
           </div>
@@ -158,7 +161,7 @@ const ServicesTimeline = () => {
   ];
 
   return (
-    <section className="w-full">
+    <section id="services" className="w-full">
       <Timeline data={data} />
     </section>
   );

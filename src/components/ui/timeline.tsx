@@ -30,10 +30,10 @@ export const Timeline = ({ data }: { data: TimelineEntry[] }) => {
     <div className="w-full bg-background font-sans md:px-10" ref={containerRef}>
       <div className="max-w-7xl mx-auto py-20 px-4 md:px-8 lg:px-10">
         <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-foreground max-w-4xl uppercase text-center mx-auto">
-          3 WAYS TO WORK WITH HEATHER
+          SERVICES I OFFER
         </h2>
         <p className="text-muted-foreground text-base md:text-lg max-w-2xl text-center mx-auto">
-          Pick the level of support you need — or take the quiz if you're not sure.
+          Here's how I can work with you
         </p>
       </div>
 

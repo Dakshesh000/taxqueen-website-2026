@@ -38,7 +38,7 @@ const blogPosts = [
 
 const BlogSection = () => {
   return (
-    <section className="w-full py-20 lg:py-28 bg-background">
+    <section id="articles" className="w-full py-20 lg:py-28 bg-background">
       <div className="container mx-auto px-4 flex flex-col gap-14">
         {/* Header */}
         <div className="flex w-full justify-center">
