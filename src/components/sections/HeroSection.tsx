@@ -89,6 +89,12 @@ const HeroSection = () => {
             fetchPriority="high"
           />
           
+          {/* Dynamic white overlay for text readability - increases with scroll */}
+          <div 
+            className="absolute inset-0 bg-gradient-to-b from-white via-white/60 to-transparent transition-opacity duration-300"
+            style={{ opacity: scrollProgress * 0.85 }}
+          />
+          
           {/* Subtle overlay for depth */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
         </div>
