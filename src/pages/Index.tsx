@@ -9,7 +9,7 @@ import CompassChatButton from "@/components/CompassChatButton";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background snap-y snap-mandatory overflow-y-scroll h-screen">
       <Navbar />
       <main>
         <HeroSection />

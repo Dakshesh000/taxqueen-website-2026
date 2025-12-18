@@ -33,15 +33,16 @@ const HeroSection = () => {
   // Calculate dynamic values based on scroll
   const videoPadding = isLocked ? 8 : 40 - scrollProgress * 32;
   const videoTranslateY = isLocked ? -280 : -scrollProgress * 280;
+  const videoScale = isLocked ? 1 : 0.9 + scrollProgress * 0.1;
 
   return (
-    <section className="relative min-h-[110vh] bg-white">
+    <section className="relative min-h-[110vh] bg-white snap-start">
       {/* Text Content Section */}
       <div 
         className={`${isLocked ? 'relative' : 'sticky top-0'} z-20 pt-32 pb-12`}
       >
         <div className="container mx-auto px-4">
-          <div className="max-w-3xl xl:max-w-4xl mx-auto text-center space-y-6">
+          <div className="max-w-3xl xl:max-w-4xl mx-auto text-center space-y-6 bg-white/95 backdrop-blur-sm rounded-2xl p-8 md:p-12 shadow-lg">
             {/* Optional Text / Badge */}
             <p className="text-sm font-medium text-foreground uppercase tracking-wider">
               For Nomads With US Tax Obligations
@@ -76,7 +77,7 @@ const HeroSection = () => {
         className="relative z-10 mx-auto transition-all duration-300 ease-out will-change-transform"
         style={{
           padding: `${videoPadding}px`,
-          transform: `translateY(${videoTranslateY}px)`,
+          transform: `translateY(${videoTranslateY}px) scale(${videoScale})`,
           maxWidth: `calc(100% - ${videoPadding * 2}px)`,
         }}
       >
@@ -101,12 +102,6 @@ const HeroSection = () => {
             preload="auto"
             onCanPlayThrough={() => setIsVideoLoaded(true)}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
-          />
-          
-          {/* Dynamic white overlay for text readability - increases with scroll */}
-          <div 
-            className="absolute inset-0 bg-gradient-to-b from-white via-white/60 to-transparent transition-opacity duration-300"
-            style={{ opacity: scrollProgress * 0.85 }}
           />
           
           {/* Subtle overlay for depth */}
