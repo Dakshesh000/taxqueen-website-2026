@@ -51,7 +51,9 @@ const HeroSection = () => {
   }, []);
 
   // Calculate dynamic values based on scroll
-  const videoPadding = isLocked ? 0 : 40 - scrollProgress * 40;
+  const minPadding = 16; // Keep 16px frame even when locked
+  const maxPadding = 56; // Start 10% narrower for more immersive effect
+  const videoPadding = minPadding + (maxPadding - minPadding) * (1 - scrollProgress);
   const videoTranslateY = isLocked ? -280 : -scrollProgress * 280;
   const textTranslateY = scrollProgress * 150; // Text moves DOWN as user scrolls
 
@@ -59,7 +61,7 @@ const HeroSection = () => {
     <section className="relative min-h-[110vh] bg-white">
       {/* Text Content Section */}
       <div 
-        className={`${isLocked ? 'relative' : 'sticky top-0'} z-20 pt-32 pb-12 transition-transform duration-300 ease-out`}
+        className={`${isLocked ? 'relative' : 'sticky top-0'} z-10 pt-32 pb-12 transition-transform duration-300 ease-out`}
         style={{
           transform: `translateY(${textTranslateY}px)`,
         }}
@@ -97,7 +99,7 @@ const HeroSection = () => {
 
       {/* Video/Image Frame - Expands on scroll until locked */}
       <div 
-        className="relative z-10 mx-auto transition-all duration-300 ease-out will-change-transform"
+        className="relative z-20 mx-auto transition-all duration-300 ease-out will-change-transform"
         style={{
           padding: `${videoPadding}px`,
           transform: `translateY(${videoTranslateY}px)`,
@@ -127,14 +129,29 @@ const HeroSection = () => {
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
           />
           
-          {/* Radial overlay for center text readability - increases with scroll */}
+          {/* Quiz Prompt Input Bar - inside video container at bottom */}
           <div 
-            className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+            className="absolute bottom-8 left-1/2 w-full max-w-2xl px-6 z-10 transition-all duration-500"
             style={{ 
-              background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.4) 30%, rgba(255,255,255,0.1) 50%, transparent 70%)',
-              opacity: scrollProgress * 0.95
+              opacity: isLocked ? 1 : 0,
+              transform: `translateX(-50%) translateY(${isLocked ? 0 : 20}px)`
             }}
-          />
+          >
+            <div className="bg-white rounded-full shadow-2xl flex items-center p-2 pl-6 border border-border">
+              <input
+                type="text"
+                placeholder="Your domicile state or current country of residence is..."
+                className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base"
+                readOnly
+              />
+              <button className="bg-primary text-primary-foreground px-5 py-3 rounded-full font-medium hover:bg-primary/90 transition-colors flex items-center gap-2">
+                <span>Enter</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="m9 18 6-6-6-6"/>
+                </svg>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
