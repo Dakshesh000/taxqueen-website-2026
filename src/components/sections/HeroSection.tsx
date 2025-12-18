@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import vanSnowMountains from "@/assets/lifestyle/van-snow-mountains.jpg";
@@ -7,14 +7,19 @@ const HeroSection = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isLocked, setIsLocked] = useState(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const navbarHeight = 64;
-      // Lock when image would reach navbar (around 280px scroll based on translateY calc)
       const lockPoint = 280;
       const maxScroll = window.innerHeight * 0.5;
+      const snapThreshold = 120; // Snap within 120px of lock point
+      
+      // Clear any pending snap timeout
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
       
       if (scrollY >= lockPoint) {
         setIsLocked(true);
@@ -23,11 +28,26 @@ const HeroSection = () => {
         setIsLocked(false);
         const progress = Math.min(scrollY / maxScroll, 1);
         setScrollProgress(progress);
+        
+        // JS-based snap: if user stops scrolling near lock point, snap to it
+        if (scrollY > lockPoint - snapThreshold && scrollY < lockPoint) {
+          scrollTimeoutRef.current = setTimeout(() => {
+            window.scrollTo({
+              top: lockPoint,
+              behavior: 'smooth'
+            });
+          }, 150);
+        }
       }
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
   }, []);
 
   // Calculate dynamic values based on scroll
@@ -36,7 +56,7 @@ const HeroSection = () => {
   const textTranslateY = scrollProgress * 150; // Text moves DOWN as user scrolls
 
   return (
-    <section className="relative min-h-[110vh] bg-white snap-y snap-mandatory">
+    <section className="relative min-h-[110vh] bg-white">
       {/* Text Content Section */}
       <div 
         className={`${isLocked ? 'relative' : 'sticky top-0'} z-20 pt-32 pb-12 transition-transform duration-300 ease-out`}
@@ -84,7 +104,7 @@ const HeroSection = () => {
           maxWidth: `calc(100% - ${videoPadding * 2}px)`,
         }}
       >
-        <div className={`relative w-full ${isLocked ? 'h-screen' : 'h-[70vh] sm:h-[80vh] xl:h-[85vh] 2xl:h-[88vh]'} rounded-2xl overflow-hidden shadow-lift-lg snap-start transition-all duration-300`}>
+        <div className={`relative w-full ${isLocked ? 'h-screen' : 'h-[70vh] sm:h-[80vh] xl:h-[85vh] 2xl:h-[88vh]'} rounded-2xl overflow-hidden shadow-lift-lg transition-all duration-300`}>
           {/* Thumbnail - shows while video loads */}
           <img
             src={vanSnowMountains}
@@ -107,8 +127,14 @@ const HeroSection = () => {
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
           />
           
-          {/* Subtle overlay for depth */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+          {/* Radial overlay for center text readability - increases with scroll */}
+          <div 
+            className="absolute inset-0 pointer-events-none transition-opacity duration-300"
+            style={{ 
+              background: 'radial-gradient(ellipse at center, rgba(255,255,255,0.75) 0%, rgba(255,255,255,0.4) 30%, rgba(255,255,255,0.1) 50%, transparent 70%)',
+              opacity: scrollProgress * 0.95
+            }}
+          />
         </div>
       </div>
 
