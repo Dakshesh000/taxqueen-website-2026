@@ -31,14 +31,18 @@ const HeroSection = () => {
   }, []);
 
   // Calculate dynamic values based on scroll
-  const videoPadding = isLocked ? 8 : 40 - scrollProgress * 32;
+  const videoPadding = isLocked ? 0 : 40 - scrollProgress * 40;
   const videoTranslateY = isLocked ? -280 : -scrollProgress * 280;
+  const textTranslateY = scrollProgress * 150; // Text moves DOWN as user scrolls
 
   return (
-    <section className="relative min-h-[110vh] bg-white">
+    <section className="relative min-h-[110vh] bg-white snap-y snap-mandatory">
       {/* Text Content Section */}
       <div 
-        className={`${isLocked ? 'relative' : 'sticky top-0'} z-20 pt-32 pb-12`}
+        className={`${isLocked ? 'relative' : 'sticky top-0'} z-20 pt-32 pb-12 transition-transform duration-300 ease-out`}
+        style={{
+          transform: `translateY(${textTranslateY}px)`,
+        }}
       >
         <div className="container mx-auto px-4">
           <div className="max-w-3xl xl:max-w-4xl mx-auto text-center space-y-6">
@@ -80,7 +84,7 @@ const HeroSection = () => {
           maxWidth: `calc(100% - ${videoPadding * 2}px)`,
         }}
       >
-        <div className="relative w-full h-[70vh] sm:h-[80vh] xl:h-[85vh] 2xl:h-[88vh] rounded-2xl overflow-hidden shadow-lift-lg">
+        <div className={`relative w-full ${isLocked ? 'h-screen' : 'h-[70vh] sm:h-[80vh] xl:h-[85vh] 2xl:h-[88vh]'} rounded-2xl overflow-hidden shadow-lift-lg snap-start transition-all duration-300`}>
           {/* Thumbnail - shows while video loads */}
           <img
             src={vanSnowMountains}
@@ -101,12 +105,6 @@ const HeroSection = () => {
             preload="auto"
             onCanPlayThrough={() => setIsVideoLoaded(true)}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
-          />
-          
-          {/* Dynamic white overlay for text readability - increases with scroll */}
-          <div 
-            className="absolute inset-0 bg-gradient-to-b from-white via-white/60 to-transparent transition-opacity duration-300"
-            style={{ opacity: scrollProgress * 0.85 }}
           />
           
           {/* Subtle overlay for depth */}
