@@ -31,8 +31,8 @@ const SubPageLayout = ({ bannerImage, bannerAlt, pageTitle, children }: SubPageL
 
       {/* Page Title - Below banner */}
       <section className="py-8 sm:py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground uppercase tracking-wide text-center">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground uppercase tracking-wide">
             {pageTitle}
           </h1>
         </div>
