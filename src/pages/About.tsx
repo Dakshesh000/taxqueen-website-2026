@@ -14,8 +14,16 @@ const About = () => {
   const credentials = [
     { icon: Award, label: "Enrolled Agent (EA)", desc: "Licensed to represent before IRS" },
     { icon: Shield, label: "Tax Strategist", desc: "Proactive planning, not just filing" },
-    { icon: MapPin, label: "Full-Time Nomad", desc: "Living the lifestyle since 2018" },
-    { icon: Users, label: "1000+ Clients Served", desc: "Digital nomads & entrepreneurs" },
+    { icon: MapPin, label: "Full-Time Nomad", desc: "Living the lifestyle since 2016" },
+    { icon: Users, label: "EA Since 2014", desc: "10+ years federal tax expertise" },
+  ];
+
+  const featuredMedia = [
+    { name: "Drivin' & Vibin'", url: "https://drivinvibin.com/" },
+    { name: "Rootless Living", url: "http://rootlessliving.com/" },
+    { name: "Heath & Alyssa", url: "https://heathandalyssa.com/" },
+    { name: "XSCAPERS", url: "https://www.escapees.com/" },
+    { name: "Nervda", url: "https://nervda.com/" },
   ];
 
   const values = [
@@ -39,7 +47,7 @@ const About = () => {
               transition={{ duration: 0.6 }}
               className="relative"
             >
-              <div className="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl">
+              <div className="aspect-[4/3.5] rounded-2xl overflow-hidden shadow-2xl">
                 <img 
                   src={heatherPortrait} 
                   alt="Heather - The Tax Queen" 
@@ -65,7 +73,7 @@ const About = () => {
               </h1>
               <p className="text-xl text-muted-foreground leading-relaxed">
                 I'm an Enrolled Agent, tax strategist, and full-time digital nomad who's been 
-                living the RV life since 2018. I understand your lifestyle because I live it too.
+                living the RV life since 2016. I understand your lifestyle because I live it too.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 When I started traveling full-time, I quickly realized that traditional tax advice 
@@ -144,7 +152,7 @@ const About = () => {
                     <div className="lg:w-2/3 space-y-4">
                       <h3 className="text-2xl font-bold text-foreground">Trading the 9-to-5 for the Open Road</h3>
                       <p className="text-muted-foreground leading-relaxed">
-                        In 2018, I made a decision that changed everything. After years in the corporate world, 
+                        In 2016, I made a decision that changed everything. After years in the corporate world, 
                         I sold most of what I owned, bought an RV, and hit the road. It was terrifying, 
                         exhilarating, and the best decision I ever made.
                       </p>
@@ -194,9 +202,9 @@ const About = () => {
                     <div className="lg:w-2/3 space-y-4">
                       <h3 className="text-2xl font-bold text-foreground">Living & Working on My Terms</h3>
                       <p className="text-muted-foreground leading-relaxed">
-                        Today, I've helped over 1,000 digital nomads, RVers, remote workers, and 
-                        location-independent entrepreneurs save money, stay compliant, and build wealth—all 
-                        while living life on their own terms.
+                        Today, I help digital nomads, RVers, remote workers, and location-independent 
+                        entrepreneurs save money, stay compliant, and build wealth—all while living life 
+                        on their own terms.
                       </p>
                       <p className="text-muted-foreground leading-relaxed">
                         I still travel full-time, work from wherever I park, and wake up to a different view 
@@ -267,18 +275,21 @@ const About = () => {
             <p className="text-muted-foreground text-sm uppercase tracking-widest mb-8">
               As Featured In
             </p>
-            <div className="flex flex-wrap justify-center items-center gap-8 lg:gap-16">
-              {["RV Lifestyle", "Nomad Finance", "Digital Nomad World", "The Remote Show"].map((media, index) => (
-                <motion.div
-                  key={media}
+            <div className="flex flex-wrap justify-center items-center gap-8 lg:gap-12">
+              {featuredMedia.map((media, index) => (
+                <motion.a
+                  key={media.name}
+                  href={media.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="text-xl lg:text-2xl font-semibold text-muted-foreground/60 hover:text-foreground transition-colors duration-300"
+                  className="text-lg lg:text-xl font-semibold text-muted-foreground/60 hover:text-primary transition-colors duration-300"
                 >
-                  {media}
-                </motion.div>
+                  {media.name}
+                </motion.a>
               ))}
             </div>
           </motion.div>
