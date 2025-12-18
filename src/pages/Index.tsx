@@ -7,6 +7,12 @@ import ComprehensiveFAQSection from "@/components/sections/ComprehensiveFAQSecti
 import BlogSection from "@/components/sections/BlogSection";
 import CompassChatButton from "@/components/CompassChatButton";
 import ServicesTimeline from "@/components/sections/ServicesTimeline";
+import ComparisonSection from "@/components/sections/ComparisonSection";
+import ParallaxDivider from "@/components/ui/ParallaxDivider";
+
+// Parallax images
+import truckStormySky from "@/assets/lifestyle/truck-stormy-sky.jpeg";
+import sunsetRvReflection from "@/assets/lifestyle/sunset-rv-reflection.png";
 
 const Index = () => {
   return (
@@ -16,8 +22,19 @@ const Index = () => {
         <HeroSection />
         <SocialProofSection />
         <AboutSection />
+        <ParallaxDivider 
+          image={truckStormySky}
+          text="Adventure Awaits"
+          subtext="Let us handle your taxes while you explore the open road"
+        />
         <FAQSection />
         <ServicesTimeline />
+        <ParallaxDivider 
+          image={sunsetRvReflection}
+          text="Your Journey Starts Here"
+          subtext="Expert tax guidance for the modern nomad lifestyle"
+        />
+        <ComparisonSection />
         <TestimonialsSection />
         <ComprehensiveFAQSection />
         <BlogSection />
