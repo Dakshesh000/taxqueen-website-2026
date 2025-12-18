@@ -6,6 +6,7 @@ import TestimonialsSection from "@/components/sections/TestimonialsSection";
 import ComprehensiveFAQSection from "@/components/sections/ComprehensiveFAQSection";
 import BlogSection from "@/components/sections/BlogSection";
 import CompassChatButton from "@/components/CompassChatButton";
+import ServicesTimeline from "@/components/sections/ServicesTimeline";
 
 const Index = () => {
   return (
@@ -17,6 +18,7 @@ const Index = () => {
         <AboutSection />
         <FAQSection />
         <ServicesSection />
+        <ServicesTimeline />
         <TestimonialsSection />
         <ComprehensiveFAQSection />
         <BlogSection />
