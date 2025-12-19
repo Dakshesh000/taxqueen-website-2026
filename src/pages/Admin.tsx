@@ -27,11 +27,19 @@ const Admin = () => {
   const { toast } = useToast();
   const [leads, setLeads] = useState<QuizLead[]>([]);
   const [loadingLeads, setLoadingLeads] = useState(true);
+  const [filter, setFilter] = useState<"all" | "qualified" | "not_qualified">("all");
   const [metrics, setMetrics] = useState({
     totalLeads: 0,
     qualifiedLeads: 0,
     conversionRate: 0,
     recentLeads: 0,
+  });
+
+  // Filter leads based on current filter
+  const filteredLeads = leads.filter((lead) => {
+    if (filter === "qualified") return lead.is_qualified;
+    if (filter === "not_qualified") return !lead.is_qualified;
+    return true;
   });
 
   // Redirect if not authenticated or not admin (unless demo mode)
@@ -92,12 +100,18 @@ const Admin = () => {
     navigate("/admin-login");
   };
 
-  // CSV Export function
-  const exportToCSV = () => {
-    if (leads.length === 0) {
+  // CSV Export function with filter support
+  const exportToCSV = (exportFilter: "all" | "qualified" | "not_qualified" = filter) => {
+    const leadsToExport = leads.filter((lead) => {
+      if (exportFilter === "qualified") return lead.is_qualified;
+      if (exportFilter === "not_qualified") return !lead.is_qualified;
+      return true;
+    });
+
+    if (leadsToExport.length === 0) {
       toast({
         title: "No Data",
-        description: "There are no leads to export.",
+        description: "There are no leads to export with the current filter.",
         variant: "destructive",
       });
       return;
@@ -106,7 +120,7 @@ const Admin = () => {
     const headers = ["Name", "Email", "Phone", "Qualified", "Score", "Status", "Submitted"];
     const csvRows = [
       headers.join(","),
-      ...leads.map((lead) =>
+      ...leadsToExport.map((lead) =>
         [
           `"${lead.name.replace(/"/g, '""')}"`,
           `"${lead.email.replace(/"/g, '""')}"`,
@@ -124,7 +138,8 @@ const Admin = () => {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `quiz-leads-${format(new Date(), "yyyy-MM-dd")}.csv`;
+    const filterSuffix = exportFilter === "all" ? "all" : exportFilter === "qualified" ? "qualified" : "not-qualified";
+    link.download = `quiz-leads-${filterSuffix}-${format(new Date(), "yyyy-MM-dd")}.csv`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -132,7 +147,7 @@ const Admin = () => {
 
     toast({
       title: "Export Complete",
-      description: `Exported ${leads.length} leads to CSV.`,
+      description: `Exported ${leadsToExport.length} ${exportFilter === "all" ? "" : exportFilter.replace("_", " ")} leads to CSV.`,
     });
   };
 
@@ -236,32 +251,65 @@ const Admin = () => {
 
         {/* Leads Table */}
         <Card>
-          <CardHeader className="flex flex-row items-center justify-between">
+          <CardHeader className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
               <CardTitle className="uppercase tracking-wide">Quiz Submissions</CardTitle>
               <CardDescription>
                 View and manage all quiz leads
               </CardDescription>
             </div>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={exportToCSV}
-              disabled={leads.length === 0}
-              className="gap-2"
-            >
-              <Download className="h-4 w-4" />
-              Export CSV
-            </Button>
+            <div className="flex flex-wrap items-center gap-2">
+              {/* Filter Buttons */}
+              <div className="flex gap-1 rounded-lg border p-1">
+                <Button
+                  variant={filter === "all" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setFilter("all")}
+                  className="h-7 text-xs"
+                >
+                  All ({leads.length})
+                </Button>
+                <Button
+                  variant={filter === "qualified" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setFilter("qualified")}
+                  className="h-7 text-xs"
+                >
+                  Qualified ({leads.filter(l => l.is_qualified).length})
+                </Button>
+                <Button
+                  variant={filter === "not_qualified" ? "default" : "ghost"}
+                  size="sm"
+                  onClick={() => setFilter("not_qualified")}
+                  className="h-7 text-xs"
+                >
+                  Not Qualified ({leads.filter(l => !l.is_qualified).length})
+                </Button>
+              </div>
+              
+              {/* Export Dropdown */}
+              <div className="flex gap-1">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => exportToCSV()}
+                  disabled={filteredLeads.length === 0}
+                  className="gap-2"
+                >
+                  <Download className="h-4 w-4" />
+                  Export {filter === "all" ? "All" : filter === "qualified" ? "Qualified" : "Not Qualified"}
+                </Button>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
             {loadingLeads ? (
               <div className="flex items-center justify-center py-8">
                 <Loader2 className="h-6 w-6 animate-spin text-primary" />
               </div>
-            ) : leads.length === 0 ? (
+            ) : filteredLeads.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
-                No quiz submissions yet.
+                No {filter === "all" ? "" : filter === "qualified" ? "qualified " : "non-qualified "}leads found.
               </div>
             ) : (
               <div className="overflow-x-auto">
@@ -279,7 +327,7 @@ const Admin = () => {
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {leads.map((lead) => (
+                    {filteredLeads.map((lead) => (
                       <TableRow key={lead.id}>
                         <TableCell className="font-medium">{lead.name}</TableCell>
                         <TableCell>{lead.email}</TableCell>
