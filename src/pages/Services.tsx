@@ -4,11 +4,11 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ServicesTimeline from "@/components/sections/ServicesTimeline";
+import GlobalQuiz from "@/components/quiz/GlobalQuiz";
 import { heatherVideoThumbnail } from "@/assets";
-import { useQuiz } from "@/contexts/QuizContext";
+import { QuizProvider } from "@/contexts/QuizContext";
 
 const Services = () => {
-  const { openQuiz } = useQuiz();
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   const processSteps = [
@@ -95,27 +95,26 @@ const Services = () => {
         </div>
       </section>
 
-      {/* Quiz Placeholder Section */}
-      <section className="py-16 bg-secondary">
+      {/* Quiz Embedded Section */}
+      <section id="quiz" className="py-16 bg-secondary">
         <div className="container mx-auto px-4">
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="bg-background rounded-2xl shadow-lg p-8 md:p-12 border-2 border-dashed border-primary/30">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-8">
               <HelpCircle className="w-16 h-16 text-primary mx-auto mb-6" />
               <h2 className="text-2xl md:text-3xl font-bold text-foreground uppercase mb-4">
                 Not Sure Which Service You Need?
               </h2>
-              <p className="text-muted-foreground mb-8">
+              <p className="text-muted-foreground">
                 Take our quick quiz to find the perfect fit for your unique tax situation.
               </p>
-              <Button
-                variant="cta"
-                size="lg"
-                className="rounded-full"
-                onClick={() => openQuiz()}
-              >
-                Take the Quiz
-              </Button>
             </div>
+            
+            {/* Embedded Quiz */}
+            <QuizProvider>
+              <div className="bg-background rounded-2xl shadow-lg border border-border overflow-hidden">
+                <GlobalQuiz isEmbedded={true} />
+              </div>
+            </QuizProvider>
           </div>
         </div>
       </section>

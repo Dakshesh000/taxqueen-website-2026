@@ -9,6 +9,7 @@ import CompassChatButton from "@/components/CompassChatButton";
 import ServicesTimeline from "@/components/sections/ServicesTimeline";
 import ComparisonSection from "@/components/sections/ComparisonSection";
 import ParallaxDivider from "@/components/ui/ParallaxDivider";
+import FeaturedInSection from "@/components/sections/FeaturedInSection";
 
 // Parallax images
 import truckStormySky from "@/assets/lifestyle/truck-stormy-sky.jpeg";
@@ -23,6 +24,7 @@ const Index = () => {
         <HeroSection />
         <SocialProofSection />
         <AboutSection />
+        <FeaturedInSection />
         <ParallaxDivider 
           image={truckStormySky}
           text="Adventure Awaits"

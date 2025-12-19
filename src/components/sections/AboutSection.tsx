@@ -61,7 +61,7 @@ const AboutSection = () => {
     const maxDistance = 180;
     if (distance > maxDistance) return 0.05;
 
-    return 0.05 + (1 - distance / maxDistance) * 0.5;
+    return 0.05 + (1 - distance / maxDistance) * 0.7;
   };
 
   return (
@@ -97,9 +97,7 @@ const AboutSection = () => {
           <div className="flex flex-col items-center text-center space-y-10 relative z-10">
             {/* Heading */}
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground uppercase">
-              Hi, I'm Heather
-              <br />
-              Your <span className="text-primary">Tax Queen!</span>
+              Hi, I'm <span className="text-primary">Heather</span>
             </h2>
 
             {/* Circular Portrait with Play Button - Both Float Together */}
