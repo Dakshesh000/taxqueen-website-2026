@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Globe,
@@ -33,6 +33,8 @@ import MultiSelectQuestion from "@/components/quiz/questions/MultiSelectQuestion
 import SingleSelectQuestion from "@/components/quiz/questions/SingleSelectQuestion";
 import SliderQuestion from "@/components/quiz/questions/SliderQuestion";
 import ContactForm from "@/components/quiz/questions/ContactForm";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 // Import background images
 import rvCoastalDrive from "@/assets/lifestyle/rv-coastal-drive.png";
@@ -65,6 +67,9 @@ const QuizPreview = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [showResults, setShowResults] = useState(false);
   const [isQualified, setIsQualified] = useState(false);
+  const [sessionId, setSessionId] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
 
   const [answers, setAnswers] = useState<QuizAnswers>({
     usTaxObligations: null,
@@ -78,6 +83,13 @@ const QuizPreview = () => {
     email: "",
     phone: "",
   });
+
+  // Generate session ID when quiz opens
+  useEffect(() => {
+    if (isModalOpen && !sessionId) {
+      setSessionId(crypto.randomUUID());
+    }
+  }, [isModalOpen, sessionId]);
 
   // Options for questions
   const incomeOptions = [
@@ -126,21 +138,125 @@ const QuizPreview = () => {
     }
   };
 
-  const handleSubmit = () => {
-    // Calculate qualification
-    const hasNomadSituation = answers.situations.some(s => 
-      ["expat", "planning", "330days"].includes(s)
-    );
-    const qualified = answers.usTaxObligations === true && hasNomadSituation;
+  // Save a single response to database
+  const saveResponse = async (questionKey: string, answerValue: unknown) => {
+    if (!sessionId) return;
     
-    setIsQualified(qualified);
-    setShowResults(true);
+    try {
+      await supabase.from("quiz_responses").insert({
+        session_id: sessionId,
+        question_key: questionKey,
+        answer_value: answerValue as any,
+      });
+    } catch (err) {
+      console.error("Error saving response:", err);
+    }
+  };
+
+  // Calculate qualification score
+  const calculateScore = (): { score: number; qualified: boolean; reasons: string[] } => {
+    let score = 0;
+    const reasons: string[] = [];
+
+    // US tax obligations is required
+    if (answers.usTaxObligations === true) {
+      score += 20;
+      reasons.push("Has US tax obligations");
+    }
+
+    // Nomad situations add points
+    const nomadSituations = ["expat", "planning", "330days"];
+    const hasNomadSituation = answers.situations.some(s => nomadSituations.includes(s));
+    if (hasNomadSituation) {
+      score += 30;
+      reasons.push("Nomad/expat lifestyle");
+    }
+
+    // Income level adds points
+    if (answers.annualIncome >= 3) {
+      score += 20;
+      reasons.push("Higher income bracket");
+    }
+
+    // Business/freelance income
+    const businessIncome = ["business", "freelance", "1099"];
+    if (answers.incomeSources.some(s => businessIncome.includes(s))) {
+      score += 15;
+      reasons.push("Business/self-employment income");
+    }
+
+    // Urgency
+    if (answers.urgency <= 1) {
+      score += 10;
+      reasons.push("Urgent timeline");
+    }
+
+    const qualified = answers.usTaxObligations === true && hasNomadSituation && score >= 50;
+
+    return { score, qualified, reasons };
+  };
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+
+    try {
+      // Save all responses first
+      const responsePromises = [
+        saveResponse("usTaxObligations", answers.usTaxObligations),
+        saveResponse("residence", answers.residence),
+        saveResponse("incomeSources", answers.incomeSources),
+        saveResponse("annualIncome", answers.annualIncome),
+        saveResponse("situations", answers.situations),
+        saveResponse("financialBehavior", answers.financialBehavior),
+        saveResponse("urgency", answers.urgency),
+      ];
+      await Promise.all(responsePromises);
+
+      // Calculate qualification
+      const { score, qualified, reasons } = calculateScore();
+
+      // Save lead to database
+      const { error } = await supabase.from("quiz_leads").insert({
+        session_id: sessionId,
+        name: answers.name,
+        email: answers.email,
+        phone: answers.phone || null,
+        is_qualified: qualified,
+        qualification_score: score,
+        qualification_reasons: reasons,
+        status: "new",
+      });
+
+      if (error) {
+        console.error("Error saving lead:", error);
+        toast({
+          title: "Submission Error",
+          description: "There was a problem saving your information. Please try again.",
+          variant: "destructive",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      setIsQualified(qualified);
+      setShowResults(true);
+    } catch (err) {
+      console.error("Error submitting quiz:", err);
+      toast({
+        title: "Submission Error", 
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const resetQuiz = () => {
     setCurrentStep(1);
     setShowResults(false);
     setIsQualified(false);
+    setSessionId("");
     setAnswers({
       usTaxObligations: null,
       residence: "",
@@ -157,6 +273,7 @@ const QuizPreview = () => {
 
   const openQuiz = () => {
     resetQuiz();
+    setSessionId(crypto.randomUUID());
     setIsModalOpen(true);
   };
 
@@ -396,9 +513,9 @@ const QuizPreview = () => {
               <Button
                 className="rounded-full px-6"
                 onClick={handleSubmit}
-                disabled={!answers.name.trim() || !answers.email.trim()}
+                disabled={!answers.name.trim() || !answers.email.trim() || isSubmitting}
               >
-                See My Results
+                {isSubmitting ? "Submitting..." : "See My Results"}
                 <Sparkles className="w-4 h-4 ml-2" />
               </Button>
             </div>

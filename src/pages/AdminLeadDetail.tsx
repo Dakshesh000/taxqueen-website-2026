@@ -30,25 +30,25 @@ interface QuizResponse {
 
 const AdminLeadDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const { user, isAdmin, loading } = useAdmin();
+  const { user, isAdmin, loading, isDemoMode } = useAdmin();
   const navigate = useNavigate();
   const [lead, setLead] = useState<QuizLead | null>(null);
   const [responses, setResponses] = useState<QuizResponse[]>([]);
   const [loadingData, setLoadingData] = useState(true);
 
-  // Redirect if not authenticated or not admin
+  // Redirect if not authenticated or not admin (unless demo mode)
   useEffect(() => {
-    if (!loading && (!user || !isAdmin)) {
+    if (!loading && !isDemoMode && (!user || !isAdmin)) {
       navigate("/admin-login");
     }
-  }, [user, isAdmin, loading, navigate]);
+  }, [user, isAdmin, loading, isDemoMode, navigate]);
 
   // Fetch lead and responses
   useEffect(() => {
-    if (user && isAdmin && id) {
+    if ((isDemoMode || (user && isAdmin)) && id) {
       fetchLeadData();
     }
-  }, [user, isAdmin, id]);
+  }, [user, isAdmin, isDemoMode, id]);
 
   const fetchLeadData = async () => {
     try {
@@ -108,7 +108,7 @@ const AdminLeadDetail = () => {
     );
   }
 
-  if (!user || !isAdmin || !lead) {
+  if (!isDemoMode && (!user || !isAdmin) || !lead) {
     return null;
   }
 

@@ -40,10 +40,6 @@ const AdminLogin = () => {
     navigate("/admin");
   };
 
-  const handleAutoFill = () => {
-    setEmail("admin@taxqueen.com");
-    setPassword("12345678");
-  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -188,15 +184,6 @@ const AdminLogin = () => {
                 disabled={isLoading}
               />
             </div>
-            
-            <Button 
-              type="button" 
-              variant="outline" 
-              className="w-full"
-              onClick={handleAutoFill}
-            >
-              Auto-fill Demo Credentials
-            </Button>
 
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (

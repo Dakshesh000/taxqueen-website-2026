@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, LogOut, Users, CheckCircle, TrendingUp, Clock, Eye } from "lucide-react";
+import { Loader2, LogOut, Users, CheckCircle, TrendingUp, Clock, Eye, Download } from "lucide-react";
 import { format } from "date-fns";
+import { useToast } from "@/hooks/use-toast";
 
 interface QuizLead {
   id: string;
@@ -23,6 +24,7 @@ interface QuizLead {
 const Admin = () => {
   const { user, isAdmin, loading, isDemoMode, signOut, exitDemoMode } = useAdmin();
   const navigate = useNavigate();
+  const { toast } = useToast();
   const [leads, setLeads] = useState<QuizLead[]>([]);
   const [loadingLeads, setLoadingLeads] = useState(true);
   const [metrics, setMetrics] = useState({
@@ -88,6 +90,50 @@ const Admin = () => {
   const handleExitDemo = () => {
     exitDemoMode();
     navigate("/admin-login");
+  };
+
+  // CSV Export function
+  const exportToCSV = () => {
+    if (leads.length === 0) {
+      toast({
+        title: "No Data",
+        description: "There are no leads to export.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const headers = ["Name", "Email", "Phone", "Qualified", "Score", "Status", "Submitted"];
+    const csvRows = [
+      headers.join(","),
+      ...leads.map((lead) =>
+        [
+          `"${lead.name.replace(/"/g, '""')}"`,
+          `"${lead.email.replace(/"/g, '""')}"`,
+          `"${(lead.phone || "").replace(/"/g, '""')}"`,
+          lead.is_qualified ? "Yes" : "No",
+          lead.qualification_score ?? "",
+          lead.status.replace("_", " "),
+          format(new Date(lead.created_at), "yyyy-MM-dd"),
+        ].join(",")
+      ),
+    ];
+
+    const csvContent = csvRows.join("\n");
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `quiz-leads-${format(new Date(), "yyyy-MM-dd")}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    toast({
+      title: "Export Complete",
+      description: `Exported ${leads.length} leads to CSV.`,
+    });
   };
 
   if (loading) {
@@ -190,11 +236,23 @@ const Admin = () => {
 
         {/* Leads Table */}
         <Card>
-          <CardHeader>
-            <CardTitle className="uppercase tracking-wide">Quiz Submissions</CardTitle>
-            <CardDescription>
-              View and manage all quiz leads
-            </CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle className="uppercase tracking-wide">Quiz Submissions</CardTitle>
+              <CardDescription>
+                View and manage all quiz leads
+              </CardDescription>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={exportToCSV}
+              disabled={leads.length === 0}
+              className="gap-2"
+            >
+              <Download className="h-4 w-4" />
+              Export CSV
+            </Button>
           </CardHeader>
           <CardContent>
             {loadingLeads ? (
