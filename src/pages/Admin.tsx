@@ -21,7 +21,7 @@ interface QuizLead {
 }
 
 const Admin = () => {
-  const { user, isAdmin, loading, signOut } = useAdmin();
+  const { user, isAdmin, loading, isDemoMode, signOut, exitDemoMode } = useAdmin();
   const navigate = useNavigate();
   const [leads, setLeads] = useState<QuizLead[]>([]);
   const [loadingLeads, setLoadingLeads] = useState(true);
@@ -32,19 +32,19 @@ const Admin = () => {
     recentLeads: 0,
   });
 
-  // Redirect if not authenticated or not admin
+  // Redirect if not authenticated or not admin (unless demo mode)
   useEffect(() => {
-    if (!loading && (!user || !isAdmin)) {
+    if (!loading && !isDemoMode && (!user || !isAdmin)) {
       navigate("/admin-login");
     }
-  }, [user, isAdmin, loading, navigate]);
+  }, [user, isAdmin, loading, isDemoMode, navigate]);
 
   // Fetch leads data
   useEffect(() => {
-    if (user && isAdmin) {
+    if (isDemoMode || (user && isAdmin)) {
       fetchLeads();
     }
-  }, [user, isAdmin]);
+  }, [user, isAdmin, isDemoMode]);
 
   const fetchLeads = async () => {
     try {
@@ -85,6 +85,11 @@ const Admin = () => {
     navigate("/admin-login");
   };
 
+  const handleExitDemo = () => {
+    exitDemoMode();
+    navigate("/admin-login");
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-muted">
@@ -93,26 +98,43 @@ const Admin = () => {
     );
   }
 
-  if (!user || !isAdmin) {
+  if (!isDemoMode && (!user || !isAdmin)) {
     return null;
   }
 
   return (
     <div className="min-h-screen bg-muted">
+      {/* Demo Mode Banner */}
+      {isDemoMode && (
+        <div className="bg-amber-500 text-amber-950 py-2 px-4 text-center text-sm font-medium">
+          🎭 Demo Mode Active — Data is read-only from the database
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleExitDemo}
+            className="ml-4 h-6 text-amber-950 hover:bg-amber-600"
+          >
+            Exit Demo
+          </Button>
+        </div>
+      )}
+
       {/* Header */}
       <header className="bg-primary text-primary-foreground py-4 px-6">
         <div className="container mx-auto flex items-center justify-between">
           <h1 className="text-xl font-bold uppercase tracking-wide">Admin Dashboard</h1>
           <div className="flex items-center gap-4">
-            <span className="text-sm opacity-80">{user.email}</span>
+            <span className="text-sm opacity-80">
+              {isDemoMode ? "demo@taxqueen.com" : user?.email}
+            </span>
             <Button
               variant="secondary"
               size="sm"
-              onClick={handleSignOut}
+              onClick={isDemoMode ? handleExitDemo : handleSignOut}
               className="gap-2"
             >
               <LogOut className="h-4 w-4" />
-              Sign Out
+              {isDemoMode ? "Exit Demo" : "Sign Out"}
             </Button>
           </div>
         </div>

@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, Lock } from "lucide-react";
+import { Loader2, Lock, Play } from "lucide-react";
 import { z } from "zod";
 
 const loginSchema = z.object({
@@ -20,16 +20,30 @@ const AdminLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   
-  const { user, isAdmin, loading, signIn, signUp } = useAdmin();
+  const { user, isAdmin, loading, isDemoMode, signIn, signUp, enterDemoMode } = useAdmin();
   const navigate = useNavigate();
   const { toast } = useToast();
 
-  // Redirect if already logged in and is admin
+  // Redirect if already logged in and is admin (or demo mode)
   useEffect(() => {
-    if (!loading && user && isAdmin) {
+    if (!loading && (isDemoMode || (user && isAdmin))) {
       navigate("/admin");
     }
-  }, [user, isAdmin, loading, navigate]);
+  }, [user, isAdmin, loading, isDemoMode, navigate]);
+
+  const handleDemoMode = () => {
+    enterDemoMode();
+    toast({
+      title: "Demo Mode Activated",
+      description: "You're now viewing the admin dashboard in demo mode.",
+    });
+    navigate("/admin");
+  };
+
+  const handleAutoFill = () => {
+    setEmail("admin@taxqueen.com");
+    setPassword("12345678");
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,7 +102,7 @@ const AdminLogin = () => {
   }
 
   // If logged in but not admin, show access denied
-  if (user && !isAdmin) {
+  if (user && !isAdmin && !isDemoMode) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-muted p-4">
         <Card className="w-full max-w-md">
@@ -124,7 +138,31 @@ const AdminLogin = () => {
             {isSignUp ? "Create an admin account" : "Sign in to access the dashboard"}
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-6">
+          {/* Demo Mode Button - Prominent for testing */}
+          <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+            <p className="text-sm text-muted-foreground mb-3 text-center">
+              Testing? Skip authentication and explore the dashboard.
+            </p>
+            <Button 
+              className="w-full gap-2" 
+              size="lg"
+              onClick={handleDemoMode}
+            >
+              <Play className="h-4 w-4" />
+              Enter Demo Mode
+            </Button>
+          </div>
+
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t" />
+            </div>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">Or sign in</span>
+            </div>
+          </div>
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
@@ -150,6 +188,16 @@ const AdminLogin = () => {
                 disabled={isLoading}
               />
             </div>
+            
+            <Button 
+              type="button" 
+              variant="outline" 
+              className="w-full"
+              onClick={handleAutoFill}
+            >
+              Auto-fill Demo Credentials
+            </Button>
+
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? (
                 <>
@@ -162,7 +210,7 @@ const AdminLogin = () => {
             </Button>
           </form>
           
-          <div className="mt-4 text-center">
+          <div className="text-center">
             <button
               type="button"
               onClick={() => setIsSignUp(!isSignUp)}
