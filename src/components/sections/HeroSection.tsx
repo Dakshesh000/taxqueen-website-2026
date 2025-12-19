@@ -141,19 +141,19 @@ const HeroSection = () => {
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
           />
           
-          {/* Quiz Prompt Input Bar - inside video container at bottom */}
+          {/* Quiz Prompt Input Bar - centered in video container */}
           <div 
-            className="absolute bottom-8 left-1/2 w-full max-w-2xl px-6 z-10 transition-all duration-500"
+            className="absolute inset-0 flex items-center justify-center z-10 transition-all duration-500 px-6"
             style={{ 
               opacity: isLocked ? 1 : 0,
-              transform: `translateX(-50%) translateY(${isLocked ? 0 : 20}px)`
+              pointerEvents: isLocked ? 'auto' : 'none'
             }}
           >
-            <div className="bg-white rounded-full shadow-2xl flex items-center p-2 pl-6 border border-border">
+            <div className="bg-white rounded-full shadow-2xl flex items-center gap-2 p-2 border border-border w-full max-w-2xl">
               <input
                 type="text"
                 placeholder="Your domicile state or current country of residence is..."
-                className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base text-center"
+                className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base text-center px-4"
                 value={residenceInput}
                 onChange={(e) => setResidenceInput(e.target.value)}
                 onKeyDown={(e) => {
