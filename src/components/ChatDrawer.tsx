@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import { X, Send, Compass } from "lucide-react";
+import { X, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useChatStream } from "@/hooks/useChatStream";
+import { heatherChatAvatar } from "@/assets";
+import ReactMarkdown from "react-markdown";
 
 interface ChatDrawerProps {
   isOpen: boolean;
@@ -56,8 +58,12 @@ const ChatDrawer = ({ isOpen, onClose }: ChatDrawerProps) => {
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b border-border">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-              <Compass className="w-5 h-5 text-primary" />
+            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
+              <img 
+                src={heatherChatAvatar} 
+                alt="Heather" 
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <h3 className="font-semibold text-foreground">Tax Queen Assistant</h3>
@@ -77,7 +83,13 @@ const ChatDrawer = ({ isOpen, onClose }: ChatDrawerProps) => {
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.length === 0 && (
             <div className="text-center py-8">
-              <Compass className="w-12 h-12 text-primary/30 mx-auto mb-3" />
+              <div className="w-12 h-12 rounded-full overflow-hidden mx-auto mb-3 border-2 border-primary/20">
+                <img 
+                  src={heatherChatAvatar} 
+                  alt="Heather" 
+                  className="w-full h-full object-cover opacity-50"
+                />
+              </div>
               <p className="text-muted-foreground text-sm">
                 Hi! I'm here to help with your tax questions. What would you like to know?
               </p>
@@ -94,7 +106,23 @@ const ChatDrawer = ({ isOpen, onClose }: ChatDrawerProps) => {
                   : "mr-auto bg-muted text-foreground rounded-bl-md"
               )}
             >
-              {msg.content}
+              {msg.role === "assistant" ? (
+                <div className="prose prose-sm max-w-none">
+                  <ReactMarkdown
+                    components={{
+                      p: ({ children }) => <p className="mb-2 last:mb-0 text-sm">{children}</p>,
+                      ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
+                      li: ({ children }) => <li className="text-sm">{children}</li>,
+                      strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                      em: ({ children }) => <em className="text-xs opacity-80 block mt-2">{children}</em>,
+                    }}
+                  >
+                    {msg.content}
+                  </ReactMarkdown>
+                </div>
+              ) : (
+                msg.content
+              )}
             </div>
           ))}
           

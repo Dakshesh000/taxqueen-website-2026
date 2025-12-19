@@ -6,6 +6,7 @@ export { default as logoTaxQueenMain } from './brand/logo-tax-queen-main.jpg';
 export { default as heatherPortrait } from './heather/portrait-square.png';
 export { default as heatherInVan } from './heather/heather-in-van.jpg';
 export { default as heatherVideoThumbnail } from './heather/video-thumbnail.png';
+export { default as heatherChatAvatar } from './heather/heather-chat-avatar.png';
 
 // Hero Section
 export { default as heroVideoThumbnail } from './hero/hero-video-thumbnail.png';

@@ -124,16 +124,16 @@ const Footer = () => {
 
       {/* Copyright */}
       <div className="border-t border-primary-foreground/20">
-        <div className="container mx-auto px-4 py-6 flex items-center justify-between">
+        <div className="container mx-auto px-4 py-6">
           <p className="text-sm text-primary-foreground/80">
-            © {currentYear} {brand.name}. All rights reserved.
+            © {currentYear} {brand.name}. All rights reserved. •{" "}
+            <Link
+              to="/admin-login"
+              className="hover:text-primary-foreground transition-colors"
+            >
+              Admin
+            </Link>
           </p>
-          <Link
-            to="/admin-login"
-            className="text-xs text-primary-foreground/50 hover:text-primary-foreground/80 transition-colors"
-          >
-            Admin
-          </Link>
         </div>
       </div>
     </footer>

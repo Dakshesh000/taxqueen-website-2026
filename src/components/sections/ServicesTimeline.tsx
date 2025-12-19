@@ -52,7 +52,7 @@ const ServicesTimeline = () => {
             <img
               src={taxPrep1}
               alt="Tax preparation service"
-              className="rounded-lg object-cover h-48 md:h-64 w-full shadow-md"
+              className="rounded-lg object-cover h-32 md:h-40 w-full shadow-md"
             />
           </div>
 
@@ -90,7 +90,7 @@ const ServicesTimeline = () => {
             <img
               src={taxStrategy1}
               alt="Tax strategy and planning service"
-              className="rounded-lg object-cover h-48 md:h-64 w-full shadow-md"
+              className="rounded-lg object-cover h-32 md:h-40 w-full shadow-md"
             />
           </div>
 
@@ -131,7 +131,7 @@ const ServicesTimeline = () => {
             <img
               src={miniSession1}
               alt="Mini tax planning session"
-              className="rounded-lg object-cover h-48 md:h-64 w-full shadow-md"
+              className="rounded-lg object-cover h-32 md:h-40 w-full shadow-md"
             />
           </div>
 

@@ -31,6 +31,9 @@ const CompassChatButton = () => {
         )}
         aria-label="Open chat"
       >
+        {/* Continuous pulse ring */}
+        <span className="absolute inset-[-4px] rounded-full border-2 border-primary/40 animate-pulse-ring" />
+        
         {/* Compass SVG */}
         <svg viewBox="0 0 100 100" className="w-10 h-10">
           {/* Outer ring */}
@@ -87,9 +90,6 @@ const CompassChatButton = () => {
           <circle cx="50" cy="50" r="6" fill="hsl(201 41% 51%)" />
           <circle cx="50" cy="50" r="3" fill="white" />
         </svg>
-        
-        {/* Pulse ring on hover */}
-        <span className="absolute inset-0 rounded-full border-2 border-primary/50 opacity-0 group-hover:opacity-100 group-hover:animate-ping" />
       </button>
 
       <ChatDrawer isOpen={isOpen} onClose={() => setIsOpen(false)} />

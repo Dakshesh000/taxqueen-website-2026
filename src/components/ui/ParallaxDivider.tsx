@@ -19,16 +19,21 @@ const ParallaxDivider = ({
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
 
-  // Lazy load background image when section approaches viewport
+  // Preload image early and lazy load when section approaches viewport
   useEffect(() => {
+    // Preload the image immediately
+    const img = new Image();
+    img.src = image;
+    img.onload = () => setIsVisible(true);
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsVisible(true);
-          observer.disconnect(); // Once loaded, no need to observe
+          observer.disconnect();
         }
       },
-      { rootMargin: "200px" } // Preload 200px before visible
+      { rootMargin: "500px" } // Preload 500px before visible
     );
 
     if (sectionRef.current) {
@@ -36,7 +41,7 @@ const ParallaxDivider = ({
     }
 
     return () => observer.disconnect();
-  }, []);
+  }, [image]);
 
   return (
     <section 
