@@ -1,3 +1,15 @@
+# Tax Queen - robots.txt
+# https://tax-queen.com
+
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin-login
+Disallow: /admin/
+Disallow: /quiz-preview
+Disallow: /template-preview
+
+# Search Engine Specific Rules
 User-agent: Googlebot
 Allow: /
 
@@ -10,5 +22,5 @@ Allow: /
 User-agent: facebookexternalhit
 Allow: /
 
-User-agent: *
-Allow: /
+# Sitemap
+Sitemap: https://tax-queen.com/sitemap.xml

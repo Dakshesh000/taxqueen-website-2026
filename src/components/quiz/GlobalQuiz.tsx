@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Globe,
@@ -21,6 +21,7 @@ import {
   CheckCircle,
   Circle,
   CircleDashed,
+  Loader2,
 } from "lucide-react";
 
 import QuestionWrapper from "@/components/quiz/QuestionWrapper";
@@ -35,6 +36,8 @@ import ContactForm from "@/components/quiz/questions/ContactForm";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useQuiz } from "@/contexts/QuizContext";
+import useImagePreloader from "@/hooks/useImagePreloader";
+import TravelCompass from "@/components/quiz/TravelCompass";
 
 // Import background images
 import rvCoastalDrive from "@/assets/lifestyle/rv-coastal-drive.png";
@@ -45,6 +48,18 @@ import workingAtBeach from "@/assets/lifestyle/working-at-beach.jpg";
 import campingByRiver from "@/assets/lifestyle/camping-by-river.jpg";
 import heatherHikingNature from "@/assets/lifestyle/heather-hiking-nature.jpg";
 import sunsetRvReflection from "@/assets/lifestyle/sunset-rv-reflection.png";
+
+// Array of all quiz background images for preloading
+const QUIZ_BACKGROUND_IMAGES = [
+  vanSnowMountains,
+  rvCoastalDrive,
+  womanWorkingViews,
+  truckDesert,
+  workingAtBeach,
+  campingByRiver,
+  heatherHikingNature,
+  sunsetRvReflection,
+];
 
 // Quiz state interface
 interface QuizAnswers {
@@ -526,6 +541,9 @@ const GlobalQuiz = () => {
     }
   };
 
+  // Preload all quiz background images when modal opens
+  const imagesLoaded = useImagePreloader(isQuizOpen ? QUIZ_BACKGROUND_IMAGES : []);
+
   return (
     <QuizModal isOpen={isQuizOpen} onClose={closeQuiz}>
       <div className="flex flex-col h-full md:h-auto">
@@ -539,6 +557,17 @@ const GlobalQuiz = () => {
             userName={answers.name}
             onClose={closeQuiz}
           />
+        ) : !imagesLoaded ? (
+          // Loading state while images preload
+          <div className="relative min-h-[380px] md:min-h-[420px] w-full overflow-hidden md:rounded-2xl bg-muted flex flex-col items-center justify-center">
+            <div className="mb-4 p-3 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 animate-pulse">
+              <TravelCompass size="md" animate={true} />
+            </div>
+            <div className="flex items-center gap-2 text-muted-foreground">
+              <Loader2 className="w-5 h-5 animate-spin" />
+              <span className="text-sm font-medium">Preparing your journey...</span>
+            </div>
+          </div>
         ) : (
           renderStep()
         )}
