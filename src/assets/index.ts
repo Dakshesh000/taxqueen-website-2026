@@ -5,6 +5,7 @@ export { default as logoTaxQueenMain } from './brand/logo-tax-queen-main.jpg';
 // Heather Personal Photos
 export { default as heatherPortrait } from './heather/portrait-square.png';
 export { default as heatherInVan } from './heather/heather-in-van.jpg';
+export { default as heatherVideoThumbnail } from './heather/video-thumbnail.png';
 
 // Lifestyle Photos
 export { default as womanWorkingViews } from './lifestyle/woman-working-views.jpg';

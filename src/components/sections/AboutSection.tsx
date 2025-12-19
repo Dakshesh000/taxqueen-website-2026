@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from 'react';
 import { Play } from 'lucide-react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-
+import { heatherVideoThumbnail } from '@/assets';
 import { useQuiz } from '@/contexts/QuizContext';
 
 const AboutSection = () => {
@@ -110,7 +110,7 @@ const AboutSection = () => {
               {/* Portrait Circle */}
               <div className="w-[280px] h-[280px] md:w-[320px] md:h-[320px] lg:w-[350px] lg:h-[350px] xl:w-[400px] xl:h-[400px] rounded-full overflow-hidden shadow-lift-lg">
               <img 
-                  src="https://img.youtube.com/vi/wSL699Bqs30/maxresdefault.jpg" 
+                  src={heatherVideoThumbnail} 
                   alt="Heather - The Tax Queen"
                   className="w-full h-full object-cover"
                   loading="lazy"
@@ -138,7 +138,7 @@ const AboutSection = () => {
         <DialogContent className="max-w-4xl p-0 bg-black border-none overflow-hidden">
           <div className="relative w-full aspect-video">
             <iframe
-              src="https://www.youtube.com/embed/wSL699Bqs30?autoplay=1&rel=0"
+              src="https://www.youtube.com/embed/3HYAasPLc_s?autoplay=1&rel=0"
               title="Meet Heather - Your Tax Queen"
               className="absolute inset-0 w-full h-full"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

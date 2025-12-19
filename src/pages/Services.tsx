@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import ServicesTimeline from "@/components/sections/ServicesTimeline";
-import heatherPortrait from "@/assets/heather/portrait-square.png";
+import { heatherVideoThumbnail } from "@/assets";
 import { useQuiz } from "@/contexts/QuizContext";
 
 const Services = () => {
@@ -47,8 +47,8 @@ const Services = () => {
               {!isVideoPlaying ? (
                 <>
                   <img
-                    src={heatherPortrait}
-                    alt="Heather - Tax Queen"
+                  src={heatherVideoThumbnail}
+                  alt="Heather - Tax Queen"
                     className="w-full h-full object-cover"
                   />
                   <div className="absolute inset-0 bg-foreground/20 flex items-center justify-center">
@@ -63,7 +63,7 @@ const Services = () => {
                 </>
               ) : (
                 <iframe
-                  src="https://www.youtube.com/embed/wSL699Bqs30?autoplay=1&rel=0"
+                  src="https://www.youtube.com/embed/3HYAasPLc_s?autoplay=1&rel=0"
                   title="Tax Queen Introduction"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
