@@ -53,18 +53,6 @@ const QuizModal = ({ isOpen, onClose, children }: QuizModalProps) => {
             className="fixed inset-0 z-50 flex items-center justify-center md:p-4 bg-foreground/80 backdrop-blur-sm"
             onClick={onClose}
           >
-            {/* Close Button - Outside the card on the backdrop */}
-            <motion.button
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.8 }}
-              transition={{ delay: 0.1 }}
-              onClick={onClose}
-              className="fixed top-4 right-4 md:top-6 md:right-6 z-[60] p-2.5 rounded-full bg-background/90 hover:bg-background text-foreground shadow-lg transition-colors"
-            >
-              <X className="w-5 h-5" />
-            </motion.button>
-
             <motion.div
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -73,6 +61,14 @@ const QuizModal = ({ isOpen, onClose, children }: QuizModalProps) => {
               className="relative w-full h-full md:h-auto md:max-w-2xl md:max-h-[90vh] overflow-hidden md:overflow-y-auto bg-background md:rounded-3xl shadow-lift-lg"
               onClick={(e) => e.stopPropagation()}
             >
+              {/* Close Button - Inside the card */}
+              <button
+                onClick={onClose}
+                className="absolute top-4 right-4 z-20 p-2 rounded-full bg-muted hover:bg-muted/80 text-foreground transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
               {children}
             </motion.div>
           </motion.div>

@@ -50,7 +50,7 @@ const QuizProgress = ({ currentStep, totalSteps }: QuizProgressProps) => {
   const { Icon: VehicleIcon, label } = getVehicleByStep(currentStep);
 
   return (
-    <div className="w-full px-4 py-6">
+    <div className="w-full pl-4 pr-14 py-6">
       {/* Journey Path */}
       <div className="relative h-12">
         {/* Background Road */}
