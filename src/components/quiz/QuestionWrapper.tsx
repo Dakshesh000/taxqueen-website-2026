@@ -55,16 +55,20 @@ const QuestionWrapper = ({
             {title}
           </h2>
           {helpText && (
-            <TooltipProvider>
+            <TooltipProvider delayDuration={0}>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <button className="p-1 rounded-full hover:bg-primary/20 transition-colors">
+                  <button 
+                    className="p-1 rounded-full hover:bg-primary/20 transition-colors"
+                    onClick={(e) => e.preventDefault()}
+                  >
                     <HelpCircle className="w-4 h-4 text-primary-foreground/80" />
                   </button>
                 </TooltipTrigger>
                 <TooltipContent
-                  side="top"
-                  className="max-w-xs text-sm bg-card text-card-foreground"
+                  side="bottom"
+                  sideOffset={8}
+                  className="max-w-xs text-sm bg-card text-card-foreground z-50"
                 >
                   {helpText}
                 </TooltipContent>
