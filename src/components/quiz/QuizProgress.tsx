@@ -119,12 +119,6 @@ const QuizProgress = ({ currentStep, totalSteps }: QuizProgressProps) => {
         </div>
       </div>
 
-      {/* Subtle vehicle label - no step counter */}
-      <div className="mt-2 text-center">
-        <span className="text-xs text-muted-foreground/60 uppercase tracking-wider">
-          {label} leg of your journey
-        </span>
-      </div>
     </div>
   );
 };

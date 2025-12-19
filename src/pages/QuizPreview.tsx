@@ -5,11 +5,6 @@ import {
   MapPin,
   Briefcase,
   DollarSign,
-  ClipboardList,
-  FolderOpen,
-  Heart,
-  Mail,
-  Plane,
   Building,
   Laptop,
   Receipt,
@@ -17,6 +12,11 @@ import {
   Sparkles,
   ArrowRight,
   ArrowLeft,
+  Plane,
+  Heart,
+  Users,
+  Shield,
+  Handshake,
 } from "lucide-react";
 
 import QuestionWrapper from "@/components/quiz/QuestionWrapper";
@@ -33,8 +33,6 @@ import ContactForm from "@/components/quiz/questions/ContactForm";
 // Import background images
 import rvCoastalDrive from "@/assets/lifestyle/rv-coastal-drive.png";
 import vanSnowMountains from "@/assets/lifestyle/van-snow-mountains.jpg";
-import freedomNomad from "@/assets/lifestyle/freedom-nomad.jpg";
-import rvMountainsBackground from "@/assets/lifestyle/rv-mountains-background.jpg";
 import womanWorkingViews from "@/assets/lifestyle/woman-working-views.jpg";
 import truckDesert from "@/assets/lifestyle/truck-desert.jpeg";
 import workingAtBeach from "@/assets/lifestyle/working-at-beach.jpg";
@@ -45,23 +43,20 @@ import sunsetRvReflection from "@/assets/lifestyle/sunset-rv-reflection.png";
 // Quiz state interface
 interface QuizAnswers {
   usTaxObligations: boolean | null;
-  homeBase: string;
-  livingTheLife: boolean | null;
-  futureAdventures: boolean | null;
+  residence: string;
   incomeSources: string[];
   annualIncome: number;
   situations: string[];
-  organizationStyle: string | null;
-  lookingFor: string[];
+  personalStyle: string | null;
+  urgency: number;
   name: string;
   email: string;
   phone: string;
 }
 
-const TOTAL_STEPS = 9;
+const TOTAL_STEPS = 8;
 
 const QuizPreview = () => {
-  // Complete modal quiz state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [showResults, setShowResults] = useState(false);
@@ -69,14 +64,12 @@ const QuizPreview = () => {
 
   const [answers, setAnswers] = useState<QuizAnswers>({
     usTaxObligations: null,
-    homeBase: "",
-    livingTheLife: null,
-    futureAdventures: null,
+    residence: "",
     incomeSources: [],
     annualIncome: 2,
     situations: [],
-    organizationStyle: null,
-    lookingFor: [],
+    personalStyle: null,
+    urgency: 1,
     name: "",
     email: "",
     phone: "",
@@ -91,55 +84,49 @@ const QuizPreview = () => {
     { id: "investments", label: "Investment Income", icon: <DollarSign className="w-5 h-5" /> },
   ];
 
+  // Updated situation options - focus on TAX SITUATION
   const situationOptions = [
+    { id: "expat", label: "I'm an expat / live outside US", icon: <Plane className="w-5 h-5" /> },
+    { id: "planning", label: "Planning the nomad lifestyle", icon: <Globe className="w-5 h-5" /> },
     { id: "330days", label: "330+ days outside USA", icon: <Globe className="w-5 h-5" /> },
     { id: "multistate", label: "Worked in multiple states", icon: <MapPin className="w-5 h-5" /> },
     { id: "foreign", label: "Foreign bank accounts", icon: <DollarSign className="w-5 h-5" /> },
-    { id: "badcpa", label: "Last CPA didn't get it", icon: <Heart className="w-5 h-5" /> },
+    { id: "badcpa", label: "Last CPA didn't understand my lifestyle", icon: <Heart className="w-5 h-5" /> },
     { id: "behindtaxes", label: "Behind on my taxes", icon: <Clock className="w-5 h-5" /> },
   ];
 
-  const organizationOptions = [
+  // Updated personal style options - focus on PERSONALITY
+  const personalStyleOptions = [
     { id: "super", label: "Super Organized", description: "Everything tracked and filed" },
     { id: "pretty", label: "Pretty Organized", description: "Most things in order" },
     { id: "working", label: "Working on It", description: "Could use some improvement" },
     { id: "help", label: "I Need Help", description: "Paperwork everywhere!" },
-  ];
-
-  const lookingForOptions = [
-    { id: "taxprep", label: "Annual Tax Preparation" },
-    { id: "strategy", label: "Tax Strategy & Planning" },
-    { id: "catchup", label: "Catching Up on Past Returns" },
-    { id: "advice", label: "General Advice / Questions" },
+    { id: "cautious", label: "Cautious About Taxes", description: "I want to minimize what I pay legally" },
+    { id: "human", label: "Prefer Human Touch", description: "I value personal service over automation" },
   ];
 
   const incomeLabels = ["Under $40k", "$40k - $75k", "$75k - $150k", "$150k - $300k", "$300k+"];
+  const urgencyLabels = ["This week", "This month", "This quarter", "Not soon"];
 
   // Navigation handlers
   const goToNextStep = () => {
-    // Handle conditional logic
-    if (currentStep === 3 && answers.livingTheLife === true) {
-      // Skip "Future Adventures" if already living the life
-      setCurrentStep(5);
-    } else if (currentStep < TOTAL_STEPS) {
+    if (currentStep < TOTAL_STEPS) {
       setCurrentStep((s) => s + 1);
     }
   };
 
   const goToPrevStep = () => {
-    if (currentStep === 5 && answers.livingTheLife === true) {
-      // Go back to step 3 if we skipped step 4
-      setCurrentStep(3);
-    } else if (currentStep > 1) {
+    if (currentStep > 1) {
       setCurrentStep((s) => s - 1);
     }
   };
 
   const handleSubmit = () => {
-    // Calculate qualification - qualified if has US tax obligations and is/planning nomad life
-    const qualified = 
-      answers.usTaxObligations === true && 
-      (answers.livingTheLife === true || answers.futureAdventures === true);
+    // Calculate qualification
+    const hasNomadSituation = answers.situations.some(s => 
+      ["expat", "planning", "330days"].includes(s)
+    );
+    const qualified = answers.usTaxObligations === true && hasNomadSituation;
     
     setIsQualified(qualified);
     setShowResults(true);
@@ -151,14 +138,12 @@ const QuizPreview = () => {
     setIsQualified(false);
     setAnswers({
       usTaxObligations: null,
-      homeBase: "",
-      livingTheLife: null,
-      futureAdventures: null,
+      residence: "",
       incomeSources: [],
       annualIncome: 2,
       situations: [],
-      organizationStyle: null,
-      lookingFor: [],
+      personalStyle: null,
+      urgency: 1,
       name: "",
       email: "",
       phone: "",
@@ -175,27 +160,14 @@ const QuizPreview = () => {
     setTimeout(() => goToNextStep(), 400);
   };
 
-  // Get effective step for progress (skip step 4 if living the life)
-  const getEffectiveStep = () => {
-    if (currentStep >= 5 && answers.livingTheLife === true) {
-      return currentStep - 1;
-    }
-    return currentStep;
-  };
-
-  const getEffectiveTotal = () => {
-    return answers.livingTheLife === true ? TOTAL_STEPS - 1 : TOTAL_STEPS;
-  };
-
   // Render current question step
   const renderStep = () => {
     switch (currentStep) {
       case 1:
         return (
           <QuestionWrapper
-            title="US Tax Obligations?"
-            subtitle="Are you a U.S. citizen, green card holder, or have U.S. tax filing requirements?"
-            helpText="You have U.S. tax obligations if you're a citizen, permanent resident, or meet the substantial presence test."
+            title="Do you have US tax obligations?"
+            helpText="US tax obligations apply to US citizens, green card holders, or anyone meeting the substantial presence test—including non-citizens with US-source income."
             backgroundImage={rvCoastalDrive}
           >
             <YesNoQuestion
@@ -209,15 +181,14 @@ const QuizPreview = () => {
       case 2:
         return (
           <QuestionWrapper
-            title="Home Base?"
-            subtitle="What's your domicile state? (Or where you're planning to be)"
-            helpText="Your domicile is your permanent legal residence - where you're registered to vote, have your driver's license, or consider your 'home base'."
+            title="Where are you currently a resident of?"
+            subtitle="This could be your domicile state or country of residence if you're an expat. If you're still planning, where are you planning to be next."
             backgroundImage={vanSnowMountains}
           >
             <TextInputQuestion
-              value={answers.homeBase}
-              onChange={(val) => setAnswers({ ...answers, homeBase: val })}
-              placeholder="e.g., Texas, Florida, Nevada..."
+              value={answers.residence}
+              onChange={(val) => setAnswers({ ...answers, residence: val })}
+              placeholder="e.g., Texas, Portugal, Thailand..."
               maxLength={50}
             />
             <div className="mt-5 flex justify-center gap-3">
@@ -232,7 +203,7 @@ const QuizPreview = () => {
               <Button
                 className="rounded-full px-6"
                 onClick={goToNextStep}
-                disabled={!answers.homeBase.trim()}
+                disabled={!answers.residence.trim()}
               >
                 Continue
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -242,62 +213,6 @@ const QuizPreview = () => {
         );
 
       case 3:
-        return (
-          <QuestionWrapper
-            title="Living the Life?"
-            subtitle="Do you currently live outside the US as an expat, or travel & move around?"
-            helpText="A digital nomad travels while working remotely. An expat lives abroad long-term. Both have unique tax considerations."
-            backgroundImage={freedomNomad}
-          >
-            <YesNoQuestion
-              value={answers.livingTheLife}
-              onChange={(val) => setAnswers({ ...answers, livingTheLife: val })}
-              onSelect={handleAutoAdvance}
-              yesLabel="That's Me!"
-              noLabel="Not Yet"
-            />
-            <div className="mt-5 flex justify-center">
-              <Button
-                variant="outline"
-                className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
-                onClick={goToPrevStep}
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-            </div>
-          </QuestionWrapper>
-        );
-
-      case 4:
-        return (
-          <QuestionWrapper
-            title="Future Adventures?"
-            subtitle="Are you planning to embrace the digital nomad lifestyle soon?"
-            helpText="Planning ahead is smart! We can help you structure your taxes before you hit the road."
-            backgroundImage={rvMountainsBackground}
-          >
-            <YesNoQuestion
-              value={answers.futureAdventures}
-              onChange={(val) => setAnswers({ ...answers, futureAdventures: val })}
-              onSelect={handleAutoAdvance}
-              yesLabel="Yes, planning!"
-              noLabel="Just exploring"
-            />
-            <div className="mt-5 flex justify-center">
-              <Button
-                variant="outline"
-                className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
-                onClick={goToPrevStep}
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-            </div>
-          </QuestionWrapper>
-        );
-
-      case 5:
         return (
           <QuestionWrapper
             title="Income Sources?"
@@ -331,7 +246,7 @@ const QuizPreview = () => {
           </QuestionWrapper>
         );
 
-      case 6:
+      case 4:
         return (
           <QuestionWrapper
             title="Annual Income?"
@@ -361,11 +276,11 @@ const QuizPreview = () => {
           </QuestionWrapper>
         );
 
-      case 7:
+      case 5:
         return (
           <QuestionWrapper
-            title="Your Situation?"
-            subtitle="Which apply to you? (Select all)"
+            title="Which of these apply to you?"
+            subtitle="Select all that describe your tax situation"
             helpText="Each of these situations has specific tax implications we're experts at handling."
             backgroundImage={workingAtBeach}
           >
@@ -391,18 +306,18 @@ const QuizPreview = () => {
           </QuestionWrapper>
         );
 
-      case 8:
+      case 6:
         return (
           <QuestionWrapper
-            title="Organization Style?"
-            subtitle="How would you describe your financial tracking?"
+            title="How would you describe yourself?"
+            subtitle="What's your style when it comes to finances?"
             helpText="Be honest! We work with all types."
             backgroundImage={campingByRiver}
           >
             <SingleSelectQuestion
-              options={organizationOptions}
-              selected={answers.organizationStyle}
-              onChange={(val) => setAnswers({ ...answers, organizationStyle: val })}
+              options={personalStyleOptions}
+              selected={answers.personalStyle}
+              onChange={(val) => setAnswers({ ...answers, personalStyle: val })}
               onSelect={handleAutoAdvance}
             />
             <div className="mt-5 flex justify-center">
@@ -418,7 +333,36 @@ const QuizPreview = () => {
           </QuestionWrapper>
         );
 
-      case 9:
+      case 7:
+        return (
+          <QuestionWrapper
+            title="How quickly do you need this solved?"
+            subtitle="What's your timeline?"
+            backgroundImage={heatherHikingNature}
+          >
+            <SliderQuestion
+              value={answers.urgency}
+              onChange={(val) => setAnswers({ ...answers, urgency: val })}
+              labels={urgencyLabels}
+            />
+            <div className="mt-5 flex justify-center gap-3">
+              <Button
+                variant="outline"
+                className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
+                onClick={goToPrevStep}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+              <Button className="rounded-full px-6" onClick={goToNextStep}>
+                Continue
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          </QuestionWrapper>
+        );
+
+      case 8:
         return (
           <QuestionWrapper
             title="Almost There!"
@@ -497,7 +441,7 @@ const QuizPreview = () => {
       <QuizModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <div className="flex flex-col h-full md:h-auto">
           {!showResults && (
-            <QuizProgress currentStep={getEffectiveStep()} totalSteps={getEffectiveTotal()} />
+            <QuizProgress currentStep={currentStep} totalSteps={TOTAL_STEPS} />
           )}
           
           {showResults ? (
