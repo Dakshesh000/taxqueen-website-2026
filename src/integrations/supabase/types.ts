@@ -14,7 +14,239 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      email_templates: {
+        Row: {
+          body_html: string
+          body_text: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          subject: string
+          template_key: string
+          updated_at: string
+        }
+        Insert: {
+          body_html: string
+          body_text?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          subject: string
+          template_key: string
+          updated_at?: string
+        }
+        Update: {
+          body_html?: string
+          body_text?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          subject?: string
+          template_key?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      notification_settings: {
+        Row: {
+          created_at: string
+          destination: string
+          id: string
+          is_active: boolean
+          notification_method: Database["public"]["Enums"]["notification_method"]
+          trigger_type: Database["public"]["Enums"]["notification_trigger"]
+        }
+        Insert: {
+          created_at?: string
+          destination: string
+          id?: string
+          is_active?: boolean
+          notification_method: Database["public"]["Enums"]["notification_method"]
+          trigger_type: Database["public"]["Enums"]["notification_trigger"]
+        }
+        Update: {
+          created_at?: string
+          destination?: string
+          id?: string
+          is_active?: boolean
+          notification_method?: Database["public"]["Enums"]["notification_method"]
+          trigger_type?: Database["public"]["Enums"]["notification_trigger"]
+        }
+        Relationships: []
+      }
+      quiz_leads: {
+        Row: {
+          created_at: string
+          email: string
+          id: string
+          is_qualified: boolean
+          name: string
+          phone: string | null
+          qualification_reasons: Json | null
+          qualification_score: number | null
+          session_id: string
+          status: Database["public"]["Enums"]["lead_status"]
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          id?: string
+          is_qualified?: boolean
+          name: string
+          phone?: string | null
+          qualification_reasons?: Json | null
+          qualification_score?: number | null
+          session_id: string
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          id?: string
+          is_qualified?: boolean
+          name?: string
+          phone?: string | null
+          qualification_reasons?: Json | null
+          qualification_score?: number | null
+          session_id?: string
+          status?: Database["public"]["Enums"]["lead_status"]
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      quiz_questions: {
+        Row: {
+          background_image: string | null
+          created_at: string
+          help_text: string | null
+          id: string
+          is_active: boolean
+          main_title: string
+          options: Json | null
+          order_index: number
+          question_type: Database["public"]["Enums"]["quiz_question_type"]
+          subtitle: string | null
+          updated_at: string
+        }
+        Insert: {
+          background_image?: string | null
+          created_at?: string
+          help_text?: string | null
+          id?: string
+          is_active?: boolean
+          main_title: string
+          options?: Json | null
+          order_index: number
+          question_type: Database["public"]["Enums"]["quiz_question_type"]
+          subtitle?: string | null
+          updated_at?: string
+        }
+        Update: {
+          background_image?: string | null
+          created_at?: string
+          help_text?: string | null
+          id?: string
+          is_active?: boolean
+          main_title?: string
+          options?: Json | null
+          order_index?: number
+          question_type?: Database["public"]["Enums"]["quiz_question_type"]
+          subtitle?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      quiz_responses: {
+        Row: {
+          answer_value: Json
+          created_at: string
+          id: string
+          lead_id: string | null
+          question_id: string | null
+          question_key: string
+          session_id: string
+        }
+        Insert: {
+          answer_value: Json
+          created_at?: string
+          id?: string
+          lead_id?: string | null
+          question_id?: string | null
+          question_key: string
+          session_id: string
+        }
+        Update: {
+          answer_value?: Json
+          created_at?: string
+          id?: string
+          lead_id?: string | null
+          question_id?: string | null
+          question_key?: string
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_responses_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_leads"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_responses_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quiz_scoring_rules: {
+        Row: {
+          answer_pattern: Json
+          created_at: string
+          description: string | null
+          id: string
+          is_disqualifier: boolean
+          is_qualifier: boolean
+          question_id: string | null
+          question_key: string
+          score_value: number
+        }
+        Insert: {
+          answer_pattern: Json
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_disqualifier?: boolean
+          is_qualifier?: boolean
+          question_id?: string | null
+          question_key: string
+          score_value?: number
+        }
+        Update: {
+          answer_pattern?: Json
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_disqualifier?: boolean
+          is_qualifier?: boolean
+          question_id?: string | null
+          question_key?: string
+          score_value?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_scoring_rules_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "quiz_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -23,7 +255,21 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      lead_status:
+        | "new"
+        | "contacted"
+        | "booked"
+        | "converted"
+        | "not_interested"
+      notification_method: "email" | "webhook"
+      notification_trigger: "new_lead" | "qualified_lead" | "high_value_lead"
+      quiz_question_type:
+        | "yes_no"
+        | "text_input"
+        | "multi_select"
+        | "single_select"
+        | "slider"
+        | "contact"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +396,24 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      lead_status: [
+        "new",
+        "contacted",
+        "booked",
+        "converted",
+        "not_interested",
+      ],
+      notification_method: ["email", "webhook"],
+      notification_trigger: ["new_lead", "qualified_lead", "high_value_lead"],
+      quiz_question_type: [
+        "yes_no",
+        "text_input",
+        "multi_select",
+        "single_select",
+        "slider",
+        "contact",
+      ],
+    },
   },
 } as const
