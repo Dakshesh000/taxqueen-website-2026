@@ -42,7 +42,7 @@ const QuizModal = ({ isOpen, onClose, children }: QuizModalProps) => {
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-foreground/20 text-primary-foreground hover:bg-foreground/30 transition-colors"
+              className="absolute top-4 right-4 z-10 p-2 rounded-full bg-muted hover:bg-muted/80 text-foreground transition-colors"
             >
               <X className="w-5 h-5" />
             </button>

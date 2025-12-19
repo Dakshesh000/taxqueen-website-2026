@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import {
   Globe,
   MapPin,
-  Compass,
   Briefcase,
   DollarSign,
   ClipboardList,
@@ -17,6 +16,7 @@ import {
   Clock,
   Sparkles,
   ArrowRight,
+  ArrowLeft,
 } from "lucide-react";
 
 import QuestionWrapper from "@/components/quiz/QuestionWrapper";
@@ -54,6 +54,8 @@ const QuizPreview = () => {
   // Modal state
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalStep, setModalStep] = useState(1);
+  const [modalYesNo, setModalYesNo] = useState<boolean | null>(null);
+  const [modalSingleSelect, setModalSingleSelect] = useState<string | null>(null);
 
   // Sample options for multi-select
   const incomeOptions = [
@@ -81,6 +83,11 @@ const QuizPreview = () => {
     "$300k+",
   ];
 
+  // Auto-advance handler for modal demo
+  const handleModalAutoAdvance = () => {
+    setModalStep((s) => Math.min(8, s + 1));
+  };
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -101,7 +108,7 @@ const QuizPreview = () => {
           Journey Progress Indicator
         </h2>
         <div className="bg-card rounded-2xl shadow-md p-6">
-          <QuizProgress currentStep={modalStep} totalSteps={10} />
+          <QuizProgress currentStep={modalStep} totalSteps={8} />
           <div className="flex justify-center gap-2 mt-4">
             <Button
               variant="outline"
@@ -112,7 +119,7 @@ const QuizPreview = () => {
             </Button>
             <Button
               size="sm"
-              onClick={() => setModalStep((s) => Math.min(10, s + 1))}
+              onClick={() => setModalStep((s) => Math.min(8, s + 1))}
             >
               Next Stop
             </Button>
@@ -129,11 +136,10 @@ const QuizPreview = () => {
             1. Yes/No Question
           </h2>
           <QuestionWrapper
-            title="Do You Have U.S. Tax Obligations?"
-            subtitle="This includes being a U.S. citizen, green card holder, or meeting substantial presence"
+            title="US Tax Obligations?"
+            subtitle="Are you a U.S. citizen, green card holder, or have U.S. tax filing requirements?"
             helpText="You have U.S. tax obligations if you're a citizen, permanent resident, or spent more than 183 days in the U.S. over a 3-year period using a weighted formula."
             backgroundImage={rvCoastalDrive}
-            icon={<Globe className="w-8 h-8 text-primary-foreground" />}
           >
             <YesNoQuestion value={yesNoValue} onChange={setYesNoValue} />
           </QuestionWrapper>
@@ -145,11 +151,10 @@ const QuizPreview = () => {
             2. Text Input Question
           </h2>
           <QuestionWrapper
-            title="Where's Home Base?"
-            subtitle="What state is your legal domicile?"
+            title="Home Base?"
+            subtitle="What's your domicile state? (Or where you're planning to be)"
             helpText="Your domicile is your permanent legal residence - where you're registered to vote, have your driver's license, or consider your 'home base' even when traveling."
             backgroundImage={vanSnowMountains}
-            icon={<MapPin className="w-8 h-8 text-primary-foreground" />}
           >
             <TextInputQuestion
               value={textValue}
@@ -166,11 +171,10 @@ const QuizPreview = () => {
             3. Yes/No Question (Lifestyle)
           </h2>
           <QuestionWrapper
-            title="Your Travel Style"
-            subtitle="Are you currently living as a digital nomad or expat?"
+            title="Living the Life?"
+            subtitle="Do you live outside the US as an expat, or travel & move around?"
             helpText="A digital nomad travels while working remotely. An expat lives abroad long-term. Both have unique tax considerations we specialize in."
             backgroundImage={freedomNomad}
-            icon={<Compass className="w-8 h-8 text-primary-foreground" />}
           >
             <YesNoQuestion
               value={yesNoValue}
@@ -188,10 +192,9 @@ const QuizPreview = () => {
           </h2>
           <QuestionWrapper
             title="Future Adventures?"
-            subtitle="Are you planning to embrace the nomad life soon?"
+            subtitle="Are you planning to embrace the digital nomad lifestyle soon?"
             helpText="Planning ahead is smart! We can help you structure your taxes before you hit the road to maximize savings."
             backgroundImage={rvMountainsBackground}
-            icon={<Plane className="w-8 h-8 text-primary-foreground" />}
           >
             <YesNoQuestion
               value={yesNoValue}
@@ -208,11 +211,10 @@ const QuizPreview = () => {
             5. Multi-Select Question
           </h2>
           <QuestionWrapper
-            title="How Do You Fuel Your Adventures?"
-            subtitle="Select all your income sources"
+            title="Income Sources?"
+            subtitle="How do you make money right now? (Select all that apply)"
             helpText="Different income types have different tax treatments. Understanding your mix helps us optimize your strategy."
             backgroundImage={womanWorkingViews}
-            icon={<Briefcase className="w-8 h-8 text-primary-foreground" />}
           >
             <MultiSelectQuestion
               options={incomeOptions}
@@ -228,11 +230,10 @@ const QuizPreview = () => {
             6. Slider Question
           </h2>
           <QuestionWrapper
-            title="Your Financial Horizon"
+            title="Annual Income?"
             subtitle="What's your approximate annual income?"
             helpText="This helps us understand which tax strategies and deductions will benefit you most. Don't worry - this is just an estimate!"
             backgroundImage={truckDesert}
-            icon={<DollarSign className="w-8 h-8 text-primary-foreground" />}
           >
             <SliderQuestion
               value={sliderValue}
@@ -248,19 +249,18 @@ const QuizPreview = () => {
             7. Multi-Select Question (Checkboxes)
           </h2>
           <QuestionWrapper
-            title="Your Situation"
-            subtitle="Which of these apply to you?"
+            title="Your Situation?"
+            subtitle="Which of these apply to you? (Select all that apply)"
             helpText="Check all that apply. Each of these situations has specific tax implications we're experts at handling."
             backgroundImage={workingAtBeach}
-            icon={<ClipboardList className="w-8 h-8 text-primary-foreground" />}
           >
             <MultiSelectQuestion
               options={[
-                { id: "330days", label: "I've spent 330+ days outside the USA this year", icon: <Globe className="w-5 h-5" /> },
-                { id: "multistate", label: "I've worked in multiple states", icon: <MapPin className="w-5 h-5" /> },
-                { id: "foreign", label: "I have foreign bank accounts or income", icon: <DollarSign className="w-5 h-5" /> },
-                { id: "badcpa", label: "My last accountant didn't get my lifestyle", icon: <Heart className="w-5 h-5" /> },
-                { id: "behindtaxes", label: "I'm behind on my taxes", icon: <Clock className="w-5 h-5" /> },
+                { id: "330days", label: "330+ days outside USA this year", icon: <Globe className="w-5 h-5" /> },
+                { id: "multistate", label: "Worked in multiple states", icon: <MapPin className="w-5 h-5" /> },
+                { id: "foreign", label: "Foreign bank accounts or income", icon: <DollarSign className="w-5 h-5" /> },
+                { id: "badcpa", label: "Last accountant didn't get it", icon: <Heart className="w-5 h-5" /> },
+                { id: "behindtaxes", label: "Behind on my taxes", icon: <Clock className="w-5 h-5" /> },
               ]}
               selected={multiSelectValue}
               onChange={setMultiSelectValue}
@@ -274,11 +274,10 @@ const QuizPreview = () => {
             8. Single-Select Question
           </h2>
           <QuestionWrapper
-            title="Your Organization Style"
-            subtitle="How well do you track your finances?"
+            title="Organization Style?"
+            subtitle="How would you describe yourself with financial tracking?"
             helpText="Be honest! We work with all types. This helps us understand what level of support you'll need."
             backgroundImage={campingByRiver}
-            icon={<FolderOpen className="w-8 h-8 text-primary-foreground" />}
           >
             <SingleSelectQuestion
               options={organizationOptions}
@@ -294,11 +293,10 @@ const QuizPreview = () => {
             9. Optional Multi-Select
           </h2>
           <QuestionWrapper
-            title="What Brings You Here?"
-            subtitle="What are you looking for? (optional)"
+            title="Looking For?"
+            subtitle="What brings you here today? (Optional)"
             helpText="This helps us prepare for your discovery call. Skip if you're not sure yet!"
             backgroundImage={heatherHikingNature}
-            icon={<Sparkles className="w-8 h-8 text-primary-foreground" />}
           >
             <MultiSelectQuestion
               options={[
@@ -320,9 +318,8 @@ const QuizPreview = () => {
           </h2>
           <QuestionWrapper
             title="Almost There!"
-            subtitle="Where should we send your results?"
+            subtitle="Where should we send your personalized results?"
             backgroundImage={sunsetRvReflection}
-            icon={<Mail className="w-8 h-8 text-primary-foreground" />}
           >
             <ContactForm
               name={contactName}
@@ -339,12 +336,17 @@ const QuizPreview = () => {
             Modal Experience Demo
           </h2>
           <p className="text-muted-foreground mb-6">
-            Click below to see how the quiz will appear as a modal overlay
+            Click below to see auto-advance behavior in action
           </p>
           <Button
             size="lg"
             className="rounded-full px-8"
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => {
+              setIsModalOpen(true);
+              setModalStep(1);
+              setModalYesNo(null);
+              setModalSingleSelect(null);
+            }}
           >
             Open Quiz Modal
             <ArrowRight className="w-5 h-5 ml-2" />
@@ -371,35 +373,71 @@ const QuizPreview = () => {
         </section>
       </div>
 
-      {/* Modal Demo */}
+      {/* Modal Demo with Auto-Advance */}
       <QuizModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <QuizProgress currentStep={3} totalSteps={10} />
-        <QuestionWrapper
-          title="Your Travel Style"
-          subtitle="Are you currently living as a digital nomad or expat?"
-          helpText="A digital nomad travels while working remotely. An expat lives abroad long-term."
-          backgroundImage={freedomNomad}
-          icon={<Compass className="w-8 h-8 text-primary-foreground" />}
-        >
-          <YesNoQuestion
-            value={yesNoValue}
-            onChange={setYesNoValue}
-            yesLabel="That's Me!"
-            noLabel="Not Yet"
-          />
-          <div className="mt-8 flex justify-center gap-4">
-            <Button
-              variant="outline"
-              className="rounded-full text-primary-foreground border-primary-foreground/30 hover:bg-primary-foreground/20"
-            >
-              Back
-            </Button>
-            <Button className="rounded-full px-8">
-              Continue
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
-          </div>
-        </QuestionWrapper>
+        <QuizProgress currentStep={modalStep} totalSteps={8} />
+        
+        {modalStep === 1 && (
+          <QuestionWrapper
+            title="Living the Life?"
+            subtitle="Do you live outside the US as an expat, or travel & move around?"
+            helpText="A digital nomad travels while working remotely. An expat lives abroad long-term."
+            backgroundImage={freedomNomad}
+          >
+            <YesNoQuestion
+              value={modalYesNo}
+              onChange={setModalYesNo}
+              onSelect={handleModalAutoAdvance}
+              yesLabel="That's Me!"
+              noLabel="Not Yet"
+            />
+          </QuestionWrapper>
+        )}
+        
+        {modalStep === 2 && (
+          <QuestionWrapper
+            title="Organization Style?"
+            subtitle="How would you describe yourself with financial tracking?"
+            helpText="Be honest! We work with all types."
+            backgroundImage={campingByRiver}
+          >
+            <SingleSelectQuestion
+              options={organizationOptions}
+              selected={modalSingleSelect}
+              onChange={setModalSingleSelect}
+              onSelect={handleModalAutoAdvance}
+            />
+            <div className="mt-8 flex justify-center">
+              <Button
+                variant="outline"
+                className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
+                onClick={() => setModalStep(1)}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+            </div>
+          </QuestionWrapper>
+        )}
+        
+        {modalStep >= 3 && (
+          <QuestionWrapper
+            title="Demo Complete!"
+            subtitle="Auto-advance works! Selection automatically moves to next question."
+            backgroundImage={sunsetRvReflection}
+          >
+            <div className="text-center text-primary-foreground">
+              <p className="mb-6">You've experienced the auto-advance feature.</p>
+              <Button
+                variant="outline"
+                className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
+                onClick={() => setIsModalOpen(false)}
+              >
+                Close Demo
+              </Button>
+            </div>
+          </QuestionWrapper>
+        )}
       </QuizModal>
     </div>
   );

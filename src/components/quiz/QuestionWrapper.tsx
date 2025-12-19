@@ -1,17 +1,18 @@
-import { ReactNode } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import { HelpCircle } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
+  TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import TravelCompass from "./TravelCompass";
 
 interface QuestionWrapperProps {
   title: string;
   subtitle?: string;
   helpText?: string;
   backgroundImage: string;
-  icon?: ReactNode;
   children: ReactNode;
 }
 
@@ -20,9 +21,17 @@ const QuestionWrapper = ({
   subtitle,
   helpText,
   backgroundImage,
-  icon,
   children,
 }: QuestionWrapperProps) => {
+  const [showAnimation, setShowAnimation] = useState(false);
+
+  // Trigger compass animation on mount
+  useEffect(() => {
+    setShowAnimation(true);
+    const timer = setTimeout(() => setShowAnimation(false), 1200);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="relative min-h-[500px] md:min-h-[600px] w-full overflow-hidden rounded-2xl">
       {/* Background Image with Overlay */}
@@ -35,12 +44,10 @@ const QuestionWrapper = ({
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center min-h-[500px] md:min-h-[600px] px-6 py-12 text-center">
-        {/* Icon */}
-        {icon && (
-          <div className="mb-6 p-4 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30">
-            {icon}
-          </div>
-        )}
+        {/* Custom Compass Icon with Animation */}
+        <div className={`mb-6 p-4 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 ${showAnimation ? "animate-needle-wiggle" : ""}`}>
+          <TravelCompass size="lg" animate={showAnimation} />
+        </div>
 
         {/* Title with Help Tooltip */}
         <div className="flex items-center gap-2 mb-3">
@@ -48,19 +55,21 @@ const QuestionWrapper = ({
             {title}
           </h2>
           {helpText && (
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button className="p-1 rounded-full hover:bg-primary/20 transition-colors">
-                  <HelpCircle className="w-5 h-5 text-primary-foreground/80" />
-                </button>
-              </TooltipTrigger>
-              <TooltipContent
-                side="top"
-                className="max-w-xs text-sm bg-card text-card-foreground"
-              >
-                {helpText}
-              </TooltipContent>
-            </Tooltip>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <button className="p-1 rounded-full hover:bg-primary/20 transition-colors">
+                    <HelpCircle className="w-5 h-5 text-primary-foreground/80" />
+                  </button>
+                </TooltipTrigger>
+                <TooltipContent
+                  side="top"
+                  className="max-w-xs text-sm bg-card text-card-foreground"
+                >
+                  {helpText}
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
         </div>
 

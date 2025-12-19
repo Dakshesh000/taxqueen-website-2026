@@ -11,13 +11,23 @@ interface SingleSelectQuestionProps {
   options: Option[];
   selected: string | null;
   onChange: (value: string) => void;
+  onSelect?: (value: string) => void; // Optional callback for auto-advance
 }
 
 const SingleSelectQuestion = ({
   options,
   selected,
   onChange,
+  onSelect,
 }: SingleSelectQuestionProps) => {
+  const handleSelect = (optionId: string) => {
+    onChange(optionId);
+    // Auto-advance after short delay for visual feedback
+    if (onSelect) {
+      setTimeout(() => onSelect(optionId), 400);
+    }
+  };
+
   return (
     <div className="w-full max-w-md mx-auto space-y-3">
       {options.map((option) => {
@@ -26,7 +36,7 @@ const SingleSelectQuestion = ({
         return (
           <button
             key={option.id}
-            onClick={() => onChange(option.id)}
+            onClick={() => handleSelect(option.id)}
             className={`w-full flex items-center gap-4 px-5 py-4 rounded-xl transition-all duration-300 ${
               isSelected
                 ? "bg-primary text-primary-foreground shadow-lift scale-[1.02]"
