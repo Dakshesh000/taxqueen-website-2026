@@ -14,9 +14,13 @@ import {
   ArrowLeft,
   Plane,
   Heart,
-  Users,
-  Shield,
-  Handshake,
+  MoreHorizontal,
+  FileX,
+  AlertTriangle,
+  Bot,
+  CheckCircle,
+  Circle,
+  CircleDashed,
 } from "lucide-react";
 
 import QuestionWrapper from "@/components/quiz/QuestionWrapper";
@@ -47,7 +51,7 @@ interface QuizAnswers {
   incomeSources: string[];
   annualIncome: number;
   situations: string[];
-  personalStyle: string | null;
+  financialBehavior: string[];
   urgency: number;
   name: string;
   email: string;
@@ -68,7 +72,7 @@ const QuizPreview = () => {
     incomeSources: [],
     annualIncome: 2,
     situations: [],
-    personalStyle: null,
+    financialBehavior: [],
     urgency: 1,
     name: "",
     email: "",
@@ -82,6 +86,7 @@ const QuizPreview = () => {
     { id: "1099", label: "1099 Income", icon: <Receipt className="w-5 h-5" /> },
     { id: "w2", label: "W-2 Employee", icon: <Briefcase className="w-5 h-5" /> },
     { id: "investments", label: "Investment Income", icon: <DollarSign className="w-5 h-5" /> },
+    { id: "other", label: "Other", icon: <MoreHorizontal className="w-5 h-5" /> },
   ];
 
   // Updated situation options - focus on TAX SITUATION
@@ -95,17 +100,17 @@ const QuizPreview = () => {
     { id: "behindtaxes", label: "Behind on my taxes", icon: <Clock className="w-5 h-5" /> },
   ];
 
-  // Updated personal style options - focus on PERSONALITY
-  const personalStyleOptions = [
-    { id: "super", label: "Super Organized", description: "Everything tracked and filed" },
-    { id: "pretty", label: "Pretty Organized", description: "Most things in order" },
-    { id: "working", label: "Working on It", description: "Could use some improvement" },
-    { id: "help", label: "I Need Help", description: "Paperwork everywhere!" },
-    { id: "cautious", label: "Cautious About Taxes", description: "I want to minimize what I pay legally" },
-    { id: "human", label: "Prefer Human Touch", description: "I value personal service over automation" },
+  // Financial behavior options - multi-select
+  const financialBehaviorOptions = [
+    { id: "super-organized", label: "Super Organized", icon: <CheckCircle className="w-5 h-5" /> },
+    { id: "somewhat-organized", label: "Somewhat Organized", icon: <Circle className="w-5 h-5" /> },
+    { id: "unorganized", label: "Unorganized", icon: <CircleDashed className="w-5 h-5" /> },
+    { id: "no-docs", label: "Don't document anything (Miles, Receipts)", icon: <FileX className="w-5 h-5" /> },
+    { id: "no-ai", label: "Don't trust AI answers", icon: <Bot className="w-5 h-5" /> },
+    { id: "messed-up", label: "Messed up Tax Situation", icon: <AlertTriangle className="w-5 h-5" /> },
   ];
 
-  const incomeLabels = ["Under $40k", "$40k - $75k", "$75k - $150k", "$150k - $300k", "$300k+"];
+  const incomeLabels = ["Under $40k", "$40k - $75k", "$75k - $150k", "$150k - $300k", "$300k - $500k", "$500k+"];
   const urgencyLabels = ["This week", "This month", "This quarter", "Not soon"];
 
   // Navigation handlers
@@ -142,7 +147,7 @@ const QuizPreview = () => {
       incomeSources: [],
       annualIncome: 2,
       situations: [],
-      personalStyle: null,
+      financialBehavior: [],
       urgency: 1,
       name: "",
       email: "",
@@ -181,8 +186,8 @@ const QuizPreview = () => {
       case 2:
         return (
           <QuestionWrapper
-            title="Where are you currently a resident of?"
-            subtitle="This could be your domicile state or country of residence if you're an expat. If you're still planning, where are you planning to be next."
+            title="Where are you residing currently?"
+            subtitle="Your domicile state or country of residence."
             backgroundImage={vanSnowMountains}
           >
             <TextInputQuestion
@@ -309,18 +314,16 @@ const QuizPreview = () => {
       case 6:
         return (
           <QuestionWrapper
-            title="How would you describe yourself?"
-            subtitle="What's your style when it comes to finances?"
-            helpText="Be honest! We work with all types."
+            title="Describe your Financial Tracking and Tax Behavior?"
+            subtitle="Select all that apply"
             backgroundImage={campingByRiver}
           >
-            <SingleSelectQuestion
-              options={personalStyleOptions}
-              selected={answers.personalStyle}
-              onChange={(val) => setAnswers({ ...answers, personalStyle: val })}
-              onSelect={handleAutoAdvance}
+            <MultiSelectQuestion
+              options={financialBehaviorOptions}
+              selected={answers.financialBehavior}
+              onChange={(val) => setAnswers({ ...answers, financialBehavior: val })}
             />
-            <div className="mt-5 flex justify-center">
+            <div className="mt-5 flex justify-center gap-3">
               <Button
                 variant="outline"
                 className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
@@ -328,6 +331,10 @@ const QuizPreview = () => {
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back
+              </Button>
+              <Button className="rounded-full px-6" onClick={goToNextStep}>
+                Continue
+                <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </div>
           </QuestionWrapper>
