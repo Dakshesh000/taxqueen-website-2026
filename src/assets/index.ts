@@ -7,6 +7,9 @@ export { default as heatherPortrait } from './heather/portrait-square.png';
 export { default as heatherInVan } from './heather/heather-in-van.jpg';
 export { default as heatherVideoThumbnail } from './heather/video-thumbnail.png';
 
+// Hero Section
+export { default as heroVideoThumbnail } from './hero/hero-video-thumbnail.png';
+
 // Lifestyle Photos
 export { default as womanWorkingViews } from './lifestyle/woman-working-views.jpg';
 export { default as rvTopView } from './lifestyle/rv-top-view.png';
@@ -22,6 +25,7 @@ export { default as truckStormySky } from './lifestyle/truck-stormy-sky.jpeg';
 export { default as droneRvsCamping } from './lifestyle/drone-rvs-camping.jpg';
 export { default as freedomNomad } from './lifestyle/freedom-nomad.jpg';
 export { default as sunsetRvReflection } from './lifestyle/sunset-rv-reflection.png';
+export { default as taxQueenInVan } from './lifestyle/tax-queen-in-van.jpg';
 
 // Blog/Resources Photos
 export { default as workingAtBeach } from './lifestyle/working-at-beach.jpg';

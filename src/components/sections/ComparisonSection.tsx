@@ -43,9 +43,9 @@ const ComparisonSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="p-6 md:p-8 rounded-xl border-2 border-destructive/30 bg-destructive/5"
+            className="p-6 md:p-8 rounded-xl border-2 border-muted-foreground/30 bg-muted/50"
           >
-            <h3 className="text-xl md:text-2xl font-bold uppercase text-destructive mb-6">
+            <h3 className="text-xl md:text-2xl font-bold uppercase text-foreground mb-6">
               Without Tax Queen
             </h3>
             <ul className="space-y-4">

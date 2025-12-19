@@ -13,6 +13,7 @@ import ParallaxDivider from "@/components/ui/ParallaxDivider";
 // Parallax images
 import truckStormySky from "@/assets/lifestyle/truck-stormy-sky.jpeg";
 import sunsetRvReflection from "@/assets/lifestyle/sunset-rv-reflection.png";
+import { taxQueenInVan } from "@/assets";
 
 const Index = () => {
   return (
@@ -28,6 +29,11 @@ const Index = () => {
           subtext="Let us handle your taxes while you explore the open road"
         />
         <FAQSection />
+        <ParallaxDivider 
+          image={taxQueenInVan}
+          text="Life on Your Terms"
+          subtext="Work from anywhere while we handle the tax complexities"
+        />
         <ServicesTimeline />
         <ParallaxDivider 
           image={sunsetRvReflection}
