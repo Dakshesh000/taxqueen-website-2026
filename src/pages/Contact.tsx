@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
-import { Link } from "react-router-dom";
+import { useQuiz } from "@/contexts/QuizContext";
 import { 
   Shield, 
   Calendar, 
@@ -26,6 +26,7 @@ import heatherWhale from "@/assets/lifestyle/heather-whale-baja.png";
 
 const Contact = () => {
   const { toast } = useToast();
+  const { openQuiz } = useQuiz();
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,7 +63,7 @@ const Contact = () => {
       <section className="pt-32 pb-20 bg-gradient-to-b from-primary/5 to-background">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
-            {/* Image */}
+            {/* Image - no badge */}
             <div className="relative">
               <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
                 <img 
@@ -70,9 +71,6 @@ const Contact = () => {
                   alt="Heather hiking in nature"
                   className="w-full h-full object-cover"
                 />
-              </div>
-              <div className="absolute -bottom-4 -right-4 bg-primary text-primary-foreground px-6 py-3 rounded-xl shadow-lg">
-                <p className="font-semibold">I get it. I live this life too.</p>
               </div>
             </div>
 
@@ -90,17 +88,8 @@ const Contact = () => {
                 just real solutions from someone who understands your lifestyle.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Button size="lg" className="gap-2" asChild>
-                  <Link to="/services#quiz">
-                    Take the Quiz <ArrowRight className="w-4 h-4" />
-                  </Link>
-                </Button>
-                <Button 
-                  size="lg" 
-                  variant="outline"
-                  onClick={() => scrollToSection("booking")}
-                >
-                  Book a Call
+                <Button size="lg" className="gap-2" onClick={() => openQuiz()}>
+                  Take the Quiz <ArrowRight className="w-4 h-4" />
                 </Button>
               </div>
             </div>
@@ -268,10 +257,8 @@ const Contact = () => {
               <p className="text-muted-foreground text-sm">
                 Not sure which service you need? Our quick quiz will help you find the perfect fit.
               </p>
-              <Button className="w-full gap-2" asChild>
-                <Link to="/services#quiz">
-                  Find My Service <ArrowRight className="w-4 h-4" />
-                </Link>
+              <Button className="w-full gap-2" onClick={() => openQuiz()}>
+                Get Started <ArrowRight className="w-4 h-4" />
               </Button>
             </div>
 

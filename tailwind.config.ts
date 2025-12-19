@@ -106,9 +106,9 @@ export default {
           "100%": { transform: "rotate(0deg)" },
         },
         "pulse-ring": {
-          "0%": { transform: "scale(0.95)", opacity: "0.6" },
-          "50%": { transform: "scale(1.08)", opacity: "0.2" },
-          "100%": { transform: "scale(0.95)", opacity: "0.6" },
+          "0%": { transform: "scale(0.95)", opacity: "0.8" },
+          "50%": { transform: "scale(1.15)", opacity: "0.3" },
+          "100%": { transform: "scale(0.95)", opacity: "0.8" },
         },
       },
       animation: {

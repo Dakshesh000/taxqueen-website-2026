@@ -32,7 +32,7 @@ const CompassChatButton = () => {
         aria-label="Open chat"
       >
         {/* Continuous pulse ring */}
-        <span className="absolute inset-[-4px] rounded-full border-2 border-primary/40 animate-pulse-ring" />
+        <span className="absolute inset-[-6px] rounded-full border-[3px] border-primary/50 animate-pulse-ring" />
         
         {/* Compass SVG */}
         <svg viewBox="0 0 100 100" className="w-10 h-10">

@@ -77,7 +77,11 @@ interface QuizAnswers {
 
 const TOTAL_STEPS = 8;
 
-const GlobalQuiz = () => {
+interface GlobalQuizProps {
+  isEmbedded?: boolean;
+}
+
+const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
   const { isQuizOpen, prefillResidence, closeQuiz } = useQuiz();
   const [currentStep, setCurrentStep] = useState(1);
   const [showResults, setShowResults] = useState(false);
@@ -541,37 +545,58 @@ const GlobalQuiz = () => {
     }
   };
 
-  // Preload all quiz background images when modal opens
-  const imagesLoaded = useImagePreloader(isQuizOpen ? QUIZ_BACKGROUND_IMAGES : []);
+  // Preload all quiz background images when modal opens or when embedded
+  const shouldPreload = isEmbedded || isQuizOpen;
+  const imagesLoaded = useImagePreloader(shouldPreload ? QUIZ_BACKGROUND_IMAGES : []);
+
+  // For embedded mode, always show and handle close differently
+  const isOpen = isEmbedded || isQuizOpen;
+  const handleClose = isEmbedded ? () => setShowResults(false) : closeQuiz;
+
+  // Initialize embedded quiz
+  useEffect(() => {
+    if (isEmbedded && !sessionId) {
+      setSessionId(crypto.randomUUID());
+    }
+  }, [isEmbedded, sessionId]);
+
+  const quizContent = (
+    <div className="flex flex-col h-full md:h-auto">
+      {!showResults && (
+        <QuizProgress currentStep={currentStep} totalSteps={TOTAL_STEPS} />
+      )}
+      
+      {showResults ? (
+        <QuizResults
+          isQualified={isQualified}
+          userName={answers.name}
+          onClose={handleClose}
+        />
+      ) : !imagesLoaded ? (
+        // Loading state while images preload
+        <div className="relative min-h-[380px] md:min-h-[420px] w-full overflow-hidden md:rounded-2xl bg-muted flex flex-col items-center justify-center">
+          <div className="mb-4 p-3 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 animate-pulse">
+            <TravelCompass size="md" animate={true} />
+          </div>
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Loader2 className="w-5 h-5 animate-spin" />
+            <span className="text-sm font-medium">Preparing your journey...</span>
+          </div>
+        </div>
+      ) : (
+        renderStep()
+      )}
+    </div>
+  );
+
+  // For embedded mode, render directly without modal
+  if (isEmbedded) {
+    return quizContent;
+  }
 
   return (
     <QuizModal isOpen={isQuizOpen} onClose={closeQuiz}>
-      <div className="flex flex-col h-full md:h-auto">
-        {!showResults && (
-          <QuizProgress currentStep={currentStep} totalSteps={TOTAL_STEPS} />
-        )}
-        
-        {showResults ? (
-          <QuizResults
-            isQualified={isQualified}
-            userName={answers.name}
-            onClose={closeQuiz}
-          />
-        ) : !imagesLoaded ? (
-          // Loading state while images preload
-          <div className="relative min-h-[380px] md:min-h-[420px] w-full overflow-hidden md:rounded-2xl bg-muted flex flex-col items-center justify-center">
-            <div className="mb-4 p-3 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 animate-pulse">
-              <TravelCompass size="md" animate={true} />
-            </div>
-            <div className="flex items-center gap-2 text-muted-foreground">
-              <Loader2 className="w-5 h-5 animate-spin" />
-              <span className="text-sm font-medium">Preparing your journey...</span>
-            </div>
-          </div>
-        ) : (
-          renderStep()
-        )}
-      </div>
+      {quizContent}
     </QuizModal>
   );
 };

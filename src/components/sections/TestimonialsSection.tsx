@@ -1,15 +1,7 @@
 import { motion } from "motion/react";
 import { TestimonialsColumn, ColumnItem } from "@/components/ui/testimonials-column";
 
-// Import lifestyle images
-import womenWorkingViews2 from "@/assets/lifestyle/women-working-views-2.jpg";
-import rvAutumnLeaves2 from "@/assets/lifestyle/rv-autumn-leaves-2.jpg";
-import droneRvsCamping from "@/assets/lifestyle/drone-rvs-camping.jpg";
-import freedomNomad from "@/assets/lifestyle/freedom-nomad.jpg";
-import sunsetRvReflection from "@/assets/lifestyle/sunset-rv-reflection.png";
-import rvMountainsBackground from "@/assets/lifestyle/rv-mountains-background.jpg";
-
-// Column 1 items
+// Column 1 items - testimonials only
 const column1Items: ColumnItem[] = [
   {
     type: "testimonial",
@@ -17,11 +9,6 @@ const column1Items: ColumnItem[] = [
     name: "Nikki",
     role: "Business Owner",
     avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face",
-  },
-  {
-    type: "image",
-    src: rvAutumnLeaves2,
-    alt: "RV surrounded by beautiful autumn leaves",
   },
   {
     type: "testimonial",
@@ -37,14 +24,9 @@ const column1Items: ColumnItem[] = [
     role: "Expat",
     avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
   },
-  {
-    type: "image",
-    src: freedomNomad,
-    alt: "Freedom of the nomad lifestyle",
-  },
 ];
 
-// Column 2 items
+// Column 2 items - testimonials only
 const column2Items: ColumnItem[] = [
   {
     type: "testimonial",
@@ -61,31 +43,16 @@ const column2Items: ColumnItem[] = [
     avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=face",
   },
   {
-    type: "image",
-    src: droneRvsCamping,
-    alt: "Aerial view of RVs camping",
-  },
-  {
     type: "testimonial",
     text: "I trust you and you know my taxes intimately. You have been the best thing to happen to me and my taxes and I wish I had worked with you from the beginning!",
     name: "Bina J.",
     role: "Personal & S-Corp",
     avatar: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&h=100&fit=crop&crop=face",
   },
-  {
-    type: "image",
-    src: sunsetRvReflection,
-    alt: "Beautiful sunset reflection in RV",
-  },
 ];
 
-// Column 3 items
+// Column 3 items - testimonials only
 const column3Items: ColumnItem[] = [
-  {
-    type: "image",
-    src: womenWorkingViews2,
-    alt: "Woman working remotely with beautiful views",
-  },
   {
     type: "testimonial",
     text: "I have been working with Heather for over 4 years now and she is as sharp as they come. The perfect fit for our needs. She helps us keep our books clean for tax time while helping me make critical business decisions.",
@@ -99,11 +66,6 @@ const column3Items: ColumnItem[] = [
     name: "Alowetta T.",
     role: "Thin Air Web",
     avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face",
-  },
-  {
-    type: "image",
-    src: rvMountainsBackground,
-    alt: "RV parked with mountains in background",
   },
   {
     type: "testimonial",

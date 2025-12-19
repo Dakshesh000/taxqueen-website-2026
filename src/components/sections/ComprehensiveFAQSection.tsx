@@ -362,7 +362,7 @@ const ComprehensiveFAQSection = () => {
         {/* Header */}
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground tracking-tight uppercase mb-4">
-            You've Got More Questions
+            Got more questions?
           </h2>
           <p className="text-muted-foreground text-lg">
             Browse by topic to find your answer

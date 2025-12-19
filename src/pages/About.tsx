@@ -5,12 +5,15 @@ import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ParallaxDivider from "@/components/ui/ParallaxDivider";
+import { useQuiz } from "@/contexts/QuizContext";
 import heatherPortrait from "@/assets/heather/portrait-square.png";
 import heatherInVan from "@/assets/heather/heather-in-van.jpg";
 import rvMountains from "@/assets/lifestyle/rv-mountains-background.jpg";
 import freedomNomad from "@/assets/lifestyle/freedom-nomad.jpg";
 
 const About = () => {
+  const { openQuiz } = useQuiz();
+  
   const credentials = [
     { icon: Award, label: "Enrolled Agent (EA)", desc: "Licensed to represent before IRS" },
     { icon: Shield, label: "Tax Strategist", desc: "Proactive planning, not just filing" },
@@ -54,8 +57,8 @@ const About = () => {
                   className="w-full h-full object-cover"
                 />
               </div>
-              {/* Floating badge */}
-              <div className="absolute -bottom-4 -right-4 bg-primary text-primary-foreground px-6 py-3 rounded-xl shadow-lg">
+              {/* Floating badge - top right */}
+              <div className="absolute -top-4 -right-4 bg-primary text-primary-foreground px-6 py-3 rounded-xl shadow-lg">
                 <p className="text-sm font-medium uppercase tracking-wide">The Tax Queen</p>
               </div>
             </motion.div>
@@ -81,8 +84,8 @@ const About = () => {
                 remote workers, and location-independent entrepreneurs navigate the unique 
                 tax challenges of our lifestyle.
               </p>
-              <Button size="lg" className="mt-4" asChild>
-                <a href="/#contact">Let's Work Together</a>
+              <Button size="lg" className="mt-4" onClick={() => openQuiz()}>
+                Let's Work Together
               </Button>
             </motion.div>
           </div>
