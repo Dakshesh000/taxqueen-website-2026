@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { useQuiz } from "@/contexts/QuizContext";
-import vanSnowMountains from "@/assets/lifestyle/van-snow-mountains.jpg";
+import { heroVideoThumbnail } from "@/assets";
 
 const HeroSection = () => {
   const { openQuiz } = useQuiz();
@@ -121,8 +121,8 @@ const HeroSection = () => {
         <div className={`relative w-full ${isLocked ? 'h-screen' : 'h-[70vh] sm:h-[80vh] xl:h-[85vh] 2xl:h-[88vh]'} rounded-2xl overflow-hidden shadow-lift-lg transition-all duration-300`}>
           {/* Thumbnail - shows while video loads */}
           <img
-            src={vanSnowMountains}
-            alt="Digital nomad lifestyle - van in snowy mountain landscape"
+            src={heroVideoThumbnail}
+            alt="Aerial view of RV adventure - hero video thumbnail"
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isVideoLoaded ? 'opacity-0' : 'opacity-100'}`}
             loading="eager"
             fetchPriority="high"

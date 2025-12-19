@@ -302,20 +302,42 @@ const ComprehensiveFAQSection = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedCategories, setExpandedCategories] = useState<Set<string>>(new Set());
 
-  // Filter FAQs based on search query
+  // Helper function to normalize text for fuzzy matching
+  const normalizeForSearch = (text: string) => {
+    return text
+      .toLowerCase()
+      .replace(/[\s\-_]/g, '') // Remove spaces, hyphens, underscores
+      .replace(/['']/g, '')    // Remove apostrophes
+      .trim();
+  };
+
+  // Filter FAQs based on search query - searches ALL categories when query exists
   const filteredFaqs = useMemo(() => {
-    const categoryFaqs = faqsByCategory[selectedCategory] || [];
-    
+    // If no search query, show only selected category
     if (!searchQuery.trim()) {
-      return categoryFaqs;
+      return faqsByCategory[selectedCategory] || [];
     }
 
     const query = searchQuery.toLowerCase().trim();
-    return categoryFaqs.filter(
-      (faq) =>
-        faq.question.toLowerCase().includes(query) ||
-        faq.answer.toLowerCase().includes(query)
-    );
+    const normalizedQuery = normalizeForSearch(query);
+    
+    // When searching, search ALL categories
+    const allFaqs = Object.values(faqsByCategory).flat();
+    
+    return allFaqs.filter((faq) => {
+      const questionLower = faq.question.toLowerCase();
+      const answerLower = faq.answer.toLowerCase();
+      const questionNormalized = normalizeForSearch(faq.question);
+      const answerNormalized = normalizeForSearch(faq.answer);
+      
+      // Check both regular and normalized matches
+      return (
+        questionLower.includes(query) ||
+        answerLower.includes(query) ||
+        questionNormalized.includes(normalizedQuery) ||
+        answerNormalized.includes(normalizedQuery)
+      );
+    });
   }, [selectedCategory, searchQuery]);
 
   const isExpanded = expandedCategories.has(selectedCategory);
