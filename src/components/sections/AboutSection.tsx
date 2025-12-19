@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback } from 'react';
 import { Play } from 'lucide-react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { heatherVideoThumbnail } from '@/assets';
 import { useQuiz } from '@/contexts/QuizContext';
@@ -135,7 +135,8 @@ const AboutSection = () => {
 
       {/* Video Modal */}
       <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
-        <DialogContent className="max-w-4xl p-0 bg-black border-none overflow-hidden">
+        <DialogContent className="max-w-4xl p-0 bg-black border-none overflow-hidden" aria-describedby={undefined}>
+          <DialogTitle className="sr-only">Meet Heather - Your Tax Queen Video</DialogTitle>
           <div className="relative w-full aspect-video">
             <iframe
               src="https://www.youtube.com/embed/3HYAasPLc_s?autoplay=1&rel=0"
