@@ -22,6 +22,7 @@ import {
 import QuestionWrapper from "@/components/quiz/QuestionWrapper";
 import QuizProgress from "@/components/quiz/QuizProgress";
 import QuizModal from "@/components/quiz/QuizModal";
+import QuizResults from "@/components/quiz/QuizResults";
 import YesNoQuestion from "@/components/quiz/questions/YesNoQuestion";
 import TextInputQuestion from "@/components/quiz/questions/TextInputQuestion";
 import MultiSelectQuestion from "@/components/quiz/questions/MultiSelectQuestion";
@@ -41,23 +42,47 @@ import campingByRiver from "@/assets/lifestyle/camping-by-river.jpg";
 import heatherHikingNature from "@/assets/lifestyle/heather-hiking-nature.jpg";
 import sunsetRvReflection from "@/assets/lifestyle/sunset-rv-reflection.png";
 
+// Quiz state interface
+interface QuizAnswers {
+  usTaxObligations: boolean | null;
+  homeBase: string;
+  livingTheLife: boolean | null;
+  futureAdventures: boolean | null;
+  incomeSources: string[];
+  annualIncome: number;
+  situations: string[];
+  organizationStyle: string | null;
+  lookingFor: string[];
+  name: string;
+  email: string;
+  phone: string;
+}
+
+const TOTAL_STEPS = 9;
+
 const QuizPreview = () => {
-  // State for all demo values
-  const [yesNoValue, setYesNoValue] = useState<boolean | null>(null);
-  const [textValue, setTextValue] = useState("");
-  const [multiSelectValue, setMultiSelectValue] = useState<string[]>([]);
-  const [singleSelectValue, setSingleSelectValue] = useState<string | null>(null);
-  const [sliderValue, setSliderValue] = useState(2);
-  const [contactName, setContactName] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
-
-  // Modal state
+  // Complete modal quiz state
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalStep, setModalStep] = useState(1);
-  const [modalYesNo, setModalYesNo] = useState<boolean | null>(null);
-  const [modalSingleSelect, setModalSingleSelect] = useState<string | null>(null);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [showResults, setShowResults] = useState(false);
+  const [isQualified, setIsQualified] = useState(false);
 
-  // Sample options for multi-select
+  const [answers, setAnswers] = useState<QuizAnswers>({
+    usTaxObligations: null,
+    homeBase: "",
+    livingTheLife: null,
+    futureAdventures: null,
+    incomeSources: [],
+    annualIncome: 2,
+    situations: [],
+    organizationStyle: null,
+    lookingFor: [],
+    name: "",
+    email: "",
+    phone: "",
+  });
+
+  // Options for questions
   const incomeOptions = [
     { id: "business", label: "Business Owner", icon: <Building className="w-5 h-5" /> },
     { id: "freelance", label: "Freelancer / Contractor", icon: <Laptop className="w-5 h-5" /> },
@@ -66,7 +91,14 @@ const QuizPreview = () => {
     { id: "investments", label: "Investment Income", icon: <DollarSign className="w-5 h-5" /> },
   ];
 
-  // Sample options for single-select
+  const situationOptions = [
+    { id: "330days", label: "330+ days outside USA", icon: <Globe className="w-5 h-5" /> },
+    { id: "multistate", label: "Worked in multiple states", icon: <MapPin className="w-5 h-5" /> },
+    { id: "foreign", label: "Foreign bank accounts", icon: <DollarSign className="w-5 h-5" /> },
+    { id: "badcpa", label: "Last CPA didn't get it", icon: <Heart className="w-5 h-5" /> },
+    { id: "behindtaxes", label: "Behind on my taxes", icon: <Clock className="w-5 h-5" /> },
+  ];
+
   const organizationOptions = [
     { id: "super", label: "Super Organized", description: "Everything tracked and filed" },
     { id: "pretty", label: "Pretty Organized", description: "Most things in order" },
@@ -74,18 +106,357 @@ const QuizPreview = () => {
     { id: "help", label: "I Need Help", description: "Paperwork everywhere!" },
   ];
 
-  // Income labels for slider
-  const incomeLabels = [
-    "Under $40k",
-    "$40k - $75k",
-    "$75k - $150k",
-    "$150k - $300k",
-    "$300k+",
+  const lookingForOptions = [
+    { id: "taxprep", label: "Annual Tax Preparation" },
+    { id: "strategy", label: "Tax Strategy & Planning" },
+    { id: "catchup", label: "Catching Up on Past Returns" },
+    { id: "advice", label: "General Advice / Questions" },
   ];
 
-  // Auto-advance handler for modal demo
-  const handleModalAutoAdvance = () => {
-    setModalStep((s) => Math.min(8, s + 1));
+  const incomeLabels = ["Under $40k", "$40k - $75k", "$75k - $150k", "$150k - $300k", "$300k+"];
+
+  // Navigation handlers
+  const goToNextStep = () => {
+    // Handle conditional logic
+    if (currentStep === 3 && answers.livingTheLife === true) {
+      // Skip "Future Adventures" if already living the life
+      setCurrentStep(5);
+    } else if (currentStep < TOTAL_STEPS) {
+      setCurrentStep((s) => s + 1);
+    }
+  };
+
+  const goToPrevStep = () => {
+    if (currentStep === 5 && answers.livingTheLife === true) {
+      // Go back to step 3 if we skipped step 4
+      setCurrentStep(3);
+    } else if (currentStep > 1) {
+      setCurrentStep((s) => s - 1);
+    }
+  };
+
+  const handleSubmit = () => {
+    // Calculate qualification - qualified if has US tax obligations and is/planning nomad life
+    const qualified = 
+      answers.usTaxObligations === true && 
+      (answers.livingTheLife === true || answers.futureAdventures === true);
+    
+    setIsQualified(qualified);
+    setShowResults(true);
+  };
+
+  const resetQuiz = () => {
+    setCurrentStep(1);
+    setShowResults(false);
+    setIsQualified(false);
+    setAnswers({
+      usTaxObligations: null,
+      homeBase: "",
+      livingTheLife: null,
+      futureAdventures: null,
+      incomeSources: [],
+      annualIncome: 2,
+      situations: [],
+      organizationStyle: null,
+      lookingFor: [],
+      name: "",
+      email: "",
+      phone: "",
+    });
+  };
+
+  const openQuiz = () => {
+    resetQuiz();
+    setIsModalOpen(true);
+  };
+
+  // Auto-advance handler for Yes/No and Single-Select
+  const handleAutoAdvance = () => {
+    setTimeout(() => goToNextStep(), 400);
+  };
+
+  // Get effective step for progress (skip step 4 if living the life)
+  const getEffectiveStep = () => {
+    if (currentStep >= 5 && answers.livingTheLife === true) {
+      return currentStep - 1;
+    }
+    return currentStep;
+  };
+
+  const getEffectiveTotal = () => {
+    return answers.livingTheLife === true ? TOTAL_STEPS - 1 : TOTAL_STEPS;
+  };
+
+  // Render current question step
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <QuestionWrapper
+            title="US Tax Obligations?"
+            subtitle="Are you a U.S. citizen, green card holder, or have U.S. tax filing requirements?"
+            helpText="You have U.S. tax obligations if you're a citizen, permanent resident, or meet the substantial presence test."
+            backgroundImage={rvCoastalDrive}
+          >
+            <YesNoQuestion
+              value={answers.usTaxObligations}
+              onChange={(val) => setAnswers({ ...answers, usTaxObligations: val })}
+              onSelect={handleAutoAdvance}
+            />
+          </QuestionWrapper>
+        );
+
+      case 2:
+        return (
+          <QuestionWrapper
+            title="Home Base?"
+            subtitle="What's your domicile state? (Or where you're planning to be)"
+            helpText="Your domicile is your permanent legal residence - where you're registered to vote, have your driver's license, or consider your 'home base'."
+            backgroundImage={vanSnowMountains}
+          >
+            <TextInputQuestion
+              value={answers.homeBase}
+              onChange={(val) => setAnswers({ ...answers, homeBase: val })}
+              placeholder="e.g., Texas, Florida, Nevada..."
+              maxLength={50}
+            />
+            <div className="mt-5 flex justify-center gap-3">
+              <Button
+                variant="outline"
+                className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
+                onClick={goToPrevStep}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+              <Button
+                className="rounded-full px-6"
+                onClick={goToNextStep}
+                disabled={!answers.homeBase.trim()}
+              >
+                Continue
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          </QuestionWrapper>
+        );
+
+      case 3:
+        return (
+          <QuestionWrapper
+            title="Living the Life?"
+            subtitle="Do you currently live outside the US as an expat, or travel & move around?"
+            helpText="A digital nomad travels while working remotely. An expat lives abroad long-term. Both have unique tax considerations."
+            backgroundImage={freedomNomad}
+          >
+            <YesNoQuestion
+              value={answers.livingTheLife}
+              onChange={(val) => setAnswers({ ...answers, livingTheLife: val })}
+              onSelect={handleAutoAdvance}
+              yesLabel="That's Me!"
+              noLabel="Not Yet"
+            />
+            <div className="mt-5 flex justify-center">
+              <Button
+                variant="outline"
+                className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
+                onClick={goToPrevStep}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+            </div>
+          </QuestionWrapper>
+        );
+
+      case 4:
+        return (
+          <QuestionWrapper
+            title="Future Adventures?"
+            subtitle="Are you planning to embrace the digital nomad lifestyle soon?"
+            helpText="Planning ahead is smart! We can help you structure your taxes before you hit the road."
+            backgroundImage={rvMountainsBackground}
+          >
+            <YesNoQuestion
+              value={answers.futureAdventures}
+              onChange={(val) => setAnswers({ ...answers, futureAdventures: val })}
+              onSelect={handleAutoAdvance}
+              yesLabel="Yes, planning!"
+              noLabel="Just exploring"
+            />
+            <div className="mt-5 flex justify-center">
+              <Button
+                variant="outline"
+                className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
+                onClick={goToPrevStep}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+            </div>
+          </QuestionWrapper>
+        );
+
+      case 5:
+        return (
+          <QuestionWrapper
+            title="Income Sources?"
+            subtitle="How do you make money? (Select all that apply)"
+            helpText="Different income types have different tax treatments. Understanding your mix helps us optimize your strategy."
+            backgroundImage={womanWorkingViews}
+          >
+            <MultiSelectQuestion
+              options={incomeOptions}
+              selected={answers.incomeSources}
+              onChange={(val) => setAnswers({ ...answers, incomeSources: val })}
+            />
+            <div className="mt-5 flex justify-center gap-3">
+              <Button
+                variant="outline"
+                className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
+                onClick={goToPrevStep}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+              <Button
+                className="rounded-full px-6"
+                onClick={goToNextStep}
+                disabled={answers.incomeSources.length === 0}
+              >
+                Continue
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          </QuestionWrapper>
+        );
+
+      case 6:
+        return (
+          <QuestionWrapper
+            title="Annual Income?"
+            subtitle="What's your approximate annual income?"
+            helpText="This helps us understand which tax strategies will benefit you most."
+            backgroundImage={truckDesert}
+          >
+            <SliderQuestion
+              value={answers.annualIncome}
+              onChange={(val) => setAnswers({ ...answers, annualIncome: val })}
+              labels={incomeLabels}
+            />
+            <div className="mt-5 flex justify-center gap-3">
+              <Button
+                variant="outline"
+                className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
+                onClick={goToPrevStep}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+              <Button className="rounded-full px-6" onClick={goToNextStep}>
+                Continue
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          </QuestionWrapper>
+        );
+
+      case 7:
+        return (
+          <QuestionWrapper
+            title="Your Situation?"
+            subtitle="Which apply to you? (Select all)"
+            helpText="Each of these situations has specific tax implications we're experts at handling."
+            backgroundImage={workingAtBeach}
+          >
+            <MultiSelectQuestion
+              options={situationOptions}
+              selected={answers.situations}
+              onChange={(val) => setAnswers({ ...answers, situations: val })}
+            />
+            <div className="mt-5 flex justify-center gap-3">
+              <Button
+                variant="outline"
+                className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
+                onClick={goToPrevStep}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+              <Button className="rounded-full px-6" onClick={goToNextStep}>
+                Continue
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          </QuestionWrapper>
+        );
+
+      case 8:
+        return (
+          <QuestionWrapper
+            title="Organization Style?"
+            subtitle="How would you describe your financial tracking?"
+            helpText="Be honest! We work with all types."
+            backgroundImage={campingByRiver}
+          >
+            <SingleSelectQuestion
+              options={organizationOptions}
+              selected={answers.organizationStyle}
+              onChange={(val) => setAnswers({ ...answers, organizationStyle: val })}
+              onSelect={handleAutoAdvance}
+            />
+            <div className="mt-5 flex justify-center">
+              <Button
+                variant="outline"
+                className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
+                onClick={goToPrevStep}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+            </div>
+          </QuestionWrapper>
+        );
+
+      case 9:
+        return (
+          <QuestionWrapper
+            title="Almost There!"
+            subtitle="Where should we send your results?"
+            backgroundImage={sunsetRvReflection}
+          >
+            <ContactForm
+              name={answers.name}
+              email={answers.email}
+              phone={answers.phone}
+              onNameChange={(val) => setAnswers({ ...answers, name: val })}
+              onEmailChange={(val) => setAnswers({ ...answers, email: val })}
+              onPhoneChange={(val) => setAnswers({ ...answers, phone: val })}
+            />
+            <div className="mt-5 flex justify-center gap-3">
+              <Button
+                variant="outline"
+                className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
+                onClick={goToPrevStep}
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back
+              </Button>
+              <Button
+                className="rounded-full px-6"
+                onClick={handleSubmit}
+                disabled={!answers.name.trim() || !answers.email.trim()}
+              >
+                See My Results
+                <Sparkles className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          </QuestionWrapper>
+        );
+
+      default:
+        return null;
+    }
   };
 
   return (
@@ -94,350 +465,51 @@ const QuizPreview = () => {
       <div className="bg-primary text-primary-foreground py-8 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-3xl md:text-4xl font-bold uppercase tracking-wide mb-3">
-            Quiz Component Preview
+            Tax Queen Quiz Demo
           </h1>
           <p className="text-primary-foreground/80">
-            Review each question type before we assemble the full quiz experience
+            Complete quiz experience with auto-advance, progress tracking, and results
           </p>
         </div>
       </div>
 
-      {/* Progress Bar Demo */}
-      <div className="max-w-2xl mx-auto py-8 px-6">
-        <h2 className="text-xl font-bold text-foreground mb-4 text-center">
-          Journey Progress Indicator
-        </h2>
-        <div className="bg-card rounded-2xl shadow-md p-6">
-          <QuizProgress currentStep={modalStep} totalSteps={8} />
-          <div className="flex justify-center gap-2 mt-4">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setModalStep((s) => Math.max(1, s - 1))}
-            >
-              Prev Stop
-            </Button>
-            <Button
-              size="sm"
-              onClick={() => setModalStep((s) => Math.min(8, s + 1))}
-            >
-              Next Stop
-            </Button>
-          </div>
-        </div>
-      </div>
-
-      {/* Question Previews */}
-      <div className="max-w-4xl mx-auto px-6 pb-16 space-y-12">
-        
-        {/* 1. Yes/No Question */}
-        <section>
-          <h2 className="text-xl font-bold text-foreground mb-4">
-            1. Yes/No Question
+      {/* Launch Button */}
+      <div className="max-w-2xl mx-auto py-16 px-6 text-center">
+        <div className="bg-card rounded-2xl shadow-md p-8 space-y-6">
+          <h2 className="text-2xl font-bold text-foreground">
+            Find Your Perfect Tax Solution
           </h2>
-          <QuestionWrapper
-            title="US Tax Obligations?"
-            subtitle="Are you a U.S. citizen, green card holder, or have U.S. tax filing requirements?"
-            helpText="You have U.S. tax obligations if you're a citizen, permanent resident, or spent more than 183 days in the U.S. over a 3-year period using a weighted formula."
-            backgroundImage={rvCoastalDrive}
-          >
-            <YesNoQuestion value={yesNoValue} onChange={setYesNoValue} />
-          </QuestionWrapper>
-        </section>
-
-        {/* 2. Text Input Question */}
-        <section>
-          <h2 className="text-xl font-bold text-foreground mb-4">
-            2. Text Input Question
-          </h2>
-          <QuestionWrapper
-            title="Home Base?"
-            subtitle="What's your domicile state? (Or where you're planning to be)"
-            helpText="Your domicile is your permanent legal residence - where you're registered to vote, have your driver's license, or consider your 'home base' even when traveling."
-            backgroundImage={vanSnowMountains}
-          >
-            <TextInputQuestion
-              value={textValue}
-              onChange={setTextValue}
-              placeholder="e.g., Texas, Florida, Nevada..."
-              maxLength={50}
-            />
-          </QuestionWrapper>
-        </section>
-
-        {/* 3. Yes/No Question (Travel Style) */}
-        <section>
-          <h2 className="text-xl font-bold text-foreground mb-4">
-            3. Yes/No Question (Lifestyle)
-          </h2>
-          <QuestionWrapper
-            title="Living the Life?"
-            subtitle="Do you live outside the US as an expat, or travel & move around?"
-            helpText="A digital nomad travels while working remotely. An expat lives abroad long-term. Both have unique tax considerations we specialize in."
-            backgroundImage={freedomNomad}
-          >
-            <YesNoQuestion
-              value={yesNoValue}
-              onChange={setYesNoValue}
-              yesLabel="That's Me!"
-              noLabel="Not Yet"
-            />
-          </QuestionWrapper>
-        </section>
-
-        {/* 4. Yes/No Question (Future Plans) */}
-        <section>
-          <h2 className="text-xl font-bold text-foreground mb-4">
-            4. Yes/No Question (Future Plans)
-          </h2>
-          <QuestionWrapper
-            title="Future Adventures?"
-            subtitle="Are you planning to embrace the digital nomad lifestyle soon?"
-            helpText="Planning ahead is smart! We can help you structure your taxes before you hit the road to maximize savings."
-            backgroundImage={rvMountainsBackground}
-          >
-            <YesNoQuestion
-              value={yesNoValue}
-              onChange={setYesNoValue}
-              yesLabel="Yes, planning!"
-              noLabel="Just exploring"
-            />
-          </QuestionWrapper>
-        </section>
-
-        {/* 5. Multi-Select Question */}
-        <section>
-          <h2 className="text-xl font-bold text-foreground mb-4">
-            5. Multi-Select Question
-          </h2>
-          <QuestionWrapper
-            title="Income Sources?"
-            subtitle="How do you make money right now? (Select all that apply)"
-            helpText="Different income types have different tax treatments. Understanding your mix helps us optimize your strategy."
-            backgroundImage={womanWorkingViews}
-          >
-            <MultiSelectQuestion
-              options={incomeOptions}
-              selected={multiSelectValue}
-              onChange={setMultiSelectValue}
-            />
-          </QuestionWrapper>
-        </section>
-
-        {/* 6. Slider Question */}
-        <section>
-          <h2 className="text-xl font-bold text-foreground mb-4">
-            6. Slider Question
-          </h2>
-          <QuestionWrapper
-            title="Annual Income?"
-            subtitle="What's your approximate annual income?"
-            helpText="This helps us understand which tax strategies and deductions will benefit you most. Don't worry - this is just an estimate!"
-            backgroundImage={truckDesert}
-          >
-            <SliderQuestion
-              value={sliderValue}
-              onChange={setSliderValue}
-              labels={incomeLabels}
-            />
-          </QuestionWrapper>
-        </section>
-
-        {/* 7. Multi-Select Question (Situations) */}
-        <section>
-          <h2 className="text-xl font-bold text-foreground mb-4">
-            7. Multi-Select Question (Checkboxes)
-          </h2>
-          <QuestionWrapper
-            title="Your Situation?"
-            subtitle="Which of these apply to you? (Select all that apply)"
-            helpText="Check all that apply. Each of these situations has specific tax implications we're experts at handling."
-            backgroundImage={workingAtBeach}
-          >
-            <MultiSelectQuestion
-              options={[
-                { id: "330days", label: "330+ days outside USA this year", icon: <Globe className="w-5 h-5" /> },
-                { id: "multistate", label: "Worked in multiple states", icon: <MapPin className="w-5 h-5" /> },
-                { id: "foreign", label: "Foreign bank accounts or income", icon: <DollarSign className="w-5 h-5" /> },
-                { id: "badcpa", label: "Last accountant didn't get it", icon: <Heart className="w-5 h-5" /> },
-                { id: "behindtaxes", label: "Behind on my taxes", icon: <Clock className="w-5 h-5" /> },
-              ]}
-              selected={multiSelectValue}
-              onChange={setMultiSelectValue}
-            />
-          </QuestionWrapper>
-        </section>
-
-        {/* 8. Single-Select Question */}
-        <section>
-          <h2 className="text-xl font-bold text-foreground mb-4">
-            8. Single-Select Question
-          </h2>
-          <QuestionWrapper
-            title="Organization Style?"
-            subtitle="How would you describe yourself with financial tracking?"
-            helpText="Be honest! We work with all types. This helps us understand what level of support you'll need."
-            backgroundImage={campingByRiver}
-          >
-            <SingleSelectQuestion
-              options={organizationOptions}
-              selected={singleSelectValue}
-              onChange={setSingleSelectValue}
-            />
-          </QuestionWrapper>
-        </section>
-
-        {/* 9. Optional Multi-Select */}
-        <section>
-          <h2 className="text-xl font-bold text-foreground mb-4">
-            9. Optional Multi-Select
-          </h2>
-          <QuestionWrapper
-            title="Looking For?"
-            subtitle="What brings you here today? (Optional)"
-            helpText="This helps us prepare for your discovery call. Skip if you're not sure yet!"
-            backgroundImage={heatherHikingNature}
-          >
-            <MultiSelectQuestion
-              options={[
-                { id: "taxprep", label: "Annual Tax Preparation" },
-                { id: "strategy", label: "Tax Strategy & Planning" },
-                { id: "catchup", label: "Catching Up on Past Returns" },
-                { id: "advice", label: "General Advice / Questions" },
-              ]}
-              selected={multiSelectValue}
-              onChange={setMultiSelectValue}
-            />
-          </QuestionWrapper>
-        </section>
-
-        {/* 10. Contact Form */}
-        <section>
-          <h2 className="text-xl font-bold text-foreground mb-4">
-            10. Contact Collection
-          </h2>
-          <QuestionWrapper
-            title="Almost There!"
-            subtitle="Where should we send your personalized results?"
-            backgroundImage={sunsetRvReflection}
-          >
-            <ContactForm
-              name={contactName}
-              email={contactEmail}
-              onNameChange={setContactName}
-              onEmailChange={setContactEmail}
-            />
-          </QuestionWrapper>
-        </section>
-
-        {/* Modal Demo */}
-        <section className="bg-card rounded-2xl shadow-md p-8 text-center">
-          <h2 className="text-xl font-bold text-foreground mb-4">
-            Modal Experience Demo
-          </h2>
-          <p className="text-muted-foreground mb-6">
-            Click below to see auto-advance behavior in action
+          <p className="text-muted-foreground max-w-md mx-auto">
+            Answer a few quick questions and we'll match you with the right service for your nomad lifestyle.
           </p>
           <Button
             size="lg"
             className="rounded-full px-8"
-            onClick={() => {
-              setIsModalOpen(true);
-              setModalStep(1);
-              setModalYesNo(null);
-              setModalSingleSelect(null);
-            }}
+            onClick={openQuiz}
           >
-            Open Quiz Modal
+            Start the Quiz
             <ArrowRight className="w-5 h-5 ml-2" />
           </Button>
-        </section>
-
-        {/* Approval Section */}
-        <section className="bg-primary/10 rounded-2xl p-8 text-center border-2 border-primary/30">
-          <h2 className="text-2xl font-bold text-foreground mb-4 uppercase">
-            Ready to Approve?
-          </h2>
-          <p className="text-muted-foreground mb-6 max-w-lg mx-auto">
-            Once you approve these question styles, we'll stitch them together
-            into the complete quiz flow with scoring logic.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <Button variant="outline" className="rounded-full px-6">
-              Request Changes
-            </Button>
-            <Button className="rounded-full px-6">
-              Approve & Build Quiz
-            </Button>
-          </div>
-        </section>
+        </div>
       </div>
 
-      {/* Modal Demo with Auto-Advance */}
+      {/* Quiz Modal */}
       <QuizModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <QuizProgress currentStep={modalStep} totalSteps={8} />
-        
-        {modalStep === 1 && (
-          <QuestionWrapper
-            title="Living the Life?"
-            subtitle="Do you live outside the US as an expat, or travel & move around?"
-            helpText="A digital nomad travels while working remotely. An expat lives abroad long-term."
-            backgroundImage={freedomNomad}
-          >
-            <YesNoQuestion
-              value={modalYesNo}
-              onChange={setModalYesNo}
-              onSelect={handleModalAutoAdvance}
-              yesLabel="That's Me!"
-              noLabel="Not Yet"
+        <div className="flex flex-col h-full md:h-auto">
+          {!showResults && (
+            <QuizProgress currentStep={getEffectiveStep()} totalSteps={getEffectiveTotal()} />
+          )}
+          
+          {showResults ? (
+            <QuizResults
+              isQualified={isQualified}
+              userName={answers.name}
+              onClose={() => setIsModalOpen(false)}
             />
-          </QuestionWrapper>
-        )}
-        
-        {modalStep === 2 && (
-          <QuestionWrapper
-            title="Organization Style?"
-            subtitle="How would you describe yourself with financial tracking?"
-            helpText="Be honest! We work with all types."
-            backgroundImage={campingByRiver}
-          >
-            <SingleSelectQuestion
-              options={organizationOptions}
-              selected={modalSingleSelect}
-              onChange={setModalSingleSelect}
-              onSelect={handleModalAutoAdvance}
-            />
-            <div className="mt-8 flex justify-center">
-              <Button
-                variant="outline"
-                className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
-                onClick={() => setModalStep(1)}
-              >
-                <ArrowLeft className="w-4 h-4 mr-2" />
-                Back
-              </Button>
-            </div>
-          </QuestionWrapper>
-        )}
-        
-        {modalStep >= 3 && (
-          <QuestionWrapper
-            title="Demo Complete!"
-            subtitle="Auto-advance works! Selection automatically moves to next question."
-            backgroundImage={sunsetRvReflection}
-          >
-            <div className="text-center text-primary-foreground">
-              <p className="mb-6">You've experienced the auto-advance feature.</p>
-              <Button
-                variant="outline"
-                className="rounded-full text-foreground border-muted-foreground/30 hover:bg-muted"
-                onClick={() => setIsModalOpen(false)}
-              >
-                Close Demo
-              </Button>
-            </div>
-          </QuestionWrapper>
-        )}
+          ) : (
+            renderStep()
+          )}
+        </div>
       </QuizModal>
     </div>
   );

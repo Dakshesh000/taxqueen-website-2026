@@ -33,22 +33,21 @@ const getWeightedProgress = (step: number, total: number): number => {
   return Math.min(100, (step / total) * 100);
 };
 
-// Get vehicle based on progress percentage
-const getVehicle = (progress: number) => {
-  if (progress <= 25) {
-    return { Icon: Car, label: "Car" };
-  } else if (progress <= 50) {
-    return { Icon: Caravan, label: "RV" };
-  } else if (progress <= 75) {
-    return { Icon: Plane, label: "Plane" };
-  } else {
-    return { Icon: Ship, label: "Boat" };
-  }
+// Get vehicle based on step number (cycles through: Car → RV → Plane → Boat → repeat)
+const getVehicleByStep = (step: number) => {
+  const vehicles = [
+    { Icon: Car, label: "Car" },
+    { Icon: Caravan, label: "RV" },
+    { Icon: Plane, label: "Plane" },
+    { Icon: Ship, label: "Boat" },
+  ];
+  // Cycle through vehicles: Q1=Car, Q2=RV, Q3=Plane, Q4=Boat, Q5=Car...
+  return vehicles[(step - 1) % 4];
 };
 
 const QuizProgress = ({ currentStep, totalSteps }: QuizProgressProps) => {
   const progress = getWeightedProgress(currentStep, totalSteps);
-  const { Icon: VehicleIcon, label } = getVehicle(progress);
+  const { Icon: VehicleIcon, label } = getVehicleByStep(currentStep);
 
   return (
     <div className="w-full px-4 py-6">

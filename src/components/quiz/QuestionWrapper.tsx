@@ -33,7 +33,7 @@ const QuestionWrapper = ({
   }, []);
 
   return (
-    <div className="relative min-h-[500px] md:min-h-[600px] w-full overflow-hidden rounded-2xl">
+    <div className="relative min-h-[380px] md:min-h-[420px] w-full overflow-hidden md:rounded-2xl">
       {/* Background Image with Overlay */}
       <div
         className="absolute inset-0 bg-cover bg-center"
@@ -43,15 +43,15 @@ const QuestionWrapper = ({
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-[500px] md:min-h-[600px] px-6 py-12 text-center">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-[380px] md:min-h-[420px] px-4 py-6 md:py-8 text-center">
         {/* Custom Compass Icon with Animation */}
-        <div className={`mb-6 p-4 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 ${showAnimation ? "animate-needle-wiggle" : ""}`}>
-          <TravelCompass size="lg" animate={showAnimation} />
+        <div className={`mb-4 p-3 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 ${showAnimation ? "animate-needle-wiggle" : ""}`}>
+          <TravelCompass size="md" animate={showAnimation} />
         </div>
 
         {/* Title with Help Tooltip */}
-        <div className="flex items-center gap-2 mb-3">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary-foreground uppercase tracking-wide text-shadow-lg">
+        <div className="flex items-center gap-2 mb-2">
+          <h2 className="text-xl md:text-2xl lg:text-3xl font-bold text-primary-foreground uppercase tracking-wide text-shadow-lg">
             {title}
           </h2>
           {helpText && (
@@ -59,7 +59,7 @@ const QuestionWrapper = ({
               <Tooltip>
                 <TooltipTrigger asChild>
                   <button className="p-1 rounded-full hover:bg-primary/20 transition-colors">
-                    <HelpCircle className="w-5 h-5 text-primary-foreground/80" />
+                    <HelpCircle className="w-4 h-4 text-primary-foreground/80" />
                   </button>
                 </TooltipTrigger>
                 <TooltipContent
@@ -75,7 +75,7 @@ const QuestionWrapper = ({
 
         {/* Subtitle */}
         {subtitle && (
-          <p className="text-primary-foreground/90 text-base md:text-lg mb-8 max-w-md text-shadow">
+          <p className="text-primary-foreground/90 text-sm md:text-base mb-5 max-w-md text-shadow px-2">
             {subtitle}
           </p>
         )}
