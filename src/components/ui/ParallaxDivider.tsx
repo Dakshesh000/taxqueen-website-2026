@@ -1,3 +1,4 @@
+import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 
 interface ParallaxDividerProps {
@@ -15,14 +16,40 @@ const ParallaxDivider = ({
   height = "h-[300px]",
   className 
 }: ParallaxDividerProps) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  // Lazy load background image when section approaches viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect(); // Once loaded, no need to observe
+        }
+      },
+      { rootMargin: "200px" } // Preload 200px before visible
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section 
+      ref={sectionRef}
       className={cn(
         "relative bg-fixed bg-cover bg-center",
         height,
         className
       )}
-      style={{ backgroundImage: `url(${image})` }}
+      style={{ 
+        backgroundImage: isVisible ? `url(${image})` : undefined,
+        backgroundColor: !isVisible ? "hsl(var(--muted))" : undefined
+      }}
     >
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-black/50" />

@@ -131,7 +131,6 @@ const HeroSection = () => {
           {/* Video - fades in when loaded */}
           <video
             src="/videos/hero-background.mp4"
-            poster={vanSnowMountains}
             autoPlay
             muted
             loop

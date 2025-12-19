@@ -1,73 +1,89 @@
-# Welcome to your Lovable project
+# Tax Queen - Digital Nomad Tax Services
 
-## Project info
+Expert tax services for digital nomads, RV travelers, and location-independent professionals with US tax obligations.
+
+## 🚀 Tech Stack
+
+- **Framework:** React 18 with TypeScript
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS with custom design system
+- **UI Components:** shadcn/ui (Radix primitives)
+- **Routing:** React Router DOM v6
+- **State Management:** TanStack Query (React Query)
+- **Animations:** Framer Motion
+- **Backend:** Supabase (Lovable Cloud)
+- **Forms:** React Hook Form + Zod validation
+
+## 📁 Project Structure
+
+```
+src/
+├── assets/           # Static images and brand assets
+├── components/
+│   ├── layout/       # Navbar, Footer, SubPageLayout
+│   ├── quiz/         # Lead generation quiz components
+│   ├── sections/     # Page sections (Hero, About, Services, etc.)
+│   └── ui/           # Reusable UI components (shadcn/ui)
+├── config/           # Brand configuration
+├── contexts/         # React contexts (Quiz state)
+├── hooks/            # Custom React hooks
+├── integrations/     # Supabase client and types
+├── lib/              # Utility functions
+└── pages/            # Route pages
+```
+
+## 🎨 Design System
+
+The project uses a semantic design token system defined in:
+- `src/index.css` - CSS custom properties for colors, gradients, shadows
+- `tailwind.config.ts` - Tailwind theme extensions
+
+**Always use semantic tokens** (e.g., `bg-primary`, `text-foreground`) instead of direct colors.
+
+## 🔧 Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
+```
+
+## 📱 Key Features
+
+- **Lead Qualification Quiz:** Multi-step quiz with image preloading for smooth transitions
+- **SEO Optimized:** Meta tags, structured data (JSON-LD), sitemap
+- **Accessibility:** Skip links, ARIA labels, keyboard navigation
+- **Performance:** Lazy loading, image optimization, code splitting
+- **Responsive:** Mobile-first design with breakpoints
+
+## 🔒 Admin Access
+
+Admin panel accessible at `/admin-login` for managing quiz leads.
+
+## 🌐 SEO Files
+
+- `public/sitemap.xml` - XML sitemap for search engines
+- `public/robots.txt` - Crawler directives
+- `index.html` - Meta tags and structured data
+
+## 📝 Contributing
+
+1. Follow the existing code patterns and design system
+2. Use semantic tokens for all colors
+3. Write TypeScript with proper types
+4. Test on mobile and desktop viewports
+5. Ensure accessibility compliance
+
+---
 
 **URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
 
-## How can I edit this code?
-
-There are several ways of editing your application.
-
-**Use Lovable**
-
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
-
-**Edit a file directly in GitHub**
-
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
-
-**Use GitHub Codespaces**
-
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
-
-## What technologies are used for this project?
-
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+To deploy, visit [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click Share → Publish.

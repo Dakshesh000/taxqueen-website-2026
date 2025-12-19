@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { brand, navigation } from "@/config/brand";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -37,6 +38,7 @@ const Footer = () => {
               src={logoTaxQueen} 
               alt="Tax Queen Logo" 
               className="h-12 w-auto brightness-0 invert"
+              loading="lazy"
             />
             <p className="text-sm text-primary-foreground/80 max-w-xs">
               {brand.description}
@@ -46,27 +48,52 @@ const Footer = () => {
           {/* Navigation Column */}
           <div className="space-y-4">
             <h4 className="font-semibold uppercase tracking-wide">Quick Links</h4>
-            <ul className="space-y-2">
-              {navigation.map((item) => (
-                <li key={item.href}>
-                  <a
-                    href={item.href}
-                    className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                  >
-                    {item.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
+            <nav aria-label="Footer navigation">
+              <ul className="space-y-2">
+                {navigation.map((item) => {
+                  const isExternal = "external" in item && item.external;
+                  const isAnchor = item.href.startsWith("#");
+                  
+                  return (
+                    <li key={item.href}>
+                      {isExternal ? (
+                        <a
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                        >
+                          {item.label}
+                        </a>
+                      ) : isAnchor ? (
+                        <a
+                          href={item.href}
+                          className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                        >
+                          {item.label}
+                        </a>
+                      ) : (
+                        <Link
+                          to={item.href}
+                          className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                        >
+                          {item.label}
+                        </Link>
+                      )}
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
           </div>
 
           {/* Contact Column */}
           <div className="space-y-4">
             <h4 className="font-semibold uppercase tracking-wide">Contact</h4>
-            <div className="space-y-2 text-sm text-primary-foreground/80">
+            <address className="not-italic space-y-2 text-sm text-primary-foreground/80">
               <p>{brand.email}</p>
               {brand.phone && <p>{brand.phone}</p>}
-            </div>
+            </address>
           </div>
 
           {/* Newsletter Column */}
@@ -82,6 +109,7 @@ const Footer = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-primary-foreground text-foreground placeholder:text-muted-foreground border-none h-11"
+                aria-label="Email address for newsletter"
               />
               <Button
                 type="submit"
@@ -100,12 +128,12 @@ const Footer = () => {
           <p className="text-sm text-primary-foreground/80">
             © {currentYear} {brand.name}. All rights reserved.
           </p>
-          <a
-            href="/admin-login"
+          <Link
+            to="/admin-login"
             className="text-xs text-primary-foreground/50 hover:text-primary-foreground/80 transition-colors"
           >
             Admin
-          </a>
+          </Link>
         </div>
       </div>
     </footer>
