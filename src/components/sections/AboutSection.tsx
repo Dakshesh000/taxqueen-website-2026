@@ -100,7 +100,7 @@ const AboutSection = () => {
               Hi, I'm <span className="text-primary">Heather</span>
             </h2>
 
-            {/* Circular Portrait with Play Button - Both Float Together */}
+            {/* Circular Portrait with Bottom Play Bar */}
             <div 
               className="relative cursor-pointer group/video animate-float"
               onClick={() => setIsVideoOpen(true)}
@@ -114,13 +114,7 @@ const AboutSection = () => {
                   loading="lazy"
                 />
 
-                {/* Option 6: Film Strip Border - Corner Play Badge */}
-                <div className="absolute inset-0 rounded-full border-4 border-dashed border-primary/30 group-hover/video:border-primary/60 transition-colors duration-300" />
-                <div className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-primary/90 flex items-center justify-center shadow-lg group-hover/video:scale-110 transition-transform duration-300">
-                  <Play className="w-5 h-5 text-primary-foreground ml-0.5" fill="currentColor" />
-                </div>
-
-                {/* Option 1: Bottom Edge Play Bar */}
+                {/* Bottom Edge Play Bar */}
                 <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-foreground/70 to-transparent flex items-end justify-center pb-2 opacity-80 group-hover/video:opacity-100 transition-opacity duration-300">
                   <div className="flex items-center gap-2 text-white">
                     <Play className="w-4 h-4" fill="currentColor" />
@@ -131,17 +125,6 @@ const AboutSection = () => {
 
               {/* Hover overlay for visual feedback */}
               <div className="absolute inset-0 rounded-full bg-foreground/0 group-hover/video:bg-foreground/10 transition-all duration-300" />
-            </div>
-
-            {/* Option 5: External Play Indicator - Below Portrait */}
-            <div 
-              className="flex items-center gap-2 text-muted-foreground group-hover/video:text-primary transition-colors duration-300 cursor-pointer mt-4"
-              onClick={() => setIsVideoOpen(true)}
-            >
-              <div className="w-8 h-8 rounded-full border-2 border-current flex items-center justify-center">
-                <Play className="w-4 h-4 ml-0.5" fill="currentColor" />
-              </div>
-              <span className="text-sm font-medium uppercase tracking-wide">Watch My Story</span>
             </div>
 
             {/* CTA Button */}
