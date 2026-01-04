@@ -9,7 +9,7 @@ const steps = [
   {
     number: 2,
     title: "Secure Document Sharing",
-    description: "No printer? No problem! I'll add you to my client portal, where we can share electronic documents securely and seamlessly. You can even upload images from your phone using a mobile app."
+    description: "No printer? No problem! I'll add you to my client portal, where we can share electronic documents securely and seamlessly."
   },
   {
     number: 3,
