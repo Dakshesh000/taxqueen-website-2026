@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "motion/react";
-import { Play, Award, Shield, MapPin, BookOpen, Calculator, Users, Brain, HelpCircle, PhoneOff } from "lucide-react";
+import { Play, Award, Shield, MapPin, BookOpen, Calculator, Users, Calendar } from "lucide-react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
@@ -15,29 +15,18 @@ import {
   freedomNomad,
   freedomNomad2,
   sunsetRvReflection,
-  taxQueenInVan,
+  truckStormySky,
 } from "@/assets";
 
 const About = () => {
   const { openQuiz } = useQuiz();
   const [isVideoOpen, setIsVideoOpen] = useState(false);
 
-  const painPoints = [
-    {
-      icon: Brain,
-      title: "Overwhelm & Anxiety",
-      description: "Every time you even think about your taxes—especially because you're worried you'll make an expensive mistake",
-    },
-    {
-      icon: HelpCircle,
-      title: "Confusion About Structure",
-      description: "Important designators like LLC and S corp, and concern that making the wrong choice will come back to bite you",
-    },
-    {
-      icon: PhoneOff,
-      title: "Crickets from Traditional Pros",
-      description: "Sending urgent questions to your sticks-and-bricks tax professional and getting nothing but crickets (followed by an invoice)",
-    },
+  const credentialsStrip = [
+    { icon: Shield, label: "Enrolled Agent (EA)" },
+    { icon: Calendar, label: "EA Since 2014" },
+    { icon: Award, label: "Certified Tax Coach" },
+    { icon: MapPin, label: "Full-Time Nomad Since 2016" },
   ];
 
   const credentials = [
@@ -66,18 +55,17 @@ const About = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative rounded-2xl overflow-hidden h-[280px] md:h-[320px]">
             <img
-              src={taxQueenInVan}
+              src={truckStormySky}
               alt="Heather - The Tax Queen"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-foreground/50" />
             <div className="absolute bottom-8 left-8 text-white">
-              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold uppercase mb-2">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold uppercase">
                 Taxes Make You Lose Sleep?
-              </h1>
-              <p className="text-xl md:text-2xl font-medium">
+                <br />
                 I'm here for you!
-              </p>
+              </h1>
             </div>
           </div>
         </div>
@@ -87,7 +75,7 @@ const About = () => {
       <section className="py-16 lg:py-24 bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-6xl mx-auto">
-            {/* Left: Video Thumbnail */}
+            {/* Left: Video Thumbnail - Rectangular */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -96,11 +84,11 @@ const About = () => {
               className="flex justify-center"
             >
               <div
-                className="relative cursor-pointer group"
+                className="relative cursor-pointer group w-full max-w-md"
                 onClick={() => setIsVideoOpen(true)}
               >
-                {/* Portrait Circle */}
-                <div className="relative w-[280px] h-[280px] md:w-[320px] md:h-[320px] lg:w-[350px] lg:h-[350px] rounded-full overflow-hidden shadow-2xl">
+                {/* Rectangular Video Thumbnail */}
+                <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl">
                   <img
                     src={heatherVideoThumbnail}
                     alt="Heather - The Tax Queen"
@@ -115,7 +103,7 @@ const About = () => {
                   </div>
                 </div>
                 {/* Hover overlay */}
-                <div className="absolute inset-0 rounded-full bg-foreground/0 group-hover:bg-foreground/10 transition-all duration-300" />
+                <div className="absolute inset-0 rounded-2xl bg-foreground/0 group-hover:bg-foreground/10 transition-all duration-300" />
               </div>
             </motion.div>
 
@@ -127,7 +115,6 @@ const About = () => {
               transition={{ duration: 0.6, delay: 0.2 }}
               className="space-y-6"
             >
-              <p className="text-primary font-medium uppercase tracking-widest text-sm">Meet Your Tax Strategist</p>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground uppercase">
                 Hi, I'm Heather
               </h2>
@@ -145,35 +132,21 @@ const About = () => {
         </div>
       </section>
 
-      {/* Section 3: "I Get It" Pain Points */}
-      <section className="py-16 lg:py-20 bg-primary">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-primary-foreground uppercase">
-              I Know Exactly What Keeps You Awake at Night
-            </h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {painPoints.map((point, index) => (
+      {/* Section 3: Credentials Strip */}
+      <section className="py-12 bg-primary">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex flex-wrap justify-center gap-8 md:gap-16">
+            {credentialsStrip.map((cred, index) => (
               <motion.div
-                key={point.title}
-                initial={{ opacity: 0, y: 30 }}
+                key={cred.label}
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="text-center"
+                className="flex items-center gap-3"
               >
-                <div className="w-16 h-16 bg-primary-foreground/20 rounded-full flex items-center justify-center mx-auto mb-6">
-                  <point.icon className="w-8 h-8 text-primary-foreground" />
-                </div>
-                <h3 className="text-xl font-bold text-primary-foreground mb-3">{point.title}</h3>
-                <p className="text-primary-foreground/80 leading-relaxed">{point.description}</p>
+                <cred.icon className="w-6 h-6 text-primary-foreground" />
+                <span className="font-medium text-primary-foreground">{cred.label}</span>
               </motion.div>
             ))}
           </div>
@@ -189,7 +162,6 @@ const About = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <p className="text-primary font-medium uppercase tracking-widest text-sm mb-4">My Journey</p>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground uppercase">
               The Story Behind The Tax Queen
             </h2>
@@ -201,15 +173,57 @@ const About = () => {
             viewport={{ once: true }}
             transition={{ delay: 0.2 }}
           >
-            <Tabs defaultValue="beginning" className="w-full">
+            <Tabs defaultValue="why-me" className="w-full">
               <TabsList className="grid w-full grid-cols-3 mb-8 h-auto">
-                <TabsTrigger value="beginning" className="py-3 text-sm sm:text-base">The Beginning</TabsTrigger>
-                <TabsTrigger value="discovery" className="py-3 text-sm sm:text-base">The Discovery</TabsTrigger>
-                <TabsTrigger value="today" className="py-3 text-sm sm:text-base">Today</TabsTrigger>
+                <TabsTrigger value="why-me" className="py-3 text-sm sm:text-base">Why Me</TabsTrigger>
+                <TabsTrigger value="my-journey" className="py-3 text-sm sm:text-base">My Journey</TabsTrigger>
+                <TabsTrigger value="my-beginning" className="py-3 text-sm sm:text-base">My Beginning</TabsTrigger>
               </TabsList>
 
               <div className="bg-card rounded-2xl p-8 lg:p-12 border border-border shadow-sm">
-                <TabsContent value="beginning" className="mt-0 space-y-6">
+                <TabsContent value="why-me" className="mt-0 space-y-6">
+                  <div className="flex flex-col lg:flex-row gap-8 items-start">
+                    <div className="lg:w-1/3">
+                      <img
+                        src={rvMountainsBackground}
+                        alt="Life on the road"
+                        className="rounded-xl w-full aspect-[4/3] object-cover shadow-md"
+                      />
+                    </div>
+                    <div className="lg:w-2/3 space-y-4">
+                      <h3 className="text-2xl font-bold text-foreground">Your Success is My Mission</h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        Whether you're already in charge of a super-successful business with dozens of employees, or just starting out with a roster of one (you), my mission is to help you keep your finances compliant, optimized, and stress-free.
+                      </p>
+                      <p className="text-muted-foreground leading-relaxed">
+                        Together, we'll make the best financial decisions for your nomadic business so you can keep doing what you love for the long haul. There's nothing worse than feeling like a boss in your business … and at a total loss with your finances. That's where I come in.
+                      </p>
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="my-journey" className="mt-0 space-y-6">
+                  <div className="flex flex-col lg:flex-row gap-8 items-start">
+                    <div className="lg:w-1/3">
+                      <img
+                        src={freedomNomad}
+                        alt="Life on the road"
+                        className="rounded-xl w-full aspect-[4/3] object-cover shadow-md"
+                      />
+                    </div>
+                    <div className="lg:w-2/3 space-y-4">
+                      <h3 className="text-2xl font-bold text-foreground">Hitting the Road</h3>
+                      <p className="text-muted-foreground leading-relaxed">
+                        I've been an Enrolled Agent (EA) since 2014 and a nomadic business owner since 2016. That's when my husband and I moved ourselves and our two dogs into an RV and hit the road. Since then we've traveled all over North America, enjoying our favorite hobbies: walking up mountains, sampling local cuisine, and taste-testing microbrews.
+                      </p>
+                      <p className="text-muted-foreground leading-relaxed">
+                        Because I'm a nomad myself, I know exactly how stressful life on the road can be. Like those moments when you're pulled over on the side of the road for a work call and hoping your signal doesn't drop. Or when you're feeling great about life until you glance in your rearview mirror and see your bike rack and bikes dragging behind you down the interstate. True story …
+                      </p>
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="my-beginning" className="mt-0 space-y-6">
                   <div className="flex flex-col lg:flex-row gap-8 items-start">
                     <div className="lg:w-1/3">
                       <img
@@ -229,99 +243,53 @@ const About = () => {
                     </div>
                   </div>
                 </TabsContent>
-
-                <TabsContent value="discovery" className="mt-0 space-y-6">
-                  <div className="flex flex-col lg:flex-row gap-8 items-start">
-                    <div className="lg:w-1/3">
-                      <img
-                        src={freedomNomad}
-                        alt="Life on the road"
-                        className="rounded-xl w-full aspect-[4/3] object-cover shadow-md"
-                      />
-                    </div>
-                    <div className="lg:w-2/3 space-y-4">
-                      <h3 className="text-2xl font-bold text-foreground">Hitting the Road</h3>
-                      <p className="text-muted-foreground leading-relaxed">
-                        In 2016, my husband and I made a life-changing decision. We moved ourselves and our two dogs into an RV and hit the road. That first tax season as a nomad? It was a nightmare. I quickly discovered that most tax professionals had no idea how to handle someone with no permanent address.
-                      </p>
-                      <p className="text-muted-foreground leading-relaxed">
-                        Other nomads started asking for help. First a few friends, then friends of friends. I realized there was a massive gap—thousands of people living alternative lifestyles with no one who truly understood their unique tax situation.
-                      </p>
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="today" className="mt-0 space-y-6">
-                  <div className="flex flex-col lg:flex-row gap-8 items-start">
-                    <div className="lg:w-1/3">
-                      <img
-                        src={rvMountainsBackground}
-                        alt="Life today"
-                        className="rounded-xl w-full aspect-[4/3] object-cover shadow-md"
-                      />
-                    </div>
-                    <div className="lg:w-2/3 space-y-4">
-                      <h3 className="text-2xl font-bold text-foreground">Living & Working on My Terms</h3>
-                      <p className="text-muted-foreground leading-relaxed">
-                        Since 2016, my husband and I have traveled all over North America in our RV with our two dogs, enjoying our favorite hobbies: walking up mountains, sampling local cuisine, and taste-testing microbrews.
-                      </p>
-                      <p className="text-muted-foreground leading-relaxed">
-                        Today, I help digital nomads, RVers, remote workers, and location-independent entrepreneurs save money, stay compliant, and build wealth—all while living life on their own terms. I'm not just your tax strategist—I'm proof that this lifestyle works.
-                      </p>
-                    </div>
-                  </div>
-                </TabsContent>
               </div>
             </Tabs>
           </motion.div>
         </div>
       </section>
 
-      {/* Section 5: Parallax Divider */}
+      {/* Section 5: Featured On */}
+      <section className="py-16 border-y border-border bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <p className="text-muted-foreground text-sm uppercase tracking-widest mb-8">
+              As Featured In
+            </p>
+            <div className="flex flex-wrap justify-center items-center gap-8 lg:gap-12">
+              {featuredMedia.map((media, index) => (
+                <motion.a
+                  key={media.name}
+                  href={media.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="text-lg lg:text-xl font-semibold text-muted-foreground/60 hover:text-primary transition-colors duration-300"
+                >
+                  {media.name}
+                </motion.a>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Section 6: Parallax Divider */}
       <ParallaxDivider
         image={rvMountainsBackground}
         text="My Mission"
         subtext="Helping you keep more of what you earn—so you can live more of the life you love"
       />
 
-      {/* Section 6: Credentials Deep Dive */}
-      <section className="py-20 lg:py-28 bg-background">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <p className="text-primary font-medium uppercase tracking-widest text-sm mb-4">Qualifications</p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground uppercase">
-              My Background is Extensive
-            </h2>
-            <p className="text-xl text-muted-foreground mt-4">Just Like My Travels</p>
-          </motion.div>
-
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {credentials.map((cred, index) => (
-              <motion.div
-                key={cred.label}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-card rounded-2xl p-6 border border-border shadow-sm hover:shadow-lg transition-shadow duration-300"
-              >
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
-                  <cred.icon className="w-6 h-6 text-primary" />
-                </div>
-                <h3 className="text-lg font-bold text-foreground mb-2">{cred.label}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">{cred.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Section 7: "I See You" Empathy Block */}
+      {/* Section 7: "Why Work With Me?" Section */}
       <section className="py-16 lg:py-24 bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center max-w-6xl mx-auto">
@@ -333,9 +301,8 @@ const About = () => {
               transition={{ duration: 0.6 }}
               className="space-y-6"
             >
-              <p className="text-primary font-medium uppercase tracking-widest text-sm">Why Work With Me?</p>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground uppercase">
-                Because, Digital Nomad—I See You.
+                Why Work With Me?
               </h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
                 I've dedicated my nomadic business to helping other adventure-seekers like you run the tax side of their business without confusion, worry, or fear. I know exactly what it takes to run a business from the road, because I'm doing it, too!
@@ -367,36 +334,39 @@ const About = () => {
         </div>
       </section>
 
-      {/* Section 8: Featured On */}
-      <section className="py-16 border-y border-border bg-background">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Section 8: Credentials Deep Dive */}
+      <section className="py-20 lg:py-28 bg-background">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center"
+            className="text-center mb-16"
           >
-            <p className="text-muted-foreground text-sm uppercase tracking-widest mb-8">
-              As Featured In
-            </p>
-            <div className="flex flex-wrap justify-center items-center gap-8 lg:gap-12">
-              {featuredMedia.map((media, index) => (
-                <motion.a
-                  key={media.name}
-                  href={media.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="text-lg lg:text-xl font-semibold text-muted-foreground/60 hover:text-primary transition-colors duration-300"
-                >
-                  {media.name}
-                </motion.a>
-              ))}
-            </div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground uppercase">
+              My Background is Extensive
+            </h2>
+            <p className="text-xl text-muted-foreground mt-4">Just Like My Travels</p>
           </motion.div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {credentials.map((cred, index) => (
+              <motion.div
+                key={cred.label}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-card rounded-2xl p-6 border border-border shadow-sm hover:shadow-lg transition-shadow duration-300"
+              >
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
+                  <cred.icon className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="text-lg font-bold text-foreground mb-2">{cred.label}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{cred.desc}</p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
 
