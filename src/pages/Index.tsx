@@ -10,10 +10,10 @@ import ServicesCards from "@/components/sections/ServicesCards";
 import ComparisonSection from "@/components/sections/ComparisonSection";
 import ParallaxDivider from "@/components/ui/ParallaxDivider";
 import FeaturedInSection from "@/components/sections/FeaturedInSection";
+import ProcessStepsSection from "@/components/sections/ProcessStepsSection";
 
 // Parallax images
 import truckStormySky from "@/assets/lifestyle/truck-stormy-sky.jpeg";
-import sunsetRvReflection from "@/assets/lifestyle/sunset-rv-reflection.png";
 import { womanWorkingViews3 } from "@/assets";
 
 const Index = () => {
@@ -37,11 +37,7 @@ const Index = () => {
           subtext="Work from anywhere while we handle the tax complexities"
         />
         <ServicesCards />
-        <ParallaxDivider 
-          image={sunsetRvReflection}
-          text="Your Journey Starts Here"
-          subtext="Expert tax guidance for the modern nomad lifestyle"
-        />
+        <ProcessStepsSection />
         <ComparisonSection />
         <TestimonialsSection />
         <ComprehensiveFAQSection />
