@@ -104,7 +104,7 @@ const ServicesCards = () => {
         "FBAR & FATCA compliance included",
       ],
       valueProp: "Avoid costly mistakes and take every deduction and credit.",
-      ctaText: "Get stress-free tax prep",
+      ctaText: "Get Started",
     },
     {
       image: miniSession1,
@@ -118,7 +118,7 @@ const ServicesCards = () => {
         "Follow-up call for Q&A",
       ],
       valueProp: "Stay on track with quarterly payments and avoid surprises.",
-      ctaText: "I need a mini tax plan",
+      ctaText: "Get Started",
     },
     {
       image: taxStrategy1,
@@ -133,7 +133,7 @@ const ServicesCards = () => {
       ],
       qualifier: "*For high-income earners with business and/or rental property.",
       valueProp: "Get a plan in place and a tax advisor to keep you on track.",
-      ctaText: "Get help with tax strategy",
+      ctaText: "Get Started",
     },
   ];
 
