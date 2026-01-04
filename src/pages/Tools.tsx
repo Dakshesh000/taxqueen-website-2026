@@ -164,8 +164,8 @@ const ToolCard = ({ tool }: { tool: Tool }) => {
     >
       <Card className="h-full bg-background border border-border rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
         <CardContent className="p-6 flex flex-col h-full">
-          {/* Logo Placeholder */}
-          <div className="w-16 h-16 rounded-xl bg-muted flex items-center justify-center mb-4 mx-auto">
+          {/* Logo Container */}
+          <div className="w-20 h-20 rounded-xl bg-muted/50 flex items-center justify-center mb-4 mx-auto p-2 overflow-hidden">
             <span className="text-lg font-bold text-muted-foreground">
               {tool.logoPlaceholder}
             </span>
@@ -184,7 +184,7 @@ const ToolCard = ({ tool }: { tool: Tool }) => {
           {/* Offer Badge */}
           {tool.offer && (
             <div className="mb-4 text-center">
-              <Badge className="bg-primary text-primary-foreground px-3 py-1">
+              <Badge className="bg-background border border-primary text-primary px-3 py-1">
                 {tool.offer}
               </Badge>
               {tool.discountCode && (
@@ -230,8 +230,8 @@ const Tools = () => {
       <Navbar />
       <main id="main-content" className="flex-1">
         {/* Hero Banner */}
-        <section className="pt-28 pb-16 px-4">
-          <div className="container mx-auto max-w-6xl">
+        <section className="pt-24 pb-8 md:pt-28 md:pb-12">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="relative rounded-2xl overflow-hidden h-[280px] md:h-[320px]">
               <img
                 src={workingAtBeach}
@@ -255,7 +255,7 @@ const Tools = () => {
               Taxes and finances as a digital nomad can be confusing and overwhelming. 
               I've created this list of recommended tools to help you get started.
             </p>
-            <p className="text-sm text-muted-foreground italic">
+            <p className="text-sm text-muted-foreground italic underline">
               Disclosure: Some of the links below are affiliate links. This means that, at no additional cost to you, 
               I may earn a commission if you click through and make a purchase.
             </p>
