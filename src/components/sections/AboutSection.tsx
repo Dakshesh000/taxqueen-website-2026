@@ -106,21 +106,42 @@ const AboutSection = () => {
               onClick={() => setIsVideoOpen(true)}
             >
               {/* Portrait Circle */}
-              <div className="w-[280px] h-[280px] md:w-[320px] md:h-[320px] lg:w-[350px] lg:h-[350px] xl:w-[400px] xl:h-[400px] rounded-full overflow-hidden shadow-lift-lg">
-              <img 
+              <div className="relative w-[280px] h-[280px] md:w-[320px] md:h-[320px] lg:w-[350px] lg:h-[350px] xl:w-[400px] xl:h-[400px] rounded-full overflow-hidden shadow-lift-lg">
+                <img 
                   src={heatherVideoThumbnail} 
                   alt="Heather - The Tax Queen"
                   className="w-full h-full object-cover"
                   loading="lazy"
                 />
-              </div>
 
-              {/* Play Button Overlay */}
-              <div className="absolute inset-0 rounded-full bg-foreground/0 group-hover/video:bg-foreground/30 transition-all duration-300 flex items-center justify-center">
-                <div className="w-16 h-16 md:w-20 md:h-20 rounded-full bg-primary/90 flex items-center justify-center transform scale-90 group-hover/video:scale-100 transition-transform duration-300 shadow-lg">
-                  <Play className="w-8 h-8 md:w-10 md:h-10 text-primary-foreground ml-1" fill="currentColor" />
+                {/* Option 6: Film Strip Border - Corner Play Badge */}
+                <div className="absolute inset-0 rounded-full border-4 border-dashed border-primary/30 group-hover/video:border-primary/60 transition-colors duration-300" />
+                <div className="absolute bottom-4 right-4 w-10 h-10 rounded-full bg-primary/90 flex items-center justify-center shadow-lg group-hover/video:scale-110 transition-transform duration-300">
+                  <Play className="w-5 h-5 text-primary-foreground ml-0.5" fill="currentColor" />
+                </div>
+
+                {/* Option 1: Bottom Edge Play Bar */}
+                <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-foreground/70 to-transparent flex items-end justify-center pb-2 opacity-80 group-hover/video:opacity-100 transition-opacity duration-300">
+                  <div className="flex items-center gap-2 text-white">
+                    <Play className="w-4 h-4" fill="currentColor" />
+                    <span className="text-sm font-medium">Watch</span>
+                  </div>
                 </div>
               </div>
+
+              {/* Hover overlay for visual feedback */}
+              <div className="absolute inset-0 rounded-full bg-foreground/0 group-hover/video:bg-foreground/10 transition-all duration-300" />
+            </div>
+
+            {/* Option 5: External Play Indicator - Below Portrait */}
+            <div 
+              className="flex items-center gap-2 text-muted-foreground group-hover/video:text-primary transition-colors duration-300 cursor-pointer mt-4"
+              onClick={() => setIsVideoOpen(true)}
+            >
+              <div className="w-8 h-8 rounded-full border-2 border-current flex items-center justify-center">
+                <Play className="w-4 h-4 ml-0.5" fill="currentColor" />
+              </div>
+              <span className="text-sm font-medium uppercase tracking-wide">Watch My Story</span>
             </div>
 
             {/* CTA Button */}
