@@ -50,7 +50,7 @@ const ServicesContent = () => {
       {/* Two-Column Content Section - White Background */}
       <section className="py-12 md:py-16 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
             {/* Left: Text Content */}
             <div className="space-y-6">
               <h2 className="text-2xl md:text-3xl font-bold text-foreground leading-tight">
