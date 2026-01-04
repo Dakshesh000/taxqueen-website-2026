@@ -115,7 +115,7 @@ const AboutSection = () => {
                 />
 
                 {/* Bottom Edge Play Bar */}
-                <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-foreground/70 to-transparent flex items-end justify-center pb-2 opacity-80 group-hover/video:opacity-100 transition-opacity duration-300">
+                <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-foreground/70 to-transparent flex items-end justify-center pb-4 opacity-80 group-hover/video:opacity-100 transition-opacity duration-300">
                   <div className="flex items-center gap-2 text-white">
                     <Play className="w-4 h-4" fill="currentColor" />
                     <span className="text-sm font-medium">Watch</span>
