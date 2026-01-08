@@ -72,21 +72,6 @@ const Contact = () => {
         </div>
       </section>
 
-      {/* Not Sure Where To Get Started? Take The Quiz */}
-      <section className="py-20 bg-muted/30">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground uppercase">
-              Not Sure Where To Get Started?
-            </h2>
-            <p className="text-xl text-muted-foreground mt-2">
-              Take The Quiz
-            </p>
-          </div>
-          <GlobalQuiz isEmbedded={true} />
-        </div>
-      </section>
-
       {/* Contact Form & Booking Widget - 30/70 Split */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
@@ -162,6 +147,21 @@ const Contact = () => {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Not Sure Where To Get Started? Take The Quiz */}
+      <section className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground uppercase">
+              Not Sure Where To Get Started?
+            </h2>
+            <p className="text-xl text-muted-foreground mt-2">
+              Take The Quiz
+            </p>
+          </div>
+          <GlobalQuiz isEmbedded={true} />
         </div>
       </section>
 
