@@ -81,7 +81,7 @@ interface QuizAnswers {
   phone: string;
 }
 
-const TOTAL_STEPS = 7;
+const TOTAL_STEPS = 8;
 
 interface GlobalQuizProps {
   isEmbedded?: boolean;
@@ -89,7 +89,7 @@ interface GlobalQuizProps {
 
 const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
   const { isQuizOpen, prefillUsTax, closeQuiz } = useQuiz();
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [isQualified, setIsQualified] = useState(false);
   const [sessionId, setSessionId] = useState<string>("");
@@ -153,7 +153,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
         setIsQualified(false);
         setShowResults(true);
       } else {
-        // Default - reset to initial state
+        // No prefill - start at step 0 (US Tax question)
         setAnswers({
           usTaxObligations: null,
           incomeSources: [],
@@ -167,7 +167,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
           email: "",
           phone: "",
         });
-        setCurrentStep(1);
+        setCurrentStep(0);
       }
     }
   }, [isQuizOpen, prefillUsTax]);
@@ -211,13 +211,13 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
   const urgencyLabels = ["This Month", "This Quarter", "This Year", "Not Anytime Soon"];
 
   const goToNextStep = () => {
-    if (currentStep < TOTAL_STEPS) {
+    if (currentStep < TOTAL_STEPS - 1) {
       setCurrentStep((s) => s + 1);
     }
   };
 
   const goToPrevStep = () => {
-    if (currentStep > 1) {
+    if (currentStep > 0) {
       setCurrentStep((s) => s - 1);
     }
   };
@@ -320,6 +320,38 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
 
   const renderStep = () => {
     switch (currentStep) {
+      case 0:
+        return (
+          <QuestionWrapper
+            title="Do you have US Tax Obligations?"
+            subtitle="US citizens, green card holders, and those with US income"
+            backgroundImage={heatherHikingNature}
+          >
+            <div className="flex flex-col gap-4 items-center max-w-xs mx-auto">
+              <Button
+                className="w-full rounded-full h-12 text-base"
+                onClick={() => {
+                  setAnswers({ ...answers, usTaxObligations: true });
+                  setCurrentStep(1);
+                }}
+              >
+                Yes
+              </Button>
+              <Button
+                variant="outline"
+                className="w-full rounded-full h-12 text-base border-2 border-foreground text-foreground hover:bg-muted"
+                onClick={() => {
+                  setAnswers({ ...answers, usTaxObligations: false });
+                  setIsQualified(false);
+                  setShowResults(true);
+                }}
+              >
+                No
+              </Button>
+            </div>
+          </QuestionWrapper>
+        );
+
       case 1:
         return (
           <QuestionWrapper
@@ -552,8 +584,8 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
 
   const quizContent = (
     <div className="flex flex-col h-full md:h-auto">
-      {!showResults && (
-        <QuizProgress currentStep={currentStep} totalSteps={TOTAL_STEPS} />
+      {!showResults && currentStep > 0 && (
+        <QuizProgress currentStep={currentStep} totalSteps={TOTAL_STEPS - 1} />
       )}
       
       {showResults ? (
