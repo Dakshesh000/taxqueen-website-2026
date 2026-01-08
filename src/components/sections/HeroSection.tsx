@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Check, X } from "lucide-react";
 import { useQuiz } from "@/contexts/QuizContext";
 import { heroVideoThumbnail } from "@/assets";
 
@@ -10,26 +10,15 @@ const HeroSection = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isLocked, setIsLocked] = useState(false);
   const [isVideoLoaded, setIsVideoLoaded] = useState(false);
-  const [residenceInput, setResidenceInput] = useState("");
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  const handleResidenceSubmit = () => {
-    if (residenceInput.trim()) {
-      openQuiz(residenceInput.trim());
-    } else {
-      openQuiz();
-    }
-    setResidenceInput("");
-  };
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const lockPoint = 280;
       const maxScroll = window.innerHeight * 0.5;
-      const snapThreshold = 120; // Snap within 120px of lock point
+      const snapThreshold = 120;
       
-      // Clear any pending snap timeout
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
       }
@@ -42,7 +31,6 @@ const HeroSection = () => {
         const progress = Math.min(scrollY / maxScroll, 1);
         setScrollProgress(progress);
         
-        // JS-based snap: if user stops scrolling near lock point, snap to it
         if (scrollY > lockPoint - snapThreshold && scrollY < lockPoint) {
           scrollTimeoutRef.current = setTimeout(() => {
             window.scrollTo({
@@ -63,12 +51,11 @@ const HeroSection = () => {
     };
   }, []);
 
-  // Calculate dynamic values based on scroll
-  const minPadding = 16; // Keep 16px frame even when locked
-  const maxPadding = 56; // Start 10% narrower for more immersive effect
+  const minPadding = 16;
+  const maxPadding = 56;
   const videoPadding = minPadding + (maxPadding - minPadding) * (1 - scrollProgress);
   const videoTranslateY = isLocked ? -280 : -scrollProgress * 280;
-  const textTranslateY = scrollProgress * 150; // Text moves DOWN as user scrolls
+  const textTranslateY = scrollProgress * 150;
 
   return (
     <section className="relative min-h-[110vh] bg-white">
@@ -141,36 +128,38 @@ const HeroSection = () => {
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}
           />
           
-          {/* Quiz Prompt Input Bar - centered in video container */}
+          {/* US Tax Obligations Question - Yes/No Buttons */}
           <div 
-            className="absolute inset-0 flex items-center justify-center z-10 transition-all duration-500 px-6"
+            className="absolute inset-0 flex flex-col items-center justify-center z-10 transition-all duration-500 px-6"
             style={{ 
               opacity: isLocked ? 1 : 0,
               pointerEvents: isLocked ? 'auto' : 'none'
             }}
           >
-            <div className="bg-white rounded-full shadow-2xl flex items-center gap-2 p-2 border border-border w-full max-w-2xl">
-              <input
-                type="text"
-                placeholder="Your domicile state or current country of residence is..."
-                className="flex-1 bg-transparent text-foreground placeholder:text-muted-foreground outline-none text-base text-center px-4"
-                value={residenceInput}
-                onChange={(e) => setResidenceInput(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    handleResidenceSubmit();
-                  }
-                }}
-              />
-              <button 
-                onClick={handleResidenceSubmit}
-                className="bg-primary text-primary-foreground px-5 py-3 rounded-full font-medium hover:bg-primary/90 transition-colors flex items-center gap-2"
-              >
-                <span>Enter</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="m9 18 6-6-6-6"/>
-                </svg>
-              </button>
+            <div className="bg-black/40 backdrop-blur-sm rounded-2xl p-8 max-w-lg w-full text-center">
+              <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
+                Do you have US Tax Obligations?
+              </h2>
+              <p className="text-sm text-white/70 mb-6">
+                US citizens, green card holders, or anyone with US-source income
+              </p>
+              <div className="flex gap-4 justify-center">
+                <Button
+                  onClick={() => openQuiz("usTaxYes")}
+                  className="flex-1 max-w-[140px] h-14 text-lg rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg transition-all hover:scale-105"
+                >
+                  <Check className="w-5 h-5 mr-2" />
+                  Yes
+                </Button>
+                <Button
+                  onClick={() => openQuiz("usTaxNo")}
+                  variant="outline"
+                  className="flex-1 max-w-[140px] h-14 text-lg rounded-full border-2 border-white text-white hover:bg-white/20 font-semibold transition-all hover:scale-105"
+                >
+                  <X className="w-5 h-5 mr-2" />
+                  No
+                </Button>
+              </div>
             </div>
           </div>
         </div>

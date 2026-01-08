@@ -1,22 +1,15 @@
 import { useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
 import { useQuiz } from "@/contexts/QuizContext";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 const QuizPreview = () => {
-  const [searchParams] = useSearchParams();
   const { openQuiz } = useQuiz();
 
   // Auto-open quiz when page loads
   useEffect(() => {
-    const residenceParam = searchParams.get("residence");
-    if (residenceParam) {
-      openQuiz(residenceParam);
-    } else {
-      openQuiz();
-    }
-  }, [searchParams, openQuiz]);
+    openQuiz();
+  }, [openQuiz]);
 
   return (
     <div className="min-h-screen bg-background">

@@ -1,9 +1,11 @@
 import { createContext, useContext, useState, ReactNode } from "react";
 
+type QuizPrefill = "usTaxYes" | "usTaxNo" | "";
+
 interface QuizContextType {
   isQuizOpen: boolean;
-  prefillResidence: string;
-  openQuiz: (residence?: string) => void;
+  prefillUsTax: QuizPrefill;
+  openQuiz: (usTaxAnswer?: "usTaxYes" | "usTaxNo") => void;
   closeQuiz: () => void;
 }
 
@@ -11,20 +13,20 @@ const QuizContext = createContext<QuizContextType | undefined>(undefined);
 
 export const QuizProvider = ({ children }: { children: ReactNode }) => {
   const [isQuizOpen, setIsQuizOpen] = useState(false);
-  const [prefillResidence, setPrefillResidence] = useState("");
+  const [prefillUsTax, setPrefillUsTax] = useState<QuizPrefill>("");
 
-  const openQuiz = (residence?: string) => {
-    setPrefillResidence(residence || "");
+  const openQuiz = (usTaxAnswer?: "usTaxYes" | "usTaxNo") => {
+    setPrefillUsTax(usTaxAnswer || "");
     setIsQuizOpen(true);
   };
 
   const closeQuiz = () => {
     setIsQuizOpen(false);
-    setPrefillResidence("");
+    setPrefillUsTax("");
   };
 
   return (
-    <QuizContext.Provider value={{ isQuizOpen, prefillResidence, openQuiz, closeQuiz }}>
+    <QuizContext.Provider value={{ isQuizOpen, prefillUsTax, openQuiz, closeQuiz }}>
       {children}
     </QuizContext.Provider>
   );
