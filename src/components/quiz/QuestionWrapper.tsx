@@ -24,6 +24,7 @@ const QuestionWrapper = ({
   children,
 }: QuestionWrapperProps) => {
   const [showAnimation, setShowAnimation] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   // Trigger compass animation on mount
   useEffect(() => {
@@ -32,12 +33,26 @@ const QuestionWrapper = ({
     return () => clearTimeout(timer);
   }, []);
 
+  // Preload the background image and fade in when ready
+  useEffect(() => {
+    setImageLoaded(false);
+    const img = new Image();
+    img.src = backgroundImage;
+    img.onload = () => setImageLoaded(true);
+  }, [backgroundImage]);
+
   return (
     <div className="relative min-h-[380px] md:min-h-[420px] w-full overflow-hidden md:rounded-2xl">
-      {/* Background Image with Overlay */}
+      {/* Gradient placeholder background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-muted via-muted-foreground/20 to-muted" />
+      
+      {/* Background Image with Overlay - fades in when loaded */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${backgroundImage})` }}
+        className="absolute inset-0 bg-cover bg-center transition-opacity duration-500 ease-in-out"
+        style={{ 
+          backgroundImage: `url(${backgroundImage})`,
+          opacity: imageLoaded ? 1 : 0
+        }}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-foreground/60 to-foreground/80" />
       </div>

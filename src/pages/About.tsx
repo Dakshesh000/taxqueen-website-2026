@@ -15,12 +15,19 @@ import {
   freedomNomad,
   freedomNomad2,
   sunsetRvReflection,
-  truckStormySky,
+  heatherWhaleBaja,
 } from "@/assets";
+import useImagePreloader from "@/hooks/useImagePreloader";
+
+// Preload tab images for instant switching
+const TAB_IMAGES = [rvMountainsBackground, freedomNomad, heatherInVan];
 
 const About = () => {
   const { openQuiz } = useQuiz();
   const [isVideoOpen, setIsVideoOpen] = useState(false);
+  
+  // Preload tab images for instant switching
+  useImagePreloader(TAB_IMAGES);
 
   const credentialsStrip = [
     { icon: Shield, label: "Enrolled Agent (EA)" },
@@ -55,8 +62,8 @@ const About = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative rounded-2xl overflow-hidden h-[280px] md:h-[320px]">
             <img
-              src={truckStormySky}
-              alt="Heather - The Tax Queen"
+              src={heatherWhaleBaja}
+              alt="Heather with dolphins in Baja"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-foreground/50" />
