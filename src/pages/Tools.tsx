@@ -12,6 +12,20 @@ import { useQuiz } from "@/contexts/QuizContext";
 import workingAtBeach from "@/assets/lifestyle/working-at-beach.jpg";
 import sunsetRvReflection from "@/assets/lifestyle/sunset-rv-reflection.png";
 
+// Import tool logos
+import logoNorthwest from "@/assets/tools/northwest-registered-agent.webp";
+import logoEscapees from "@/assets/tools/escapees-rv-club.webp";
+import logoSavvyNomad from "@/assets/tools/savvynomad.webp";
+import logoQuickBooks from "@/assets/tools/quickbooks.webp";
+import logoHarvestHosts from "@/assets/tools/harvest-hosts.webp";
+import logoRelay from "@/assets/tools/relay.webp";
+import logoGusto from "@/assets/tools/gusto.webp";
+import logoWave from "@/assets/tools/wave.webp";
+import logoMileIQ from "@/assets/tools/mileiq.webp";
+import logoZenwork from "@/assets/tools/zenwork-tax1099.webp";
+import logoDocyt from "@/assets/tools/docyt.webp";
+import logoArtfulContracts from "@/assets/tools/artful-contracts.webp";
+
 type Category = "all" | "business" | "financial" | "lifestyle";
 
 interface Tool {
@@ -23,7 +37,7 @@ interface Tool {
   ctaUrl: string;
   offer?: string;
   discountCode?: string;
-  logoPlaceholder: string; // Will be replaced with actual logos
+  logo: string;
 }
 
 const tools: Tool[] = [
@@ -33,9 +47,9 @@ const tools: Tool[] = [
     description: "Looking to form an LLC? Start your business the right way with help from Northwest Registered Agent. They can register in all 50 states.",
     category: "business",
     ctaText: "Start an LLC",
-    ctaUrl: "#", // Affiliate URL to be provided
+    ctaUrl: "#",
     offer: "Register a new LLC for $39 only available using the link below!",
-    logoPlaceholder: "NW",
+    logo: logoNorthwest,
   },
   {
     id: "escapees",
@@ -45,7 +59,7 @@ const tools: Tool[] = [
     ctaText: "Join Escapees",
     ctaUrl: "#",
     offer: "Save 20% on your membership",
-    logoPlaceholder: "ESC",
+    logo: logoEscapees,
   },
   {
     id: "savvynomad",
@@ -56,7 +70,7 @@ const tools: Tool[] = [
     ctaUrl: "#",
     offer: "Save $60",
     discountCode: "taxqueen",
-    logoPlaceholder: "SN",
+    logo: logoSavvyNomad,
   },
   {
     id: "quickbooks",
@@ -65,7 +79,7 @@ const tools: Tool[] = [
     category: "financial",
     ctaText: "Get QuickBooks",
     ctaUrl: "#",
-    logoPlaceholder: "QB",
+    logo: logoQuickBooks,
   },
   {
     id: "harvesthosts",
@@ -75,7 +89,7 @@ const tools: Tool[] = [
     ctaText: "Camp Today!",
     ctaUrl: "#",
     offer: "Save 20% on your membership",
-    logoPlaceholder: "HH",
+    logo: logoHarvestHosts,
   },
   {
     id: "relay",
@@ -84,7 +98,7 @@ const tools: Tool[] = [
     category: "financial",
     ctaText: "I Need Online Banking",
     ctaUrl: "#",
-    logoPlaceholder: "RLY",
+    logo: logoRelay,
   },
   {
     id: "gusto",
@@ -93,7 +107,7 @@ const tools: Tool[] = [
     category: "financial",
     ctaText: "Start Payroll with Gusto",
     ctaUrl: "#",
-    logoPlaceholder: "GST",
+    logo: logoGusto,
   },
   {
     id: "wave",
@@ -102,7 +116,7 @@ const tools: Tool[] = [
     category: "financial",
     ctaText: "Join Wave",
     ctaUrl: "#",
-    logoPlaceholder: "WV",
+    logo: logoWave,
   },
   {
     id: "mileiq",
@@ -113,7 +127,7 @@ const tools: Tool[] = [
     ctaUrl: "#",
     offer: "20% off",
     discountCode: "HRYA631A",
-    logoPlaceholder: "MIQ",
+    logo: logoMileIQ,
   },
   {
     id: "zenwork",
@@ -122,7 +136,7 @@ const tools: Tool[] = [
     category: "financial",
     ctaText: "Efile your 1099s Now",
     ctaUrl: "#",
-    logoPlaceholder: "ZW",
+    logo: logoZenwork,
   },
   {
     id: "docyt",
@@ -131,7 +145,7 @@ const tools: Tool[] = [
     category: "financial",
     ctaText: "Automate Bookkeeping",
     ctaUrl: "#",
-    logoPlaceholder: "DT",
+    logo: logoDocyt,
   },
   {
     id: "artfulcontracts",
@@ -142,7 +156,7 @@ const tools: Tool[] = [
     ctaUrl: "#",
     offer: "10% off",
     discountCode: "Heather",
-    logoPlaceholder: "AC",
+    logo: logoArtfulContracts,
   },
 ];
 
@@ -165,10 +179,12 @@ const ToolCard = ({ tool }: { tool: Tool }) => {
       <Card className="h-full bg-background border border-border rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
         <CardContent className="p-6 flex flex-col h-full">
           {/* Logo Container */}
-          <div className="w-20 h-20 rounded-xl bg-muted/50 flex items-center justify-center mb-4 mx-auto p-2 overflow-hidden">
-            <span className="text-lg font-bold text-muted-foreground">
-              {tool.logoPlaceholder}
-            </span>
+          <div className="w-20 h-20 rounded-xl bg-white flex items-center justify-center mb-4 mx-auto p-2 overflow-hidden">
+            <img 
+              src={tool.logo} 
+              alt={`${tool.name} logo`}
+              className="max-w-full max-h-full object-contain"
+            />
           </div>
 
           {/* Tool Name */}
