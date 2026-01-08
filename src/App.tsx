@@ -13,9 +13,6 @@ import Services from "./pages/Services";
 import Contact from "./pages/Contact";
 import QuizPreview from "./pages/QuizPreview";
 import Tools from "./pages/Tools";
-import AdminLogin from "./pages/AdminLogin";
-import Admin from "./pages/Admin";
-import AdminLeadDetail from "./pages/AdminLeadDetail";
 
 const queryClient = new QueryClient();
 
@@ -43,9 +40,6 @@ const App = () => (
             <Route path="/tools" element={<Tools />} />
             <Route path="/design-guide" element={<DesignGuide />} />
             <Route path="/quiz-preview" element={<QuizPreview />} />
-            <Route path="/admin-login" element={<AdminLogin />} />
-            <Route path="/admin" element={<Admin />} />
-            <Route path="/admin/lead/:id" element={<AdminLeadDetail />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

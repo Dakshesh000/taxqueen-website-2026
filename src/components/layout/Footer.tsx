@@ -126,13 +126,7 @@ const Footer = () => {
       <div className="border-t border-primary-foreground/20">
         <div className="container mx-auto px-4 py-6">
           <p className="text-sm text-primary-foreground/80">
-            © {currentYear} {brand.name}. All rights reserved. •{" "}
-            <Link
-              to="/admin-login"
-              className="hover:text-primary-foreground transition-colors"
-            >
-              Admin
-            </Link>
+            © {currentYear} {brand.name}. All rights reserved.
           </p>
         </div>
       </div>
