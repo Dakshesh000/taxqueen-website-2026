@@ -136,23 +136,25 @@ const HeroSection = () => {
               pointerEvents: isLocked ? 'auto' : 'none'
             }}
           >
-            <div className="flex flex-wrap items-center justify-center gap-4 px-6">
-              <span className="text-xl sm:text-2xl font-semibold text-white drop-shadow-lg">
-                Do you have US Tax Obligations?
-              </span>
-              <div className="flex gap-3">
-                <Button
-                  onClick={() => openQuiz("usTaxYes")}
-                  className="h-11 px-6 text-base rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg transition-all hover:scale-105"
-                >
-                  Yes
-                </Button>
-                <Button
-                  onClick={() => openQuiz("usTaxNo")}
-                  className="h-11 px-6 text-base rounded-full bg-white/90 hover:bg-white text-foreground font-semibold shadow-lg transition-all hover:scale-105"
-                >
-                  No
-                </Button>
+            <div className="bg-white/95 backdrop-blur-sm rounded-full py-4 px-8 shadow-xl">
+              <div className="flex flex-wrap items-center justify-center gap-4">
+                <span className="text-xl sm:text-2xl font-semibold text-foreground">
+                  Do you have US Tax Obligations?
+                </span>
+                <div className="flex gap-3">
+                  <Button
+                    onClick={() => openQuiz("usTaxYes")}
+                    className="h-11 px-6 text-base rounded-full bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg transition-all hover:scale-105"
+                  >
+                    Yes
+                  </Button>
+                  <Button
+                    onClick={() => openQuiz("usTaxNo")}
+                    className="h-11 px-6 text-base rounded-full bg-white hover:bg-gray-50 text-foreground font-semibold shadow-lg transition-all hover:scale-105 border-2 border-foreground"
+                  >
+                    No
+                  </Button>
+                </div>
               </div>
             </div>
           </div>
