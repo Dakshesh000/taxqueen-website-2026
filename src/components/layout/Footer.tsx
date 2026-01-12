@@ -30,14 +30,38 @@ const Footer = () => {
 
   return (
     <footer className="bg-primary text-primary-foreground">
-      <div className="container mx-auto px-4 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+      <div className="container mx-auto px-4 py-12 sm:py-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
+          {/* Newsletter Column - First on mobile for engagement */}
+          <div className="space-y-4 order-first sm:order-last lg:order-last">
+            <h4 className="font-semibold uppercase tracking-wide">Stay Updated</h4>
+            <p className="text-sm text-primary-foreground/80">
+              Get tax tips & updates delivered to your inbox.
+            </p>
+            <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row lg:flex-col gap-3">
+              <Input
+                type="email"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="bg-primary-foreground text-foreground placeholder:text-muted-foreground border-none h-11 flex-1"
+                aria-label="Email address for newsletter"
+              />
+              <Button
+                type="submit"
+                className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold h-11"
+              >
+                Subscribe
+              </Button>
+            </form>
+          </div>
+
           {/* Brand Column */}
-          <div className="space-y-4">
+          <div className="space-y-4 order-2 sm:order-first lg:order-first">
             <img 
               src={logoTaxQueen} 
               alt="Tax Queen Logo" 
-              className="h-12 w-auto brightness-0 invert"
+              className="h-10 sm:h-12 w-auto brightness-0 invert"
               loading="lazy"
             />
             <p className="text-sm text-primary-foreground/80 max-w-xs">
@@ -46,7 +70,7 @@ const Footer = () => {
           </div>
 
           {/* Navigation Column */}
-          <div className="space-y-4">
+          <div className="space-y-4 order-3">
             <h4 className="font-semibold uppercase tracking-wide">Quick Links</h4>
             <nav aria-label="Footer navigation">
               <ul className="space-y-2">
@@ -88,44 +112,20 @@ const Footer = () => {
           </div>
 
           {/* Contact Column */}
-          <div className="space-y-4">
+          <div className="space-y-4 order-4">
             <h4 className="font-semibold uppercase tracking-wide">Contact</h4>
             <address className="not-italic space-y-2 text-sm text-primary-foreground/80">
               <p>{brand.email}</p>
               {brand.phone && <p>{brand.phone}</p>}
             </address>
           </div>
-
-          {/* Newsletter Column */}
-          <div className="space-y-4">
-            <h4 className="font-semibold uppercase tracking-wide">Stay Updated</h4>
-            <p className="text-sm text-primary-foreground/80">
-              Get tax tips & updates delivered to your inbox.
-            </p>
-            <form onSubmit={handleNewsletterSubmit} className="flex flex-col gap-3">
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-primary-foreground text-foreground placeholder:text-muted-foreground border-none h-11"
-                aria-label="Email address for newsletter"
-              />
-              <Button
-                type="submit"
-                className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold"
-              >
-                Subscribe
-              </Button>
-            </form>
-          </div>
         </div>
       </div>
 
       {/* Copyright */}
       <div className="border-t border-primary-foreground/20">
-        <div className="container mx-auto px-4 py-6">
-          <p className="text-sm text-primary-foreground/80">
+        <div className="container mx-auto px-4 py-4 sm:py-6 pb-[max(1rem,env(safe-area-inset-bottom))]">
+          <p className="text-sm text-primary-foreground/80 text-center sm:text-left">
             © {currentYear} {brand.name}. All rights reserved.
           </p>
         </div>

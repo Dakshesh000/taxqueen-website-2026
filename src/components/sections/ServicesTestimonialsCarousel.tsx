@@ -99,13 +99,13 @@ const ServicesTestimonialsCarousel = () => {
           </h2>
         </motion.div>
 
-        <div className="relative max-w-3xl mx-auto">
-          {/* Navigation Buttons */}
+        <div className="relative max-w-3xl mx-auto px-2 sm:px-0">
+          {/* Navigation Buttons - Hidden on mobile, use swipe */}
           <Button
             variant="outline"
             size="icon"
             onClick={scrollPrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 z-10 rounded-full bg-background shadow-lg"
+            className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 z-10 rounded-full bg-background shadow-lg"
           >
             <ChevronLeft className="h-5 w-5" />
           </Button>
@@ -114,7 +114,7 @@ const ServicesTestimonialsCarousel = () => {
             variant="outline"
             size="icon"
             onClick={scrollNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 z-10 rounded-full bg-background shadow-lg"
+            className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 z-10 rounded-full bg-background shadow-lg"
           >
             <ChevronRight className="h-5 w-5" />
           </Button>
@@ -136,7 +136,7 @@ const ServicesTestimonialsCarousel = () => {
                     />
                     
                     {/* Quote */}
-                    <blockquote className="text-xl md:text-2xl italic text-foreground leading-relaxed max-w-2xl mb-6">
+                    <blockquote className="text-lg sm:text-xl md:text-2xl italic text-foreground leading-relaxed max-w-2xl mb-6">
                       "{testimonial.text}"
                     </blockquote>
                     

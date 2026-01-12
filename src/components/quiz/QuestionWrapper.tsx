@@ -44,7 +44,7 @@ const QuestionWrapper = ({
   }, [backgroundImage]);
 
   return (
-    <div className="relative min-h-[380px] md:min-h-[420px] w-full overflow-hidden md:rounded-2xl">
+    <div className="relative min-h-[340px] sm:min-h-[380px] md:min-h-[420px] w-full overflow-hidden md:rounded-2xl">
       {/* Blurred LQIP placeholder - shows instantly */}
       {placeholderImage ? (
         <div
@@ -71,7 +71,7 @@ const QuestionWrapper = ({
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-[380px] md:min-h-[420px] px-4 py-6 md:py-8 text-center">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-[340px] sm:min-h-[380px] md:min-h-[420px] px-3 sm:px-4 py-5 sm:py-6 md:py-8 text-center">
         {/* Custom Compass Icon with Animation */}
         <div className={`mb-4 p-3 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 ${showAnimation ? "animate-needle-wiggle" : ""}`}>
           <TravelCompass size="md" animate={showAnimation} />

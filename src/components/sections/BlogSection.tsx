@@ -83,14 +83,19 @@ const BlogSection = () => {
             ))}
           </CarouselContent>
           
-          {/* Navigation Arrows - centered with image dimensions */}
-          <CarouselPrevious className="left-0 -translate-x-4 md:-translate-x-14 top-[14%] -translate-y-0 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-12 h-12 shadow-lg">
+          {/* Navigation Arrows - hidden on mobile, visible on md+ */}
+          <CarouselPrevious className="hidden md:flex left-0 -translate-x-14 top-[14%] -translate-y-0 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-12 h-12 shadow-lg">
             <ChevronLeft className="w-6 h-6" />
           </CarouselPrevious>
-          <CarouselNext className="right-0 translate-x-4 md:translate-x-14 top-[14%] -translate-y-0 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-12 h-12 shadow-lg">
+          <CarouselNext className="hidden md:flex right-0 translate-x-14 top-[14%] -translate-y-0 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-12 h-12 shadow-lg">
             <ChevronRight className="w-6 h-6" />
           </CarouselNext>
         </Carousel>
+        
+        {/* Mobile swipe indicator */}
+        <p className="md:hidden text-center text-sm text-muted-foreground mt-4">
+          Swipe to see more →
+        </p>
       </div>
     </section>
   );

@@ -177,9 +177,9 @@ const ToolCard = memo(({ tool }: { tool: Tool }) => {
       transition={{ duration: 0.3 }}
     >
       <Card className="h-full bg-background border border-border rounded-2xl overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
-        <CardContent className="p-6 flex flex-col h-full">
-          {/* Logo Container */}
-          <div className="w-40 h-40 rounded-xl bg-white flex items-center justify-center mb-4 mx-auto p-3 overflow-hidden">
+        <CardContent className="p-4 sm:p-6 flex flex-col h-full">
+          {/* Logo Container - Responsive sizing */}
+          <div className="w-28 h-28 sm:w-36 sm:h-36 md:w-40 md:h-40 rounded-xl bg-white flex items-center justify-center mb-4 mx-auto p-2 sm:p-3 overflow-hidden">
             <img 
               src={tool.logo} 
               alt={`${tool.name} logo`}

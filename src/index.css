@@ -145,8 +145,23 @@
     @apply border-border;
   }
 
+  /* Prevent horizontal overflow on mobile */
+  html, body {
+    @apply overflow-x-hidden;
+    position: relative;
+  }
+
   body {
     @apply bg-background text-foreground;
+    /* iOS Safari safe area support */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* iOS Safari background-attachment: fixed bug fix */
+@supports (-webkit-touch-callout: none) {
+  .bg-fixed {
+    background-attachment: scroll !important;
   }
 }
 
@@ -162,5 +177,32 @@
 
   .text-shadow-lg {
     text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Hide scrollbar for horizontal scroll containers */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Mobile horizontal scroll container */
+  .mobile-scroll {
+    @apply overflow-x-auto scrollbar-hide -mx-4 px-4;
+  }
+
+  .mobile-scroll-inner {
+    @apply flex gap-4 w-max pb-2;
+  }
+
+  /* Safe area utilities */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-area-all {
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   }
 }

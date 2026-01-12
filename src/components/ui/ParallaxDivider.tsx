@@ -13,12 +13,18 @@ const ParallaxDivider = ({
   image, 
   text, 
   subtext,
-  height = "h-[300px]",
+  height = "h-[250px] sm:h-[300px]",
   className 
 }: ParallaxDividerProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const [overlayOpacity, setOverlayOpacity] = useState(0.5);
+  const [isIOS, setIsIOS] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+
+  // Detect iOS for background-attachment fix
+  useEffect(() => {
+    setIsIOS(/iPad|iPhone|iPod/.test(navigator.userAgent));
+  }, []);
 
   // Preload image early and lazy load when section approaches viewport
   useEffect(() => {
@@ -78,7 +84,9 @@ const ParallaxDivider = ({
     <section 
       ref={sectionRef}
       className={cn(
-        "relative bg-fixed bg-cover bg-center",
+        "relative bg-cover bg-center",
+        // Use bg-scroll on iOS (bg-fixed doesn't work), bg-fixed on desktop
+        isIOS ? "bg-scroll" : "bg-fixed",
         height,
         className
       )}
@@ -97,12 +105,12 @@ const ParallaxDivider = ({
       {(text || subtext) && (
         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
           {text && (
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white uppercase tracking-wide">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white uppercase tracking-wide">
               {text}
             </h2>
           )}
           {subtext && (
-            <p className="mt-4 text-lg md:text-xl text-white/90 max-w-2xl">
+            <p className="mt-3 sm:mt-4 text-base sm:text-lg md:text-xl text-white/90 max-w-2xl">
               {subtext}
             </p>
           )}

@@ -73,28 +73,43 @@ const Contact = () => {
       </section>
 
       {/* Contact Form & Booking Widget - 30/70 Split */}
-      <section className="py-20 bg-background">
+      <section className="py-12 sm:py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-[30%_70%] gap-8">
-            {/* Column 1 - 30% - Send a Message + Credentials */}
-            <div className="space-y-8">
+            {/* Column 2 - Booking Widget - First on mobile (more important action) */}
+            <div id="booking" className="scroll-mt-32 order-1 lg:order-2">
+              <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6 uppercase">Book a Discovery Call</h2>
+              <div className="bg-muted/30 rounded-2xl p-2 sm:p-4">
+                <iframe
+                  src="https://bookme.name/embed/widget/4573/PkkmsRgxM6nqOnUWU19ErYrgjwUnFdCG9FxGCRAmDRfX8SgQudeXGIPa1h36"
+                  width="100%"
+                  height="500"
+                  frameBorder="0"
+                  className="rounded-lg min-h-[450px] sm:min-h-[500px] lg:min-h-[700px]"
+                  title="Book a discovery call with Tax Queen"
+                />
+              </div>
+            </div>
+
+            {/* Column 1 - Send a Message + Credentials - Second on mobile */}
+            <div className="space-y-6 sm:space-y-8 order-2 lg:order-1">
               <div id="contact-form" className="scroll-mt-32">
-                <h2 className="text-2xl font-bold text-foreground mb-6 uppercase">Send a Message</h2>
-                <div className="bg-muted/30 rounded-2xl p-6">
+                <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4 sm:mb-6 uppercase">Send a Message</h2>
+                <div className="bg-muted/30 rounded-2xl p-4 sm:p-6">
                   <form onSubmit={handleFormSubmit} className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="name">Name</Label>
-                      <Input id="name" placeholder="Your name" required />
+                      <Input id="name" placeholder="Your name" required className="h-11" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" placeholder="your@email.com" required />
+                      <Input id="email" type="email" placeholder="your@email.com" required className="h-11" />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="subject">Subject</Label>
                       <select 
                         id="subject" 
-                        className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                        className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                         required
                       >
                         <option value="">Select a topic...</option>
@@ -114,36 +129,21 @@ const Contact = () => {
                         required
                       />
                     </div>
-                    <Button type="submit" className="w-full">Send Message</Button>
+                    <Button type="submit" className="w-full h-11">Send Message</Button>
                   </form>
                 </div>
               </div>
 
               {/* Credentials below form */}
-              <div className="bg-primary text-primary-foreground rounded-2xl p-6">
-                <div className="space-y-4">
+              <div className="bg-primary text-primary-foreground rounded-2xl p-4 sm:p-6">
+                <div className="grid grid-cols-2 sm:grid-cols-1 gap-3 sm:gap-4">
                   {credentials.map((cred, index) => (
-                    <div key={index} className="flex items-center gap-3">
-                      <cred.icon className="w-5 h-5 flex-shrink-0" />
-                      <span className="font-medium text-sm">{cred.label}</span>
+                    <div key={index} className="flex items-center gap-2 sm:gap-3">
+                      <cred.icon className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                      <span className="font-medium text-xs sm:text-sm">{cred.label}</span>
                     </div>
                   ))}
                 </div>
-              </div>
-            </div>
-
-            {/* Column 2 - 70% - Booking Widget */}
-            <div id="booking" className="scroll-mt-32">
-              <h2 className="text-2xl font-bold text-foreground mb-6 uppercase">Book a Discovery Call</h2>
-              <div className="bg-muted/30 rounded-2xl p-4">
-                <iframe
-                  src="https://bookme.name/embed/widget/4573/PkkmsRgxM6nqOnUWU19ErYrgjwUnFdCG9FxGCRAmDRfX8SgQudeXGIPa1h36"
-                  width="100%"
-                  height="700"
-                  frameBorder="0"
-                  className="rounded-lg"
-                  title="Book a discovery call with Tax Queen"
-                />
               </div>
             </div>
           </div>

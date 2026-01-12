@@ -130,15 +130,15 @@ const HeroSection = () => {
           
           {/* US Tax Obligations Question - Yes/No Buttons */}
           <div 
-            className="absolute inset-0 flex flex-col items-center justify-center z-10 transition-all duration-500 px-6"
+            className="absolute inset-0 flex flex-col items-center justify-center z-10 transition-all duration-500 px-4 sm:px-6"
             style={{ 
               opacity: isLocked ? 1 : 0,
               pointerEvents: isLocked ? 'auto' : 'none'
             }}
           >
-            <div className="bg-white/95 backdrop-blur-sm rounded-full py-4 px-8 shadow-xl">
-              <div className="flex flex-wrap items-center justify-center gap-4">
-                <span className="text-xl sm:text-2xl font-semibold text-foreground">
+            <div className="bg-white/95 backdrop-blur-sm rounded-2xl sm:rounded-full py-4 px-5 sm:px-8 shadow-xl max-w-sm sm:max-w-none">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+                <span className="text-lg sm:text-xl md:text-2xl font-semibold text-foreground text-center">
                   Do you have US Tax Obligations?
                 </span>
                 <div className="flex gap-3">
