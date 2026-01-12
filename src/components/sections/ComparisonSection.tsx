@@ -26,8 +26,8 @@ const ComparisonSection = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl md:text-4xl font-bold uppercase tracking-wide text-foreground">
-            See If You're A Good Fit!
+        <h2 className="text-3xl md:text-4xl font-bold uppercase tracking-wide text-foreground">
+            What Makes You An Excellent Fit
           </h2>
           <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
             Here's how to know if we're ready to work together
