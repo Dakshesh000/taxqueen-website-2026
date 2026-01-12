@@ -9,7 +9,7 @@ import ServicesTestimonialsCarousel from "@/components/sections/ServicesTestimon
 import ServicesCards from "@/components/sections/ServicesCards";
 import ParallaxDivider from "@/components/ui/ParallaxDivider";
 import { QuizProvider, useQuiz } from "@/contexts/QuizContext";
-import { truckStormySky, heatherPortrait, sunsetRvReflection } from "@/assets";
+import { servicesHero, heatherPortrait, servicesCta } from "@/assets";
 
 const ServicesContent = () => {
   const { openQuiz } = useQuiz();
@@ -30,8 +30,8 @@ const ServicesContent = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative rounded-2xl overflow-hidden h-[280px] md:h-[320px]">
             <img
-              src={truckStormySky}
-              alt="Digital nomad lifestyle"
+              src={servicesHero}
+              alt="Digital nomad working from van"
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-foreground/50" />
@@ -124,7 +124,7 @@ const ServicesContent = () => {
       {/* CTA Section with Parallax Effect */}
       <section className="relative">
         <ParallaxDivider
-          image={sunsetRvReflection}
+          image={servicesCta}
           height="h-[350px] md:h-[400px]"
         />
         <div className="absolute inset-0 flex items-center justify-center z-20">

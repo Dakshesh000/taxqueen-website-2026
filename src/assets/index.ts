@@ -7,6 +7,18 @@ export { default as heatherPortrait } from './heather/portrait-square.png';
 export { default as heatherInVan } from './heather/heather-in-van.jpg';
 export { default as heatherVideoThumbnail } from './heather/video-thumbnail.png';
 export { default as heatherChatAvatar } from './heather/heather-chat-avatar.png';
+export { default as heatherAboutHero } from './heather/about-hero.jpg';
+export { default as heatherStoryTab1 } from './heather/story-tab-1.webp';
+export { default as heatherStoryTab2 } from './heather/story-tab-2.png';
+export { default as heatherStoryTab3 } from './heather/story-tab-3.jpg';
+export { default as heatherMission } from './heather/mission.webp';
+export { default as heatherWhyWorkWithMe } from './heather/why-work-with-me.jpg';
+export { default as heatherAboutCta } from './heather/about-cta.jpg';
+
+// Services Images
+export { default as servicesHero } from './services/services-hero.jpg';
+export { default as servicesCta } from './services/services-cta.webp';
+export { default as taxPreparation } from './services/tax-preparation-new-2.jpg';
 
 // Hero Section
 export { default as heroVideoThumbnail } from './hero/hero-video-thumbnail.png';

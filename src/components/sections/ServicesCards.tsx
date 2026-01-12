@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { useQuiz } from "@/contexts/QuizContext";
 
 // Service images - updated
-import taxPrep1 from "@/assets/services/tax-preparation-new.jpg";
+import taxPrep1 from "@/assets/services/tax-preparation-new-2.jpg";
 import taxStrategy1 from "@/assets/services/tax-strategy-new.jpg";
 import miniSession1 from "@/assets/services/mini-session-new.jpg";
 

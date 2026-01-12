@@ -9,17 +9,18 @@ import InlineVideoPlayer from "@/components/ui/InlineVideoPlayer";
 import { useQuiz } from "@/contexts/QuizContext";
 import {
   heatherVideoThumbnail,
-  heatherInVan,
-  rvMountainsBackground,
-  freedomNomad,
-  freedomNomad2,
-  sunsetRvReflection,
-  heatherWhaleBaja,
+  heatherAboutHero,
+  heatherStoryTab1,
+  heatherStoryTab2,
+  heatherStoryTab3,
+  heatherMission,
+  heatherWhyWorkWithMe,
+  heatherAboutCta,
 } from "@/assets";
 import useImagePreloader from "@/hooks/useImagePreloader";
 
 // Preload tab images for instant switching
-const TAB_IMAGES = [rvMountainsBackground, freedomNomad, heatherInVan];
+const TAB_IMAGES = [heatherStoryTab1, heatherStoryTab2, heatherStoryTab3];
 
 const About = () => {
   const { openQuiz } = useQuiz();
@@ -60,8 +61,8 @@ const About = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative rounded-2xl overflow-hidden h-[280px] md:h-[320px]">
             <img
-              src={heatherWhaleBaja}
-              alt="Heather with dolphins in Baja"
+              src={heatherAboutHero}
+              alt="Two women smiling at laptop"
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-foreground/50" />
@@ -177,8 +178,8 @@ const About = () => {
                   <div className="flex flex-col lg:flex-row gap-8 items-stretch">
                     <div className="lg:w-1/3 flex">
                       <img
-                        src={rvMountainsBackground}
-                        alt="Life on the road"
+                        src={heatherStoryTab1}
+                        alt="Heather smiling"
                         className="rounded-xl w-full h-auto lg:h-full object-cover shadow-md"
                       />
                     </div>
@@ -198,8 +199,8 @@ const About = () => {
                   <div className="flex flex-col lg:flex-row gap-8 items-stretch">
                     <div className="lg:w-1/3 flex">
                       <img
-                        src={freedomNomad}
-                        alt="Life on the road"
+                        src={heatherStoryTab2}
+                        alt="Heather and husband with RV"
                         className="rounded-xl w-full h-auto lg:h-full object-cover shadow-md"
                       />
                     </div>
@@ -219,8 +220,8 @@ const About = () => {
                   <div className="flex flex-col lg:flex-row gap-8 items-stretch">
                     <div className="lg:w-1/3 flex">
                       <img
-                        src={heatherInVan}
-                        alt="Heather's early days"
+                        src={heatherStoryTab3}
+                        alt="Heather decorating cupcakes"
                         className="rounded-xl w-full h-auto lg:h-full object-cover shadow-md"
                       />
                     </div>
@@ -276,7 +277,7 @@ const About = () => {
 
       {/* Section 6: Parallax Divider */}
       <ParallaxDivider
-        image={rvMountainsBackground}
+        image={heatherMission}
         text="My Mission"
         subtext="Helping you keep more of what you earn—so you can live more of the life you love"
       />
@@ -316,8 +317,8 @@ const About = () => {
             >
               <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
                 <img
-                  src={freedomNomad2}
-                  alt="Life on the road"
+                  src={heatherWhyWorkWithMe}
+                  alt="Heather on phone with laptop"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -366,8 +367,8 @@ const About = () => {
       <section className="relative py-20 lg:py-28">
         <div className="absolute inset-0">
           <img
-            src={sunsetRvReflection}
-            alt="RV at sunset"
+            src={heatherAboutCta}
+            alt="Van in snowy mountains"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-foreground/60" />
