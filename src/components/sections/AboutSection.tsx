@@ -100,6 +100,11 @@ const AboutSection = () => {
               Hi, I'm <span className="text-primary">Heather</span>
             </h2>
 
+            {/* Tagline */}
+            <p className="text-lg sm:text-xl xl:text-2xl text-foreground max-w-2xl mx-auto">
+              Play the video to learn more about me!
+            </p>
+
             {/* Circular Portrait with Bottom Play Bar */}
             <div 
               className="relative cursor-pointer group/video animate-float"
