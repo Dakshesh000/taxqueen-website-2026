@@ -17,6 +17,7 @@ const ParallaxDivider = ({
   className 
 }: ParallaxDividerProps) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [overlayOpacity, setOverlayOpacity] = useState(0.5);
   const sectionRef = useRef<HTMLElement>(null);
 
   // Preload image early and lazy load when section approaches viewport
@@ -43,6 +44,36 @@ const ParallaxDivider = ({
     return () => observer.disconnect();
   }, [image]);
 
+  // Dynamic overlay opacity based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!sectionRef.current) return;
+
+      const rect = sectionRef.current.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const sectionCenter = rect.top + rect.height / 2;
+      const viewportCenter = viewportHeight / 2;
+
+      // Calculate distance from center (0 = perfectly centered)
+      const distanceFromCenter = Math.abs(sectionCenter - viewportCenter);
+      const maxDistance = viewportHeight / 2 + rect.height / 2;
+
+      // Normalize to 0-1 range, where 0 = center, 1 = far from center
+      const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
+
+      // Map to opacity: center = 0.15 (reduced), edges = 0.5 (full)
+      // Using easeOutQuad for smoother transition
+      const eased = 1 - Math.pow(1 - normalizedDistance, 2);
+      const opacity = 0.15 + (eased * 0.35);
+      setOverlayOpacity(opacity);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll(); // Initial calculation
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <section 
       ref={sectionRef}
@@ -56,8 +87,11 @@ const ParallaxDivider = ({
         backgroundColor: !isVisible ? "hsl(var(--muted))" : undefined
       }}
     >
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-black/50" />
+      {/* Dynamic dark overlay - opacity changes based on scroll position */}
+      <div 
+        className="absolute inset-0 transition-opacity duration-150"
+        style={{ backgroundColor: `rgba(0, 0, 0, ${overlayOpacity})` }}
+      />
       
       {/* Content */}
       {(text || subtext) && (

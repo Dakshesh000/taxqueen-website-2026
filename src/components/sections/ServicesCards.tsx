@@ -3,10 +3,10 @@ import { FileText, Sparkles, Compass, LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQuiz } from "@/contexts/QuizContext";
 
-// Service images
-import taxPrep1 from "@/assets/services/tax-preparation-1.jpg";
-import taxStrategy1 from "@/assets/services/tax-strategy-1.jpg";
-import miniSession1 from "@/assets/services/mini-session-1.jpg";
+// Service images - updated
+import taxPrep1 from "@/assets/services/tax-preparation-new.jpg";
+import taxStrategy1 from "@/assets/services/tax-strategy-new.jpg";
+import miniSession1 from "@/assets/services/mini-session-new.jpg";
 
 interface ServiceCardProps {
   image: string;

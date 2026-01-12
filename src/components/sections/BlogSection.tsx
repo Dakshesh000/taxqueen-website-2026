@@ -2,8 +2,7 @@ import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { 
   workingAtBeach, 
   rvTopView3, 
-  rvCoastalDrive, 
-  freedomNomad2 
+  rvCoastalDrive 
 } from "@/assets";
 import {
   Carousel,
@@ -29,11 +28,6 @@ const blogPosts = [
     excerpt: "How to calculate and stay on top of your estimated tax payments as a self-employed nomad.",
     image: rvCoastalDrive,
   },
-  {
-    title: "Tax Deductions Every Digital Nomad Should Know",
-    excerpt: "Maximize your savings with these often-overlooked deductions for location-independent workers.",
-    image: freedomNomad2,
-  },
 ];
 
 const BlogSection = () => {
@@ -52,6 +46,7 @@ const BlogSection = () => {
           opts={{
             loop: true,
             align: "start",
+            dragFree: true,
           }}
           className="w-full"
         >
@@ -59,7 +54,7 @@ const BlogSection = () => {
             {blogPosts.map((post, index) => (
               <CarouselItem 
                 key={index} 
-                className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3 xl:basis-1/4"
+                className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
               >
                 <article 
                   className="flex flex-col gap-3 group cursor-pointer h-full"
@@ -88,11 +83,11 @@ const BlogSection = () => {
             ))}
           </CarouselContent>
           
-          {/* Navigation Arrows */}
-          <CarouselPrevious className="left-0 -translate-x-1/2 md:-translate-x-full bg-muted/80 hover:bg-primary hover:text-primary-foreground border-none w-12 h-12">
+          {/* Navigation Arrows - Blue and well spaced */}
+          <CarouselPrevious className="left-0 -translate-x-4 md:-translate-x-14 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-12 h-12 shadow-lg">
             <ChevronLeft className="w-6 h-6" />
           </CarouselPrevious>
-          <CarouselNext className="right-0 translate-x-1/2 md:translate-x-full bg-muted/80 hover:bg-primary hover:text-primary-foreground border-none w-12 h-12">
+          <CarouselNext className="right-0 translate-x-4 md:translate-x-14 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-12 h-12 shadow-lg">
             <ChevronRight className="w-6 h-6" />
           </CarouselNext>
         </Carousel>

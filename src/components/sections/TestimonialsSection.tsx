@@ -1,6 +1,21 @@
 import { motion } from "motion/react";
 import { TestimonialsColumn, ColumnItem } from "@/components/ui/testimonials-column";
 
+// Iconographic avatars using DiceBear Personas style
+const femaleAvatars = [
+  "https://api.dicebear.com/7.x/personas/svg?seed=Sarah&backgroundColor=b6e3f4",
+  "https://api.dicebear.com/7.x/personas/svg?seed=Emma&backgroundColor=ffd5dc",
+  "https://api.dicebear.com/7.x/personas/svg?seed=Maria&backgroundColor=d1d4f9",
+  "https://api.dicebear.com/7.x/personas/svg?seed=Lisa&backgroundColor=c0aede",
+];
+
+const maleAvatars = [
+  "https://api.dicebear.com/7.x/personas/svg?seed=James&backgroundColor=b6e3f4",
+  "https://api.dicebear.com/7.x/personas/svg?seed=Mike&backgroundColor=ffd5dc",
+  "https://api.dicebear.com/7.x/personas/svg?seed=David&backgroundColor=d1d4f9",
+  "https://api.dicebear.com/7.x/personas/svg?seed=John&backgroundColor=c0aede",
+];
+
 // Column 1 items - testimonials only
 const column1Items: ColumnItem[] = [
   {
@@ -8,21 +23,21 @@ const column1Items: ColumnItem[] = [
     text: "Owning and running a business was the easy part. When it came to taxes, I had no idea what to do or how to plan. Heather has been so helpful and breaks it all down in simple terms I can understand. She has helped me with the smartest moves for both me personally and in the business.",
     name: "Nikki",
     role: "Business Owner",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face",
+    avatar: femaleAvatars[0],
   },
   {
     type: "testimonial",
     text: "Excellent service. Quick turnaround. Heather has surpassed any previous tax preparer with her customer service, and we will be back year after year for our tax preparation.",
     name: "Jon K.",
     role: "Personal Return",
-    avatar: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face",
+    avatar: maleAvatars[0],
   },
   {
     type: "testimonial",
     text: "Taxes have been an enormous stressor since I moved to Portugal and this could not have been a more straightforward process. If there is a review I can write advocating for your services let me know!",
     name: "Catherine",
     role: "Expat",
-    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face",
+    avatar: femaleAvatars[1],
   },
 ];
 
@@ -33,21 +48,21 @@ const column2Items: ColumnItem[] = [
     text: "Heather has been our tax accountant for 11 years and has been consistently great to work with providing timely responses to all our questions and rapid processing of our tax returns.",
     name: "Mike M.",
     role: "11-Year Client",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face",
+    avatar: maleAvatars[1],
   },
   {
     type: "testimonial",
     text: "I could have spent hours on Google searching for answers to the various topics in this course. Having them in one place and explained in a way that made sense was invaluable. It saved me so much stress and frustration.",
     name: "Marcia H.",
     role: "Course Student",
-    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=100&h=100&fit=crop&crop=face",
+    avatar: femaleAvatars[2],
   },
   {
     type: "testimonial",
     text: "I trust you and you know my taxes intimately. You have been the best thing to happen to me and my taxes and I wish I had worked with you from the beginning!",
     name: "Bina J.",
     role: "Personal & S-Corp",
-    avatar: "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=100&h=100&fit=crop&crop=face",
+    avatar: femaleAvatars[3],
   },
 ];
 
@@ -58,21 +73,21 @@ const column3Items: ColumnItem[] = [
     text: "I have been working with Heather for over 4 years now and she is as sharp as they come. The perfect fit for our needs. She helps us keep our books clean for tax time while helping me make critical business decisions.",
     name: "James W.",
     role: "Weatherproof Roofing",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face",
+    avatar: maleAvatars[2],
   },
   {
     type: "testimonial",
     text: "Heather has been our accountant for over 8 years, and in that time has completely changed how I feel about accountants. She is easily accessible via email or phone and has helped us turn our business tax situation around.",
     name: "Alowetta T.",
     role: "Thin Air Web",
-    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face",
+    avatar: femaleAvatars[0],
   },
   {
     type: "testimonial",
     text: "You're the BEST! You are so prompt and super helpful (and patient!). Thank you!",
     name: "Sevilla",
     role: "Personal",
-    avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100&h=100&fit=crop&crop=face",
+    avatar: femaleAvatars[1],
   },
 ];
 
