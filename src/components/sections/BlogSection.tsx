@@ -83,11 +83,11 @@ const BlogSection = () => {
             ))}
           </CarouselContent>
           
-          {/* Navigation Arrows - Blue and well spaced */}
-          <CarouselPrevious className="left-0 -translate-x-4 md:-translate-x-14 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-12 h-12 shadow-lg">
+          {/* Navigation Arrows - centered with image dimensions */}
+          <CarouselPrevious className="left-0 -translate-x-4 md:-translate-x-14 top-[14%] -translate-y-0 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-12 h-12 shadow-lg">
             <ChevronLeft className="w-6 h-6" />
           </CarouselPrevious>
-          <CarouselNext className="right-0 translate-x-4 md:translate-x-14 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-12 h-12 shadow-lg">
+          <CarouselNext className="right-0 translate-x-4 md:translate-x-14 top-[14%] -translate-y-0 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-12 h-12 shadow-lg">
             <ChevronRight className="w-6 h-6" />
           </CarouselNext>
         </Carousel>

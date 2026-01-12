@@ -40,8 +40,8 @@ const ServiceCard = ({
         className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         loading="lazy"
       />
-      {/* Dark overlay - fades on hover */}
-      <div className="absolute inset-0 bg-black/40 transition-opacity duration-500 group-hover:opacity-0 z-10" />
+      {/* Dark overlay - appears on hover */}
+      <div className="absolute inset-0 bg-black/0 transition-all duration-500 group-hover:bg-black/40 z-10" />
       {/* Icon badge above overlay */}
       <div className="absolute top-4 right-4 w-12 h-12 rounded-full bg-primary flex items-center justify-center shadow-lg z-20">
         <Icon className="w-6 h-6 text-primary-foreground" />

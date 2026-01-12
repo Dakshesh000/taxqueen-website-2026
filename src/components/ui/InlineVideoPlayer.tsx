@@ -37,10 +37,10 @@ const InlineVideoPlayer = ({
 
   return (
     <div className={cn("relative overflow-hidden", className)}>
-      {/* Thumbnail Layer - visible when not playing */}
+      {/* Thumbnail Layer - visible when not playing, captures all clicks */}
       <div 
         className={cn(
-          "absolute inset-0 transition-opacity duration-300 cursor-pointer group",
+          "absolute inset-0 transition-opacity duration-300 cursor-pointer group z-10",
           isPlaying ? "opacity-0 pointer-events-none" : "opacity-100"
         )}
         onClick={handlePlay}
@@ -69,7 +69,7 @@ const InlineVideoPlayer = ({
         src={videoSrc}
         className={cn(
           "w-full h-full object-cover transition-opacity duration-300",
-          isPlaying ? "opacity-100" : "opacity-0"
+          isPlaying ? "opacity-100" : "opacity-0 pointer-events-none"
         )}
         controls
         onEnded={handleVideoEnd}

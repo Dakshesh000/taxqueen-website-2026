@@ -1,19 +1,19 @@
 import { motion } from "motion/react";
 import { TestimonialsColumn, ColumnItem } from "@/components/ui/testimonials-column";
 
-// Iconographic avatars using DiceBear Personas style
+// Iconographic avatars using DiceBear Personas style with white and brown skin tones
 const femaleAvatars = [
-  "https://api.dicebear.com/7.x/personas/svg?seed=Sarah&backgroundColor=b6e3f4",
-  "https://api.dicebear.com/7.x/personas/svg?seed=Emma&backgroundColor=ffd5dc",
-  "https://api.dicebear.com/7.x/personas/svg?seed=Maria&backgroundColor=d1d4f9",
-  "https://api.dicebear.com/7.x/personas/svg?seed=Lisa&backgroundColor=c0aede",
+  "https://api.dicebear.com/7.x/personas/svg?seed=Sarah&backgroundColor=b6e3f4&skinColor=f5d0c5",
+  "https://api.dicebear.com/7.x/personas/svg?seed=Emma&backgroundColor=ffd5dc&skinColor=eac393",
+  "https://api.dicebear.com/7.x/personas/svg?seed=Maria&backgroundColor=d1d4f9&skinColor=c68642",
+  "https://api.dicebear.com/7.x/personas/svg?seed=Lisa&backgroundColor=c0aede&skinColor=f5d0c5",
 ];
 
 const maleAvatars = [
-  "https://api.dicebear.com/7.x/personas/svg?seed=James&backgroundColor=b6e3f4",
-  "https://api.dicebear.com/7.x/personas/svg?seed=Mike&backgroundColor=ffd5dc",
-  "https://api.dicebear.com/7.x/personas/svg?seed=David&backgroundColor=d1d4f9",
-  "https://api.dicebear.com/7.x/personas/svg?seed=John&backgroundColor=c0aede",
+  "https://api.dicebear.com/7.x/personas/svg?seed=James&backgroundColor=b6e3f4&skinColor=eac393",
+  "https://api.dicebear.com/7.x/personas/svg?seed=Mike&backgroundColor=ffd5dc&skinColor=c68642",
+  "https://api.dicebear.com/7.x/personas/svg?seed=David&backgroundColor=d1d4f9&skinColor=f5d0c5",
+  "https://api.dicebear.com/7.x/personas/svg?seed=John&backgroundColor=c0aede&skinColor=8d5524",
 ];
 
 // Column 1 items - testimonials only
@@ -29,7 +29,7 @@ const column1Items: ColumnItem[] = [
     type: "testimonial",
     text: "Excellent service. Quick turnaround. Heather has surpassed any previous tax preparer with her customer service, and we will be back year after year for our tax preparation.",
     name: "Jon K.",
-    role: "Personal Return",
+    role: "",
     avatar: maleAvatars[0],
   },
   {
@@ -61,7 +61,7 @@ const column2Items: ColumnItem[] = [
     type: "testimonial",
     text: "I trust you and you know my taxes intimately. You have been the best thing to happen to me and my taxes and I wish I had worked with you from the beginning!",
     name: "Bina J.",
-    role: "Personal & S-Corp",
+    role: "S-Corp",
     avatar: femaleAvatars[3],
   },
 ];
@@ -86,7 +86,7 @@ const column3Items: ColumnItem[] = [
     type: "testimonial",
     text: "You're the BEST! You are so prompt and super helpful (and patient!). Thank you!",
     name: "Sevilla",
-    role: "Personal",
+    role: "",
     avatar: femaleAvatars[1],
   },
 ];
