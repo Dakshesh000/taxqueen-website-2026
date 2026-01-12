@@ -197,19 +197,19 @@ const ToolCard = ({ tool }: { tool: Tool }) => {
             {tool.description}
           </p>
 
-          {/* Offer Badge */}
-          {tool.offer && (
-            <div className="mb-4 text-center">
-              <Badge className="bg-background border border-primary text-primary px-3 py-1">
-                {tool.offer}
-              </Badge>
-              {tool.discountCode && (
-                <p className="text-xs text-muted-foreground mt-2">
-                  Use code: <span className="font-semibold text-primary">{tool.discountCode}</span>
-                </p>
+{/* Offer Badge */}
+              {tool.offer && (
+                <div className="mb-4 text-center bg-muted/50 rounded-lg p-3 border border-primary/20">
+                  <p className="text-sm text-primary font-medium">
+                    {tool.offer}
+                  </p>
+                  {tool.discountCode && (
+                    <p className="text-xs text-muted-foreground mt-1">
+                      Use code: <span className="font-semibold text-primary">{tool.discountCode}</span>
+                    </p>
+                  )}
+                </div>
               )}
-            </div>
-          )}
 
           {/* CTA Button */}
           <Button
