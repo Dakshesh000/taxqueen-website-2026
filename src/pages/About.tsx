@@ -1,12 +1,11 @@
-import { useState } from "react";
 import { motion } from "motion/react";
-import { Play, Award, Shield, MapPin, BookOpen, Calculator, Users, Calendar } from "lucide-react";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Award, Shield, MapPin, BookOpen, Calculator, Users, Calendar } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ParallaxDivider from "@/components/ui/ParallaxDivider";
+import InlineVideoPlayer from "@/components/ui/InlineVideoPlayer";
 import { useQuiz } from "@/contexts/QuizContext";
 import {
   heatherVideoThumbnail,
@@ -24,7 +23,6 @@ const TAB_IMAGES = [rvMountainsBackground, freedomNomad, heatherInVan];
 
 const About = () => {
   const { openQuiz } = useQuiz();
-  const [isVideoOpen, setIsVideoOpen] = useState(false);
   
   // Preload tab images for instant switching
   useImagePreloader(TAB_IMAGES);
@@ -90,28 +88,13 @@ const About = () => {
               transition={{ duration: 0.6 }}
               className="flex justify-center"
             >
-              <div
-                className="relative cursor-pointer group w-full max-w-md"
-                onClick={() => setIsVideoOpen(true)}
-              >
-                {/* Rectangular Video Thumbnail */}
-                <div className="relative aspect-video rounded-2xl overflow-hidden shadow-2xl">
-                  <img
-                    src={heatherVideoThumbnail}
-                    alt="Heather - The Tax Queen"
-                    className="w-full h-full object-cover"
-                  />
-                  {/* Bottom Edge Play Bar */}
-                  <div className="absolute bottom-0 left-0 right-0 h-14 bg-gradient-to-t from-foreground/70 to-transparent flex items-end justify-center pb-4 opacity-80 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="flex items-center gap-2 text-white">
-                      <Play className="w-4 h-4" fill="currentColor" />
-                      <span className="text-sm font-medium">Watch</span>
-                    </div>
-                  </div>
-                </div>
-                {/* Hover overlay */}
-                <div className="absolute inset-0 rounded-2xl bg-foreground/0 group-hover:bg-foreground/10 transition-all duration-300" />
-              </div>
+              <InlineVideoPlayer
+                thumbnail={heatherVideoThumbnail}
+                videoSrc="/videos/heather-intro.mp4"
+                alt="Heather - The Tax Queen"
+                className="w-full max-w-md aspect-video rounded-2xl shadow-2xl"
+                aspectRatio="video"
+              />
             </motion.div>
 
             {/* Right: Text Content */}
@@ -412,21 +395,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Video Modal */}
-      <Dialog open={isVideoOpen} onOpenChange={setIsVideoOpen}>
-        <DialogContent className="max-w-4xl p-0 bg-black border-none overflow-hidden" aria-describedby={undefined}>
-          <DialogTitle className="sr-only">Meet Heather - Your Tax Queen Video</DialogTitle>
-          <div className="relative w-full aspect-video">
-            <iframe
-              src="https://www.youtube.com/embed/3HYAasPLc_s?autoplay=1&rel=0"
-              title="Meet Heather - Your Tax Queen"
-              className="absolute inset-0 w-full h-full"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        </DialogContent>
-      </Dialog>
 
       <Footer />
     </div>
