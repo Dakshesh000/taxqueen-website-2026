@@ -264,16 +264,12 @@ const Tools = () => {
           </div>
         </section>
 
-        {/* Intro + Affiliate Disclosure */}
+        {/* Intro */}
         <section className="py-12 px-4 bg-background">
           <div className="container mx-auto max-w-4xl text-center">
             <p className="text-lg md:text-xl text-foreground mb-4 leading-relaxed">
               Taxes and finances as a digital nomad can be confusing and overwhelming. 
               I've created this list of recommended tools to help you get started.
-            </p>
-            <p className="text-sm text-muted-foreground italic underline">
-              Disclosure: Some of the links below are affiliate links. This means that, at no additional cost to you, 
-              I may earn a commission if you click through and make a purchase.
             </p>
           </div>
         </section>
@@ -289,18 +285,24 @@ const Tools = () => {
                   className={`px-6 py-2.5 rounded-full font-medium transition-all duration-300 ${
                     activeCategory === category.key
                       ? "bg-primary text-primary-foreground shadow-lg"
-                      : "bg-muted text-muted-foreground hover:bg-muted/80"
+                      : "bg-muted text-foreground hover:bg-muted/80"
                   }`}
                 >
                   {category.label}
                 </button>
               ))}
             </div>
+            
+            {/* Affiliate Disclosure - Below tabs */}
+            <p className="text-sm text-muted-foreground italic underline text-center mt-6">
+              Disclosure: Some of the links below are affiliate links. This means that, at no additional cost to you, 
+              I may earn a commission if you click through and make a purchase.
+            </p>
           </div>
         </section>
 
         {/* Tools Grid */}
-        <section className="py-12 px-4 bg-background">
+        <section className="py-8 px-4 bg-background">
           <div className="container mx-auto max-w-6xl">
             <motion.div
               layout
