@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { FileText, Sparkles, Compass, LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useQuiz } from "@/contexts/QuizContext";
@@ -20,7 +20,7 @@ interface ServiceCardProps {
   onGetStarted: () => void;
 }
 
-const ServiceCard = ({ 
+const ServiceCard = memo(({ 
   image, 
   icon: Icon, 
   title, 
@@ -86,7 +86,9 @@ const ServiceCard = ({
       </Button>
     </div>
   </div>
-);
+));
+
+ServiceCard.displayName = "ServiceCard";
 
 const ServicesCards = () => {
   const { openQuiz } = useQuiz();

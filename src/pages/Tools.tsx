@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, memo } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import { ExternalLink } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { useQuiz } from "@/contexts/QuizContext";
+import usePageMeta from "@/hooks/usePageMeta";
 
 // Import lifestyle images
 import workingAtBeach from "@/assets/lifestyle/working-at-beach.jpg";
@@ -167,7 +167,7 @@ const categories: { key: Category; label: string }[] = [
   { key: "lifestyle", label: "Nomad Lifestyle" },
 ];
 
-const ToolCard = ({ tool }: { tool: Tool }) => {
+const ToolCard = memo(({ tool }: { tool: Tool }) => {
   return (
     <motion.div
       layout
@@ -231,11 +231,19 @@ const ToolCard = ({ tool }: { tool: Tool }) => {
       </Card>
     </motion.div>
   );
-};
+});
+
+ToolCard.displayName = "ToolCard";
 
 const Tools = () => {
   const [activeCategory, setActiveCategory] = useState<Category>("all");
   const { openQuiz } = useQuiz();
+
+  // Set page meta for SEO
+  usePageMeta(
+    "Tools & Resources | Tax Queen",
+    "Recommended tools for digital nomads - banking, bookkeeping, mileage tracking, and more."
+  );
 
   const filteredTools = activeCategory === "all"
     ? tools

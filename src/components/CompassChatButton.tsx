@@ -27,9 +27,11 @@ const CompassChatButton = () => {
           "bg-background shadow-lift-lg border-[3px] border-foreground",
           "hover:scale-110 hover:shadow-xl transition-all duration-300",
           "flex items-center justify-center group",
+          "focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2",
           isOpen && "opacity-0 pointer-events-none"
         )}
-        aria-label="Open chat"
+        aria-label="Open chat assistant"
+        aria-expanded={isOpen}
       >
         {/* Continuous pulse ring */}
         <span className="absolute inset-[-6px] rounded-full border-[3px] border-primary/50 animate-pulse-ring" />

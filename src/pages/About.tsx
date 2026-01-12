@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import ParallaxDivider from "@/components/ui/ParallaxDivider";
 import InlineVideoPlayer from "@/components/ui/InlineVideoPlayer";
 import { useQuiz } from "@/contexts/QuizContext";
+import usePageMeta from "@/hooks/usePageMeta";
 import {
   heatherVideoThumbnail,
   heatherAboutHero,
@@ -24,6 +25,11 @@ const TAB_IMAGES = [heatherStoryTab1, heatherStoryTab2, heatherStoryTab3];
 
 const About = () => {
   const { openQuiz } = useQuiz();
+  // Set page meta for SEO
+  usePageMeta(
+    "About Heather | Tax Queen - Nomad Tax Specialist",
+    "Meet Heather, an Enrolled Agent and Certified Tax Coach who has been helping digital nomads with their taxes since 2014."
+  );
   
   // Preload tab images for instant switching
   useImagePreloader(TAB_IMAGES);

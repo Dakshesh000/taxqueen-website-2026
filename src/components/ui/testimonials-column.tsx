@@ -1,5 +1,4 @@
-"use client";
-import React from "react";
+import React, { memo } from "react";
 import { motion } from "motion/react";
 
 export type TestimonialItem = {
@@ -18,7 +17,7 @@ export type ImageItem = {
 
 export type ColumnItem = TestimonialItem | ImageItem;
 
-export const TestimonialsColumn = (props: {
+const TestimonialsColumn = memo((props: {
   className?: string;
   items: ColumnItem[];
   duration?: number;
@@ -89,4 +88,8 @@ export const TestimonialsColumn = (props: {
       </motion.div>
     </div>
   );
-};
+});
+
+TestimonialsColumn.displayName = "TestimonialsColumn";
+
+export { TestimonialsColumn };
