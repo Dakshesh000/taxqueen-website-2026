@@ -256,7 +256,7 @@ const Tools = () => {
               />
               <div className="absolute inset-0 bg-black/50" />
               <div className="absolute bottom-8 left-8 right-8">
-                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white uppercase tracking-tight">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white uppercase">
                   Tools I Use & Recommend
                 </h1>
               </div>
