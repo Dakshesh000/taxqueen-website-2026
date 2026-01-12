@@ -7,6 +7,7 @@ import ProcessStepsSection from "@/components/sections/ProcessStepsSection";
 import ComparisonSection from "@/components/sections/ComparisonSection";
 import ServicesTestimonialsCarousel from "@/components/sections/ServicesTestimonialsCarousel";
 import ServicesCards from "@/components/sections/ServicesCards";
+import ParallaxDivider from "@/components/ui/ParallaxDivider";
 import { QuizProvider, useQuiz } from "@/contexts/QuizContext";
 import { truckStormySky, heatherPortrait, sunsetRvReflection } from "@/assets";
 
@@ -92,9 +93,6 @@ const ServicesContent = () => {
       {/* How It Works - ProcessStepsSection */}
       <ProcessStepsSection />
 
-      {/* Testimonials - Single View Carousel */}
-      <ServicesTestimonialsCarousel />
-
       {/* Quiz Embedded Section - White Background */}
       <section id="quiz" className="py-16 bg-background">
         <div className="container mx-auto px-4">
@@ -105,7 +103,7 @@ const ServicesContent = () => {
                 Not Sure Which Service You Need?
               </h2>
               <p className="text-muted-foreground">
-                Take our quick quiz to find the perfect fit for your unique tax situation.
+                This quiz can help
               </p>
             </div>
             
@@ -117,32 +115,35 @@ const ServicesContent = () => {
         </div>
       </section>
 
+      {/* Testimonials - Single View Carousel */}
+      <ServicesTestimonialsCarousel />
+
       {/* Who's A Good Fit - ComparisonSection */}
       <ComparisonSection />
 
-      {/* CTA Section with Background Image */}
-      <section className="relative py-16 md:py-20">
-        <img
-          src={sunsetRvReflection}
-          alt="Sunset RV reflection"
-          className="absolute inset-0 w-full h-full object-cover"
+      {/* CTA Section with Parallax Effect */}
+      <section className="relative">
+        <ParallaxDivider
+          image={sunsetRvReflection}
+          height="h-[350px] md:h-[400px]"
         />
-        <div className="absolute inset-0 bg-foreground/60" />
-        <div className="relative z-10 container mx-auto px-4 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold text-white uppercase mb-4">
-            Ready to Take Control of Your Taxes?
-          </h2>
-          <p className="text-white/90 text-lg md:text-xl max-w-xl mx-auto mb-8">
-            Stop stressing about taxes and start enjoying the nomad life you deserve.
-          </p>
-          <Button
-            variant="cta"
-            size="lg"
-            className="rounded-full"
-            onClick={() => openQuiz()}
-          >
-            Get Started
-          </Button>
+        <div className="absolute inset-0 flex items-center justify-center z-20">
+          <div className="container mx-auto px-4 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold text-white uppercase mb-4">
+              Ready to Take Control of Your Taxes?
+            </h2>
+            <p className="text-white/90 text-lg md:text-xl max-w-xl mx-auto mb-8">
+              Stop stressing about taxes and start enjoying the nomad life you deserve.
+            </p>
+            <Button
+              variant="cta"
+              size="lg"
+              className="rounded-full"
+              onClick={() => openQuiz()}
+            >
+              Get Started
+            </Button>
+          </div>
         </div>
       </section>
 
