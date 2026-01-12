@@ -13,6 +13,7 @@ interface QuestionWrapperProps {
   subtitle?: string;
   helpText?: string;
   backgroundImage: string;
+  placeholderImage?: string; // Base64 LQIP for instant blur-up display
   children: ReactNode;
 }
 
@@ -21,6 +22,7 @@ const QuestionWrapper = ({
   subtitle,
   helpText,
   backgroundImage,
+  placeholderImage,
   children,
 }: QuestionWrapperProps) => {
   const [showAnimation, setShowAnimation] = useState(false);
@@ -43,12 +45,23 @@ const QuestionWrapper = ({
 
   return (
     <div className="relative min-h-[380px] md:min-h-[420px] w-full overflow-hidden md:rounded-2xl">
-      {/* Gradient placeholder background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-muted via-muted-foreground/20 to-muted" />
+      {/* Blurred LQIP placeholder - shows instantly */}
+      {placeholderImage ? (
+        <div
+          className="absolute inset-0 bg-cover bg-center scale-110"
+          style={{ 
+            backgroundImage: `url(${placeholderImage})`,
+            filter: 'blur(20px)',
+          }}
+        />
+      ) : (
+        // Fallback gradient if no placeholder provided
+        <div className="absolute inset-0 bg-gradient-to-br from-muted via-muted-foreground/20 to-muted" />
+      )}
       
-      {/* Background Image with Overlay - fades in when loaded */}
+      {/* Full-quality background image - fades in when loaded */}
       <div
-        className="absolute inset-0 bg-cover bg-center transition-opacity duration-500 ease-in-out"
+        className="absolute inset-0 bg-cover bg-center transition-opacity duration-700 ease-in-out"
         style={{ 
           backgroundImage: `url(${backgroundImage})`,
           opacity: imageLoaded ? 1 : 0

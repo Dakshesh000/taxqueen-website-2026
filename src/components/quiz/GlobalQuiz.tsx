@@ -22,11 +22,9 @@ import {
   FileX,
   FileText,
   Calendar,
-  Clock,
   Sparkles,
   ArrowRight,
   ArrowLeft,
-  Loader2,
 } from "lucide-react";
 
 import QuestionWrapper from "@/components/quiz/QuestionWrapper";
@@ -42,7 +40,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useQuiz } from "@/contexts/QuizContext";
 import useImagePreloader from "@/hooks/useImagePreloader";
-import TravelCompass from "@/components/quiz/TravelCompass";
 
 // Import background images
 import rvCoastalDrive from "@/assets/lifestyle/rv-coastal-drive.png";
@@ -54,7 +51,19 @@ import campingByRiver from "@/assets/lifestyle/camping-by-river.jpg";
 import heatherHikingNature from "@/assets/lifestyle/heather-hiking-nature.jpg";
 import sunsetRvReflection from "@/assets/lifestyle/sunset-rv-reflection.png";
 
-// Array of all quiz background images for preloading
+// Import LQIP placeholders for blur-up effect
+import {
+  heatherHikingNaturePlaceholder,
+  vanSnowMountainsPlaceholder,
+  rvCoastalDrivePlaceholder,
+  womanWorkingViewsPlaceholder,
+  truckDesertPlaceholder,
+  workingAtBeachPlaceholder,
+  campingByRiverPlaceholder,
+  sunsetRvReflectionPlaceholder,
+} from "@/assets/placeholders/quiz-placeholders";
+
+// Array of all quiz background images for preloading (background preload for smoother steps)
 const QUIZ_BACKGROUND_IMAGES = [
   vanSnowMountains,
   rvCoastalDrive,
@@ -326,6 +335,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
             title="Do you have US Tax Obligations?"
             subtitle="US citizens, green card holders, and those with US income"
             backgroundImage={heatherHikingNature}
+            placeholderImage={heatherHikingNaturePlaceholder}
           >
             <div className="flex flex-col gap-4 items-center max-w-xs mx-auto">
               <Button
@@ -358,6 +368,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
             title="How do you make money right now?"
             subtitle="Select all that apply"
             backgroundImage={vanSnowMountains}
+            placeholderImage={vanSnowMountainsPlaceholder}
           >
             <MultiSelectQuestion
               options={incomeOptions}
@@ -382,6 +393,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
           <QuestionWrapper
             title="If an expat, what country is your residence or visa in?"
             backgroundImage={rvCoastalDrive}
+            placeholderImage={rvCoastalDrivePlaceholder}
           >
             <ExpatQuestion
               value={answers.expatCountry}
@@ -417,6 +429,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
             title="Which of these applies to you?"
             subtitle="Select all that apply"
             backgroundImage={womanWorkingViews}
+            placeholderImage={womanWorkingViewsPlaceholder}
           >
             <MultiSelectQuestion
               options={situationOptions}
@@ -445,6 +458,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
           <QuestionWrapper
             title="How would you describe yourself when it comes to financial tracking and taxes?"
             backgroundImage={truckDesert}
+            placeholderImage={truckDesertPlaceholder}
           >
             <SingleSelectQuestion
               options={financialTrackingOptions}
@@ -471,6 +485,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
             title="What are you looking for right now?"
             subtitle="Select all that apply"
             backgroundImage={workingAtBeach}
+            placeholderImage={workingAtBeachPlaceholder}
           >
             <MultiSelectQuestion
               options={lookingForOptions}
@@ -503,6 +518,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
           <QuestionWrapper
             title="How fast do you need help?"
             backgroundImage={campingByRiver}
+            placeholderImage={campingByRiverPlaceholder}
           >
             <SliderQuestion
               value={answers.urgency}
@@ -532,6 +548,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
             title="Almost There!"
             subtitle="Where should we send your results?"
             backgroundImage={sunsetRvReflection}
+            placeholderImage={sunsetRvReflectionPlaceholder}
           >
             <ContactForm
               name={answers.name}
@@ -567,9 +584,10 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
     }
   };
 
-  // Preload all quiz background images when modal opens or when embedded
+  // Preload all quiz background images in background (for smoother step transitions)
+  // Quiz now opens instantly with blur-up placeholders - no blocking needed
   const shouldPreload = isEmbedded || isQuizOpen;
-  const imagesLoaded = useImagePreloader(shouldPreload ? QUIZ_BACKGROUND_IMAGES : []);
+  useImagePreloader(shouldPreload ? QUIZ_BACKGROUND_IMAGES : []);
 
   // For embedded mode, always show and handle close differently
   const isOpen = isEmbedded || isQuizOpen;
@@ -594,17 +612,6 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
           userName={answers.name}
           onClose={handleClose}
         />
-      ) : !imagesLoaded ? (
-        // Loading state while images preload
-        <div className="relative min-h-[380px] md:min-h-[420px] w-full overflow-hidden md:rounded-2xl bg-muted flex flex-col items-center justify-center">
-          <div className="mb-4 p-3 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 animate-pulse">
-            <TravelCompass size="md" animate={true} />
-          </div>
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Loader2 className="w-5 h-5 animate-spin" />
-            <span className="text-sm font-medium">Preparing your journey...</span>
-          </div>
-        </div>
       ) : (
         renderStep()
       )}
