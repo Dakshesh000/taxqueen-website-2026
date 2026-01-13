@@ -112,7 +112,7 @@ const HeroSection = () => {
           maxWidth: isMobile ? '100%' : `calc(100% - ${videoPadding * 2}px)`,
         }}
       >
-        <div className={`relative w-full ${isLocked ? 'h-screen' : 'h-[100vh] md:h-[70vh] sm:h-[80vh] xl:h-[85vh] 2xl:h-[88vh]'} ${isMobile ? 'rounded-none' : 'rounded-2xl'} overflow-hidden shadow-lift-lg transition-all duration-300`}>
+        <div className={`relative w-full ${isLocked ? 'h-screen' : 'h-[70vh] sm:h-[80vh] xl:h-[85vh] 2xl:h-[88vh]'} ${isMobile ? 'rounded-none' : 'rounded-2xl'} overflow-hidden shadow-lift-lg transition-all duration-300`}>
           {/* Thumbnail - shows while video loads */}
           <img
             src={heroVideoThumbnail}

@@ -39,106 +39,79 @@ const Footer = () => {
 
   return (
     <footer className="bg-primary text-primary-foreground">
-      {/* Mobile Layout */}
-      <div className="md:hidden container mx-auto px-4 py-8">
-        <div className="space-y-6">
-          {/* Brand + Tagline centered */}
-          <div className="text-center pb-6 border-b border-primary-foreground/20">
-            <img 
-              src={logoTaxQueen} 
-              alt="Tax Queen Logo" 
-              className="h-10 w-auto brightness-0 invert mx-auto mb-3"
-              loading="lazy"
-            />
-            <p className="text-sm text-primary-foreground/80 max-w-xs mx-auto">
-              {brand.description}
-            </p>
-          </div>
+      {/* Mobile Layout - Clean & Simple */}
+      <div className="md:hidden container mx-auto px-4 py-6">
+        {/* Brand - centered, compact */}
+        <div className="text-center mb-5">
+          <img 
+            src={logoTaxQueen} 
+            alt="Tax Queen Logo" 
+            className="h-8 w-auto brightness-0 invert mx-auto mb-2"
+            loading="lazy"
+          />
+          <p className="text-xs text-primary-foreground/70">{brand.description}</p>
+        </div>
 
-          {/* Newsletter - prominent */}
-          <div className="pb-6 border-b border-primary-foreground/20">
-            <h4 className="font-semibold uppercase tracking-wide mb-3 text-center">Stay Updated</h4>
-            <p className="text-sm text-primary-foreground/80 mb-4 text-center">
-              Get tax tips & updates delivered to your inbox.
-            </p>
-            <form onSubmit={handleNewsletterSubmit} className="flex flex-col gap-3">
-              <Input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="bg-primary-foreground text-foreground placeholder:text-muted-foreground border-none h-11"
-                aria-label="Email address for newsletter"
-              />
-              <Button
-                type="submit"
-                className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold h-11 w-full"
-              >
-                Subscribe
-              </Button>
-            </form>
-          </div>
+        {/* Newsletter - simple inline form */}
+        <form onSubmit={handleNewsletterSubmit} className="flex gap-2 mb-6">
+          <Input
+            type="email"
+            placeholder="Enter email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="bg-primary-foreground text-foreground placeholder:text-muted-foreground border-none h-10 flex-1 text-sm"
+            aria-label="Email address for newsletter"
+          />
+          <Button
+            type="submit"
+            className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold h-10 px-4 text-sm"
+          >
+            Subscribe
+          </Button>
+        </form>
 
-          {/* Collapsible Quick Links */}
-          <Collapsible open={linksOpen} onOpenChange={setLinksOpen}>
-            <CollapsibleTrigger className="flex justify-between items-center w-full py-3 border-b border-primary-foreground/20">
-              <span className="font-semibold uppercase tracking-wide">Quick Links</span>
-              <ChevronDown className={cn("w-5 h-5 transition-transform", linksOpen && "rotate-180")} />
-            </CollapsibleTrigger>
-            <CollapsibleContent className="pt-3 pb-2">
-              <nav aria-label="Footer navigation">
-                <ul className="space-y-3">
-                  {navigation.map((item) => {
-                    const isExternal = "external" in item && item.external;
-                    const isAnchor = item.href.startsWith("#");
-                    
-                    return (
-                      <li key={item.href}>
-                        {isExternal ? (
-                          <a
-                            href={item.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                          >
-                            {item.label}
-                          </a>
-                        ) : isAnchor ? (
-                          <a
-                            href={item.href}
-                            className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                          >
-                            {item.label}
-                          </a>
-                        ) : (
-                          <Link
-                            to={item.href}
-                            className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                          >
-                            {item.label}
-                          </Link>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
-              </nav>
-            </CollapsibleContent>
-          </Collapsible>
+        {/* Links - 2-column grid */}
+        <nav className="mb-6" aria-label="Footer navigation">
+          <ul className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+            {navigation.map((item) => {
+              const isExternal = "external" in item && item.external;
+              const isAnchor = item.href.startsWith("#");
+              
+              return (
+                <li key={item.href}>
+                  {isExternal ? (
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
+                    >
+                      {item.label}
+                    </a>
+                  ) : isAnchor ? (
+                    <a
+                      href={item.href}
+                      className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
+                    >
+                      {item.label}
+                    </a>
+                  ) : (
+                    <Link
+                      to={item.href}
+                      className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
+                    >
+                      {item.label}
+                    </Link>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
 
-          {/* Collapsible Contact */}
-          <Collapsible open={contactOpen} onOpenChange={setContactOpen}>
-            <CollapsibleTrigger className="flex justify-between items-center w-full py-3 border-b border-primary-foreground/20">
-              <span className="font-semibold uppercase tracking-wide">Contact</span>
-              <ChevronDown className={cn("w-5 h-5 transition-transform", contactOpen && "rotate-180")} />
-            </CollapsibleTrigger>
-            <CollapsibleContent className="pt-3 pb-2">
-              <address className="not-italic space-y-2 text-sm text-primary-foreground/80">
-                <p>{brand.email}</p>
-                {brand.phone && <p>{brand.phone}</p>}
-              </address>
-            </CollapsibleContent>
-          </Collapsible>
+        {/* Contact - simple line */}
+        <div className="text-center text-xs text-primary-foreground/70 pt-4 border-t border-primary-foreground/20">
+          <p>{brand.email}</p>
         </div>
       </div>
 

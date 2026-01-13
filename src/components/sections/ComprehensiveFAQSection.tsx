@@ -371,9 +371,37 @@ const ComprehensiveFAQSection = () => {
 
         {/* Two Column Layout */}
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Left Column - Categories (25%) */}
-          <div className="lg:w-1/4 flex-shrink-0">
-            <div className="lg:sticky lg:top-24 space-y-2">
+          {/* Categories - order-2 on mobile (appears below questions) */}
+          <div className="lg:w-1/4 flex-shrink-0 order-2 lg:order-1">
+            {/* Mobile: horizontal scroll tabs */}
+            <div className="lg:hidden overflow-x-auto scrollbar-hide -mx-4 px-4 pb-4">
+              <div className="flex gap-2 w-max">
+                {categories.map((category) => {
+                  const Icon = category.icon;
+                  return (
+                    <button
+                      key={category.id}
+                      onClick={() => {
+                        setSelectedCategory(category.id);
+                        setSearchQuery("");
+                      }}
+                      className={cn(
+                        "px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors flex items-center gap-2",
+                        selectedCategory === category.id
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted text-foreground hover:bg-muted/80"
+                      )}
+                    >
+                      <Icon className="w-4 h-4" />
+                      {category.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Desktop: vertical list */}
+            <div className="hidden lg:block lg:sticky lg:top-24 space-y-2">
               {categories.map((category) => {
                 const Icon = category.icon;
                 return (
@@ -398,8 +426,8 @@ const ComprehensiveFAQSection = () => {
             </div>
           </div>
 
-          {/* Right Column - Questions (75%) */}
-          <div className="lg:w-3/4">
+          {/* Questions - order-1 on mobile (appears first) */}
+          <div className="lg:w-3/4 order-1 lg:order-2">
             {/* Search Bar */}
             <div className="relative mb-6">
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
