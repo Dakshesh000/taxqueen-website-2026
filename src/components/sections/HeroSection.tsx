@@ -73,6 +73,10 @@ const HeroSection = () => {
   
   // Mobile: show rounded corners while expanding, remove when fully expanded
   const mobileFullyExpanded = isMobile && (isLocked || (mobileVideoWidth && mobileVideoWidth >= 99));
+  
+  // Mobile: start with no negative margin (no overlap with Learn More button), 
+  // progressively add it as user scrolls. 0 at top → -64px when scrolled
+  const mobileMarginTop = isMobile ? -64 * scrollProgress : undefined;
 
   return (
     <section className="relative min-h-[110vh] bg-white">
@@ -117,7 +121,7 @@ const HeroSection = () => {
       {/* Video/Image Frame - Width & height animate 70%→100% on mobile */}
       <div 
         className={`relative mx-auto transition-all duration-300 ease-out will-change-transform ${
-          isMobile ? 'z-[60] -mt-16' : 'z-20'
+          isMobile ? 'z-[60]' : 'z-20'
         }`}
         style={{
           padding: isMobile ? 0 : `${videoPadding}px`,
@@ -126,6 +130,8 @@ const HeroSection = () => {
           // Desktop: uses padding-based animation
           width: isMobile ? `${mobileVideoWidth}%` : undefined,
           maxWidth: isMobile ? `${mobileVideoWidth}%` : `calc(100% - ${videoPadding * 2}px)`,
+          // Mobile: dynamic margin - starts at 0, goes to -64px as user scrolls
+          marginTop: mobileMarginTop,
         }}
       >
         <div 
