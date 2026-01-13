@@ -61,12 +61,18 @@ const HeroSection = () => {
   const videoTranslateY = isLocked ? (isMobile ? -200 : -280) : -scrollProgress * (isMobile ? 200 : 280);
   const textTranslateY = scrollProgress * 150;
 
-  // Mobile video height: smoothly interpolate from 70vh to 100vh based on scroll
-  const mobileStartHeight = 70;
-  const mobileEndHeight = 100;
-  const mobileVideoHeight = isMobile 
-    ? (isLocked ? mobileEndHeight : mobileStartHeight + (mobileEndHeight - mobileStartHeight) * scrollProgress)
+  // Mobile video dimensions: smoothly interpolate from 70% to 100% based on scroll
+  const mobileStart = 70; // Start at 70% width and 70vh height
+  const mobileEnd = 100;  // End at 100% width and 100vh height
+  const mobileVideoWidth = isMobile 
+    ? (isLocked ? mobileEnd : mobileStart + (mobileEnd - mobileStart) * scrollProgress)
     : null;
+  const mobileVideoHeight = isMobile 
+    ? (isLocked ? mobileEnd : mobileStart + (mobileEnd - mobileStart) * scrollProgress)
+    : null;
+  
+  // Mobile: show rounded corners while expanding, remove when fully expanded
+  const mobileFullyExpanded = isMobile && (isLocked || (mobileVideoWidth && mobileVideoWidth >= 99));
 
   return (
     <section className="relative min-h-[110vh] bg-white">
@@ -108,7 +114,7 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Video/Image Frame - Full-bleed on mobile, overlaps navbar for immersive feel */}
+      {/* Video/Image Frame - Width & height animate 70%→100% on mobile */}
       <div 
         className={`relative mx-auto transition-all duration-300 ease-out will-change-transform ${
           isMobile ? 'z-[60] -mt-16' : 'z-20'
@@ -116,15 +122,22 @@ const HeroSection = () => {
         style={{
           padding: isMobile ? 0 : `${videoPadding}px`,
           transform: `translateY(${videoTranslateY}px)`,
-          maxWidth: isMobile ? '100%' : `calc(100% - ${videoPadding * 2}px)`,
+          // Mobile: width animates from 70% to 100%
+          // Desktop: uses padding-based animation
+          width: isMobile ? `${mobileVideoWidth}%` : undefined,
+          maxWidth: isMobile ? `${mobileVideoWidth}%` : `calc(100% - ${videoPadding * 2}px)`,
         }}
       >
         <div 
           className={`relative w-full ${
             !isMobile && (isLocked ? 'h-screen' : 'h-[70vh] sm:h-[80vh] xl:h-[85vh] 2xl:h-[88vh]')
-          } ${isMobile ? 'rounded-none' : 'rounded-2xl'} overflow-hidden shadow-lift-lg transition-all duration-300`}
+          } overflow-hidden shadow-lift-lg transition-all duration-300`}
           style={{
             height: isMobile ? `${mobileVideoHeight}vh` : undefined,
+            // Rounded corners during expansion, none when fully expanded
+            borderRadius: isMobile 
+              ? (mobileFullyExpanded ? '0px' : '16px') 
+              : (isLocked ? '0px' : '16px'),
           }}
         >
           {/* Thumbnail - shows while video loads */}
