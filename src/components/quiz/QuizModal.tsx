@@ -1,12 +1,13 @@
 import { ReactNode, useEffect, useState, useRef } from "react";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface QuizModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: ReactNode;
-  hasEngaged?: boolean; // Lock modal height after first interaction
+  hasEngaged?: boolean;
 }
 
 const CALENDAR_URL = "https://bookme.name/embed/widget/4573/PkkmsRgxM6nqOnUWU19ErYrgjwUnFdCG9FxGCRAmDRfX8SgQudeXGIPa1h36";
@@ -19,24 +20,19 @@ const QuizModal = ({ isOpen, onClose, children, hasEngaged = false }: QuizModalP
   // Prevent body scroll when modal is open and manage focus
   useEffect(() => {
     if (isOpen) {
-      // Store the previously focused element
       previousActiveElement.current = document.activeElement as HTMLElement;
-      
       document.body.style.overflow = "hidden";
       
-      // Start preloading calendar when modal opens
       if (!calendarPreloaded) {
         setCalendarPreloaded(true);
       }
       
-      // Focus the close button for accessibility
       setTimeout(() => {
         closeButtonRef.current?.focus();
       }, 100);
     } else {
       document.body.style.overflow = "unset";
       
-      // Return focus to the previously focused element
       if (previousActiveElement.current) {
         previousActiveElement.current.focus();
       }
@@ -60,7 +56,7 @@ const QuizModal = ({ isOpen, onClose, children, hasEngaged = false }: QuizModalP
 
   return (
     <>
-      {/* Hidden Calendar Preloader - loads in background when modal first opens */}
+      {/* Hidden Calendar Preloader */}
       {calendarPreloaded && (
         <div className="fixed -left-[9999px] top-0 w-1 h-1 overflow-hidden" aria-hidden="true">
           <iframe
@@ -90,22 +86,34 @@ const QuizModal = ({ isOpen, onClose, children, hasEngaged = false }: QuizModalP
               animate={{ scale: 1, opacity: 1, y: 0 }}
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className={`relative w-full h-full md:h-auto md:max-w-2xl md:max-h-[90vh] overflow-hidden md:overflow-y-auto bg-background md:rounded-3xl shadow-lift-lg pb-[env(safe-area-inset-bottom)] ${
-                hasEngaged ? 'md:min-h-[600px]' : ''
-              }`}
+              className={`
+                relative w-full bg-background shadow-lift-lg
+                /* Mobile: Full screen with flex layout */
+                h-[100dvh] flex flex-col
+                /* Desktop: Centered modal with fixed dimensions */
+                md:h-auto md:max-w-2xl md:rounded-3xl
+                ${hasEngaged ? 'md:min-h-[620px] md:max-h-[90vh]' : 'md:max-h-[90vh]'}
+              `}
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Close Button - Inside the card */}
+              {/* Close Button - Fixed position on mobile, absolute on desktop */}
               <button
                 ref={closeButtonRef}
                 onClick={onClose}
                 aria-label="Close quiz"
-                className="absolute top-4 right-4 z-20 p-2 rounded-full bg-muted hover:bg-muted/80 text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+                className="absolute top-4 right-4 z-30 p-2 rounded-full bg-muted/90 hover:bg-muted text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
               >
                 <X className="w-5 h-5" />
               </button>
 
-              {children}
+              {/* Mobile: Scrollable content area that fills screen */}
+              <div className="flex-1 overflow-hidden md:overflow-visible">
+                <ScrollArea className="h-full md:h-auto">
+                  <div className="pb-[env(safe-area-inset-bottom)]">
+                    {children}
+                  </div>
+                </ScrollArea>
+              </div>
             </motion.div>
           </motion.div>
         )}

@@ -1,4 +1,4 @@
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect, useRef } from "react";
 import { HelpCircle } from "lucide-react";
 import {
   Tooltip,
@@ -7,15 +7,16 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import TravelCompass from "./TravelCompass";
+import { QUIZ_CONTENT_MIN_HEIGHT, QUIZ_CONTENT_MIN_HEIGHT_MOBILE } from "@/constants/layout";
 
 interface QuestionWrapperProps {
   title: string;
   subtitle?: string;
   helpText?: string;
   backgroundImage: string;
-  placeholderImage?: string; // Base64 LQIP for instant blur-up display
+  placeholderImage?: string;
   children: ReactNode;
-  fixedHeight?: boolean; // Lock content area height after first interaction
+  fixedHeight?: boolean;
 }
 
 const QuestionWrapper = ({
@@ -29,6 +30,7 @@ const QuestionWrapper = ({
 }: QuestionWrapperProps) => {
   const [showAnimation, setShowAnimation] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   // Trigger compass animation on mount
   useEffect(() => {
@@ -45,8 +47,31 @@ const QuestionWrapper = ({
     img.onload = () => setImageLoaded(true);
   }, [backgroundImage]);
 
+  // Auto-scroll to ensure Continue button is visible when content changes
+  useEffect(() => {
+    if (fixedHeight && contentRef.current) {
+      // Small delay to allow content to render
+      const timer = setTimeout(() => {
+        const buttons = contentRef.current?.querySelectorAll('button');
+        if (buttons && buttons.length > 0) {
+          const lastButton = buttons[buttons.length - 1];
+          lastButton.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [fixedHeight, children]);
+
   return (
-    <div className="relative min-h-[340px] sm:min-h-[380px] md:min-h-[420px] w-full overflow-hidden md:rounded-2xl">
+    <div 
+      className={`
+        relative w-full overflow-hidden md:rounded-2xl
+        ${fixedHeight 
+          ? 'min-h-[480px] md:min-h-[520px]' 
+          : 'min-h-[340px] sm:min-h-[380px] md:min-h-[420px]'
+        }
+      `}
+    >
       {/* Blurred LQIP placeholder - shows instantly */}
       {placeholderImage ? (
         <div
@@ -57,7 +82,6 @@ const QuestionWrapper = ({
           }}
         />
       ) : (
-        // Fallback gradient if no placeholder provided
         <div className="absolute inset-0 bg-gradient-to-br from-muted via-muted-foreground/20 to-muted" />
       )}
       
@@ -73,7 +97,17 @@ const QuestionWrapper = ({
       </div>
 
       {/* Content */}
-      <div className="relative z-10 flex flex-col items-center justify-center min-h-[340px] sm:min-h-[380px] md:min-h-[420px] px-3 sm:px-4 py-5 sm:py-6 md:py-8 text-center">
+      <div 
+        ref={contentRef}
+        className={`
+          relative z-10 flex flex-col items-center justify-start
+          px-3 sm:px-4 py-5 sm:py-6 md:py-8 text-center
+          ${fixedHeight 
+            ? 'min-h-[480px] md:min-h-[520px] overflow-y-auto' 
+            : 'min-h-[340px] sm:min-h-[380px] md:min-h-[420px]'
+          }
+        `}
+      >
         {/* Custom Compass Icon with Animation */}
         <div className={`mb-4 p-3 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 ${showAnimation ? "animate-needle-wiggle" : ""}`}>
           <TravelCompass size="md" animate={showAnimation} />
@@ -114,13 +148,8 @@ const QuestionWrapper = ({
           </p>
         )}
 
-        {/* Question Content - fixed height after first interaction to prevent layout shifts */}
-        <div 
-          className="w-full max-w-lg"
-          style={{
-            minHeight: fixedHeight ? '320px' : undefined,
-          }}
-        >
+        {/* Question Content */}
+        <div className="w-full max-w-lg flex-1">
           {children}
         </div>
       </div>

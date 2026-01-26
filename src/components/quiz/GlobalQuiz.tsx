@@ -705,20 +705,24 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
 
 
   const quizContent = (
-    <div className="flex flex-col h-full md:h-auto">
+    <div className="flex flex-col h-full">
       {!showResults && currentStep > 0 && (
-        <QuizProgress currentStep={currentStep} totalSteps={TOTAL_STEPS - 1} />
+        <div className="flex-shrink-0">
+          <QuizProgress currentStep={currentStep} totalSteps={TOTAL_STEPS - 1} />
+        </div>
       )}
       
-      {showResults ? (
-        <QuizResults
-          isQualified={isQualified}
-          userName={answers.name}
-          onClose={handleClose}
-        />
-      ) : (
-        renderStep()
-      )}
+      <div className="flex-1 min-h-0">
+        {showResults ? (
+          <QuizResults
+            isQualified={isQualified}
+            userName={answers.name}
+            onClose={handleClose}
+          />
+        ) : (
+          renderStep()
+        )}
+      </div>
     </div>
   );
 

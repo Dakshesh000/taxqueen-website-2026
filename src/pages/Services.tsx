@@ -129,8 +129,8 @@ const ServicesContent = () => {
               </p>
             </div>
             
-            {/* Embedded Quiz */}
-            <div className="bg-background rounded-2xl shadow-lg border border-border overflow-hidden">
+            {/* Embedded Quiz - Fixed height container to prevent page jumping */}
+            <div className="bg-background rounded-2xl shadow-lg border border-border overflow-hidden min-h-[620px]">
               <GlobalQuiz isEmbedded={true} />
             </div>
           </div>
