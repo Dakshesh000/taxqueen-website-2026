@@ -1,3 +1,10 @@
+/**
+ * Contact Page
+ * 
+ * Contact form, booking widget integration, and embedded quiz.
+ * Features credentials display and discovery call booking.
+ */
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,15 +17,21 @@ import {
   Calendar, 
   MapPin, 
   Award,
-  ArrowRight,
 } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
+import usePageMeta from "@/hooks/usePageMeta";
 
 import heatherHiking from "@/assets/lifestyle/heather-hiking-nature.jpg";
 
 const Contact = () => {
   const { toast } = useToast();
+
+  // SEO meta tags for contact page
+  usePageMeta(
+    "Contact Tax Queen | Book a Discovery Call",
+    "Get in touch with Tax Queen for expert nomad tax services. Book a discovery call or send a message to start your tax journey."
+  );
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -48,8 +61,11 @@ const Contact = () => {
               <div className="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
                 <img 
                   src={heatherHiking} 
-                  alt="Heather hiking in nature"
+                  alt="Heather hiking in nature - Tax Queen lifestyle"
+                  width={800}
+                  height={600}
                   className="w-full h-full object-cover"
+                  loading="eager"
                 />
               </div>
             </div>

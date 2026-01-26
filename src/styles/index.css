@@ -1,0 +1,314 @@
+/**
+ * @fileoverview Tax Queen Design System - Consolidated Styles
+ * @description Complete CSS design system for Tax Queen website
+ * @version 2.0.0
+ * 
+ * TABLE OF CONTENTS:
+ * 1. Tailwind Directives
+ * 2. Base Styles (CSS Variables, Reset)
+ * 3. iOS Safari Fixes
+ * 4. Utility Classes
+ * 5. Animation Utilities
+ * 
+ * =============================================================
+ * BRAND GUIDELINES
+ * =============================================================
+ * 
+ * BRAND COLORS (USE ONLY THESE):
+ * - Primary: Steel Blue (201 41% 51%) - Main brand color
+ * - Primary Light: (201 41% 95%) - Light backgrounds
+ * - Foreground: Near Black (222.2 84% 4.9%) - Body text
+ * - Muted Foreground: Gray (215.4 16.3% 46.9%) - Secondary text
+ * - Background: White (0 0% 100%)
+ * 
+ * DO NOT USE:
+ * - Teal or any green-ish colors
+ * - Random accent colors
+ * 
+ * TYPOGRAPHY:
+ * - All headings: UPPERCASE, font-bold
+ * - Heading sizes: text-3xl (mobile) → text-4xl (tablet) → text-5xl (desktop)
+ * - Body: text-base (mobile) → text-lg (desktop)
+ * 
+ * BUTTONS:
+ * - CTA: bg-primary, text-primary-foreground, rounded-full
+ * - Outline: border-border, hover lift animation
+ * - All buttons: "Get Started" (not "Learn More")
+ * 
+ * CARDS:
+ * - bg-background, rounded-2xl, shadow-md
+ * - Active/focused cards: border-2 border-primary
+ * 
+ * SECTION BACKGROUNDS:
+ * - White: bg-background
+ * - Light Blue: bg-section-blue
+ * - Alternating pattern recommended
+ * 
+ * BULLET POINTS:
+ * - Use primary color dots (bg-primary), NOT teal/accent
+ * 
+ * =============================================================
+ */
+
+/* =============================================================
+   1. TAILWIND DIRECTIVES
+   ============================================================= */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =============================================================
+   2. BASE STYLES - CSS Variables & Reset
+   ============================================================= */
+
+@layer base {
+  :root {
+    /* Core Colors */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    /* Card Colors */
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    /* Popover Colors */
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    /* Primary: Steel Blue - MAIN BRAND COLOR */
+    --primary: 201 41% 51%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary: Light Steel Blue */
+    --secondary: 201 30% 90%;
+    --secondary-foreground: 201 41% 25%;
+
+    /* Muted Colors */
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    /* Accent: Steel Blue variant (same family as primary) */
+    --accent: 201 41% 65%;
+    --accent-foreground: 201 41% 15%;
+
+    /* Destructive Colors */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    /* Border & Input */
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 201 41% 51%;
+
+    /* Border Radius */
+    --radius: 0.5rem;
+
+    /* Section Backgrounds - Blue tones only */
+    --section-blue-light: 211 100% 95%;
+
+    /* Glass effect */
+    --glass-bg: 0 0% 100% / 0.15;
+    --glass-border: 0 0% 100% / 0.2;
+
+    /* Sidebar Colors */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* Dark Mode Variables */
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 201 41% 60%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 201 41% 55%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+
+    --section-blue-light: 211 50% 15%;
+
+    --glass-bg: 0 0% 0% / 0.3;
+    --glass-border: 0 0% 100% / 0.1;
+
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    /* iOS Safari safe area support */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+}
+
+/* =============================================================
+   3. iOS SAFARI FIXES
+   ============================================================= */
+
+/**
+ * Prevent horizontal overflow on mobile
+ * iOS Safari's momentum scrolling can sometimes cause horizontal overflow
+ */
+html, body {
+  overflow-x: hidden;
+  position: relative;
+}
+
+/**
+ * iOS Safari background-attachment: fixed bug fix
+ * 
+ * On iOS Safari, background-attachment: fixed causes:
+ * - Severe scrolling performance issues
+ * - Background image flickering
+ * - Memory issues on older devices
+ * 
+ * Solution: Fall back to scroll on iOS devices
+ * @see https://bugs.webkit.org/show_bug.cgi?id=154399
+ */
+@supports (-webkit-touch-callout: none) {
+  .bg-fixed {
+    background-attachment: scroll !important;
+  }
+}
+
+/* =============================================================
+   4. UTILITY CLASSES
+   ============================================================= */
+
+@layer utilities {
+  /**
+   * Glass morphism effect
+   * Usage: Apply to overlays or cards that need a frosted glass appearance
+   */
+  .glass {
+    @apply bg-white/15 backdrop-blur-md border border-white/20;
+  }
+
+  /**
+   * Text shadow utilities
+   * Usage: For text over images to improve readability
+   */
+  .text-shadow {
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .text-shadow-lg {
+    text-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  }
+
+  /**
+   * Scrollbar hiding utilities
+   * Usage: For horizontal scroll containers where native scrollbar is unwanted
+   */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /**
+   * Mobile horizontal scroll container
+   * Usage: Wrap content that should horizontally scroll on mobile
+   * Example: <div className="mobile-scroll"><div className="mobile-scroll-inner">...</div></div>
+   */
+  .mobile-scroll {
+    @apply overflow-x-auto scrollbar-hide -mx-4 px-4;
+  }
+
+  .mobile-scroll-inner {
+    @apply flex gap-4 w-max pb-2;
+  }
+
+  /**
+   * Safe area utilities for iOS devices
+   * Usage: Apply to elements that need to respect device safe areas
+   */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-area-all {
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+}
+
+/* =============================================================
+   5. ANIMATION UTILITIES
+   ============================================================= */
+
+@layer utilities {
+  /**
+   * Auto-scroll animation for mobile marquee
+   * Usage: For infinite horizontal scrolling content (testimonials, logos)
+   * 
+   * @example
+   * <div className="animate-scroll-mobile">
+   *   <div>Content 1</div>
+   *   <div>Content 2</div>
+   *   <div>Content 1 (duplicate)</div>
+   *   <div>Content 2 (duplicate)</div>
+   * </div>
+   */
+  @keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .animate-scroll-mobile {
+    animation: scroll-left 25s linear infinite;
+  }
+
+  .animate-scroll-mobile-fast {
+    animation: scroll-left 15s linear infinite;
+  }
+
+  /* Pause animation on hover/touch for better UX */
+  .animate-scroll-mobile:hover,
+  .animate-scroll-mobile:active,
+  .animate-scroll-mobile-fast:hover,
+  .animate-scroll-mobile-fast:active {
+    animation-play-state: paused;
+  }
+}
