@@ -123,7 +123,7 @@ const HeroSection = () => {
                 Get Started
               </Button>
               <Button variant="outline-cta" size="xl" asChild>
-                <Link to="/services">Learn More</Link>
+                <Link to="/services">Explore Our Services</Link>
               </Button>
             </div>
           </div>
