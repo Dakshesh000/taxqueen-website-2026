@@ -1,6 +1,6 @@
 // Brand Assets
 export { default as logoTaxQueen } from './brand/logo-tax-queen.png';
-export { default as logoTaxQueenMain } from './brand/logo-tax-queen-main.jpg';
+export { default as logoTaxQueenMain } from './brand/logo-tax-queen-main.png';
 
 // Heather Personal Photos
 export { default as heatherPortrait } from './heather/portrait-square.png';
@@ -21,7 +21,7 @@ export { default as servicesCta } from './services/services-cta.webp';
 export { default as taxPreparation } from './services/tax-preparation-new-2.jpg';
 
 // Hero Section
-export { default as heroVideoThumbnail } from './hero/hero-video-thumbnail.png';
+export { default as heroVideoThumbnail } from './hero/hero-video-thumbnail.webp';
 
 // Lifestyle Photos
 export { default as womanWorkingViews } from './lifestyle/woman-working-views.jpg';

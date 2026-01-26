@@ -30,6 +30,8 @@ const Navbar = () => {
           <img 
             src={logoTaxQueenMain} 
             alt="Tax Queen" 
+            width={40}
+            height={40}
             className={`w-auto transition-all duration-300 ${isScrolled ? "h-8" : "h-10"}`}
           />
           <span className={`font-bold text-foreground uppercase tracking-wide transition-all duration-300 ${isScrolled ? "text-lg" : "text-xl"}`}>

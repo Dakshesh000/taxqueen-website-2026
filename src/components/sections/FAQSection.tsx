@@ -77,7 +77,7 @@ const FAQSection = () => {
               href="#full-faq"
               className="inline-block mt-8 text-sm text-primary underline hover:text-primary/80 transition-colors text-right w-full"
             >
-              Didn't find what you're looking for? Click here
+              View our complete FAQ
             </a>
           </div>
 
@@ -126,7 +126,7 @@ const FAQSection = () => {
           href="#full-faq"
           className="inline-block mt-8 text-sm text-primary underline hover:text-primary/80 transition-colors"
         >
-          Didn't find what you're looking for? Click here
+          View our complete FAQ
         </a>
       </div>
     </section>
