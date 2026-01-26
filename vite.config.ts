@@ -16,6 +16,14 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
+    // Use Terser for better minification (~3KB savings)
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
     rollupOptions: {
       output: {
         manualChunks: {
