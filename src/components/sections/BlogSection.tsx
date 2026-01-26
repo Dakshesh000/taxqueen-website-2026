@@ -34,14 +34,7 @@ const BlogSection = () => {
   return (
     <section id="articles" className="w-full py-20 lg:py-28 bg-background">
       <div className="container mx-auto px-4 flex flex-col gap-14">
-        {/* Header */}
-        <div className="flex w-full justify-center">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold uppercase text-foreground text-center">
-            Tax Tips & Resources
-          </h2>
-        </div>
-
-        {/* Blog Cards Carousel */}
+        {/* Blog Cards Carousel - Header inside for mobile arrow access */}
         <Carousel
           opts={{
             loop: true,
@@ -50,6 +43,23 @@ const BlogSection = () => {
           }}
           className="w-full"
         >
+          {/* Header with Mobile Navigation */}
+          <div className="flex flex-col items-center gap-4 mb-8">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold uppercase text-foreground text-center">
+              Tax Tips & Resources
+            </h2>
+            
+            {/* Mobile Navigation - Below heading */}
+            <div className="flex md:hidden justify-center gap-4">
+              <CarouselPrevious className="relative static translate-x-0 translate-y-0 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-10 h-10 shadow-md">
+                <ChevronLeft className="w-5 h-5" />
+              </CarouselPrevious>
+              <CarouselNext className="relative static translate-x-0 translate-y-0 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-10 h-10 shadow-md">
+                <ChevronRight className="w-5 h-5" />
+              </CarouselNext>
+            </div>
+          </div>
+
           <CarouselContent className="-ml-4">
             {blogPosts.map((post, index) => (
               <CarouselItem 
@@ -84,16 +94,6 @@ const BlogSection = () => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          
-          {/* Mobile Navigation - Below carousel */}
-          <div className="flex md:hidden justify-center gap-4 mt-6">
-            <CarouselPrevious className="relative static translate-x-0 translate-y-0 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-10 h-10 shadow-md">
-              <ChevronLeft className="w-5 h-5" />
-            </CarouselPrevious>
-            <CarouselNext className="relative static translate-x-0 translate-y-0 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-10 h-10 shadow-md">
-              <ChevronRight className="w-5 h-5" />
-            </CarouselNext>
-          </div>
           
           {/* Desktop Navigation Arrows */}
           <CarouselPrevious className="hidden md:flex left-0 -translate-x-14 top-[14%] -translate-y-0 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-12 h-12 shadow-lg">

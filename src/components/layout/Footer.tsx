@@ -78,16 +78,18 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Book a Call CTA */}
-        <a 
-          href={BOOKING_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 mb-6 py-3 px-6 bg-primary-foreground text-primary rounded-full font-semibold hover:bg-primary-foreground/90 transition-colors shadow-lg"
-        >
-          <Calendar className="w-5 h-5" />
-          Book a Discovery Call
-        </a>
+        {/* Contact - simple text format */}
+        <div className="text-center mb-6">
+          <p className="text-sm font-semibold text-primary-foreground mb-1">Contact Us</p>
+          <a 
+            href={BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors pl-4 inline-block"
+          >
+            Book a Discovery Call
+          </a>
+        </div>
 
         {/* Newsletter - simple inline form */}
         <form onSubmit={handleNewsletterSubmit} className="flex gap-2 mb-6">
@@ -148,16 +150,6 @@ const Footer = () => {
           </ul>
         </nav>
 
-        {/* Legal Links */}
-        <div className="flex justify-center gap-4 text-xs text-primary-foreground/60 mb-4">
-          <Link to="/terms" className="hover:text-primary-foreground transition-colors">
-            Terms of Service
-          </Link>
-          <span className="text-primary-foreground/40">•</span>
-          <Link to="/privacy" className="hover:text-primary-foreground transition-colors">
-            Privacy Policy
-          </Link>
-        </div>
       </div>
 
       {/* Desktop Layout */}
@@ -284,6 +276,16 @@ const Footer = () => {
           <p className="text-sm text-primary-foreground/80 text-center">
             © {currentYear} {brand.name}. All rights reserved.
           </p>
+          {/* Legal Links - Below copyright */}
+          <div className="flex justify-center gap-4 text-xs text-primary-foreground/60 mt-2">
+            <Link to="/terms" className="hover:text-primary-foreground transition-colors">
+              Terms of Service
+            </Link>
+            <span className="text-primary-foreground/40">•</span>
+            <Link to="/privacy" className="hover:text-primary-foreground transition-colors">
+              Privacy Policy
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
