@@ -356,7 +356,7 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-card rounded-2xl p-6 border border-border shadow-sm hover:shadow-lg transition-shadow duration-300"
+                className="bg-card rounded-2xl p-6 border border-border shadow-sm hover:shadow-lg hover:shadow-primary/25 hover:border-primary/40 transition-all duration-300"
               >
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4">
                   <cred.icon className="w-6 h-6 text-primary" />

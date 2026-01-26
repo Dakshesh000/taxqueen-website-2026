@@ -20,7 +20,7 @@ import ServicesTestimonialsCarousel from "@/components/sections/ServicesTestimon
 import ServicesCards from "@/components/sections/ServicesCards";
 import ParallaxDivider from "@/components/ui/ParallaxDivider";
 import { QuizProvider, useQuiz } from "@/contexts/QuizContext";
-import { servicesHero, heatherPortrait, servicesCta } from "@/assets";
+import { servicesHero, heatherPortrait, taxQueenInVan } from "@/assets";
 import usePageMeta from "@/hooks/usePageMeta";
 
 const ServicesContent = () => {
@@ -130,7 +130,7 @@ const ServicesContent = () => {
             </div>
             
             {/* Embedded Quiz - Fixed height container to prevent page jumping */}
-            <div className="bg-background rounded-2xl shadow-lg border border-border overflow-hidden min-h-[620px]">
+            <div className="rounded-2xl shadow-lg border border-border overflow-hidden h-[620px]">
               <GlobalQuiz isEmbedded={true} />
             </div>
           </div>
@@ -146,7 +146,7 @@ const ServicesContent = () => {
       {/* CTA Section with Parallax Effect */}
       <section className="relative">
         <ParallaxDivider
-          image={servicesCta}
+          image={taxQueenInVan}
           height="h-[350px] md:h-[400px]"
         />
         <div className="absolute inset-0 flex items-center justify-center z-20">

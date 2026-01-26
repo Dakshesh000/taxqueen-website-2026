@@ -108,45 +108,45 @@ const Footer = () => {
               const isExternal = "external" in item && item.external;
               const isAnchor = item.href.startsWith("#");
               
-                  return (
-                    <li key={item.href}>
-                      {isExternal ? (
-                        <a
-                          href={item.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
-                        >
-                          {item.label}
-                        </a>
-                      ) : isAnchor ? (
-                        <a
-                          href={item.href}
-                          className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
-                        >
-                          {item.label}
-                        </a>
-                      ) : (
-                        <Link
-                          to={item.href}
-                          className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
-                        >
-                          {item.label}
-                        </Link>
-                      )}
-                      {item.label === "Portal" && (
-                        <a
-                          href={BOOKING_URL}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block text-sm"
-                        >
-                          Book a Call
-                        </a>
-                      )}
-                    </li>
-                  );
+              return (
+                <li key={item.href}>
+                  {isExternal ? (
+                    <a
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
+                    >
+                      {item.label}
+                    </a>
+                  ) : isAnchor ? (
+                    <a
+                      href={item.href}
+                      className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
+                    >
+                      {item.label}
+                    </a>
+                  ) : (
+                    <Link
+                      to={item.href}
+                      className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
+                    >
+                      {item.label}
+                    </Link>
+                  )}
+                </li>
+              );
             })}
+            <li>
+              <a
+                href={BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
+              >
+                Book a Call
+              </a>
+            </li>
           </ul>
         </nav>
 
@@ -205,45 +205,45 @@ const Footer = () => {
                   const isExternal = "external" in item && item.external;
                   const isAnchor = item.href.startsWith("#");
                   
-                    return (
-                      <li key={item.href}>
-                        {isExternal ? (
-                          <a
-                            href={item.href}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                          >
-                            {item.label}
-                          </a>
-                        ) : isAnchor ? (
-                          <a
-                            href={item.href}
-                            className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                          >
-                            {item.label}
-                          </a>
-                        ) : (
-                          <Link
-                            to={item.href}
-                            className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                          >
-                            {item.label}
-                          </Link>
-                        )}
-                        {item.label === "Portal" && (
+                  return (
+                    <li key={item.href}>
+                      {isExternal ? (
                         <a
-                          href={BOOKING_URL}
+                          href={item.href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors block mt-1"
+                          className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
                         >
-                          Book a Call
+                          {item.label}
                         </a>
-                        )}
-                      </li>
-                    );
+                      ) : isAnchor ? (
+                        <a
+                          href={item.href}
+                          className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                        >
+                          {item.label}
+                        </a>
+                      ) : (
+                        <Link
+                          to={item.href}
+                          className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                        >
+                          {item.label}
+                        </Link>
+                      )}
+                    </li>
+                  );
                 })}
+                <li>
+                  <a
+                    href={BOOKING_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                  >
+                    Book a Call
+                  </a>
+                </li>
               </ul>
             </nav>
           </div>

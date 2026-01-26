@@ -5,11 +5,11 @@
  * Features credentials display and discovery call booking.
  */
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import GlobalQuiz from "@/components/quiz/GlobalQuiz";
 import { 
@@ -24,8 +24,17 @@ import usePageMeta from "@/hooks/usePageMeta";
 
 import heatherHiking from "@/assets/lifestyle/heather-hiking-nature.jpg";
 
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/mlgbnbeo";
+
 const Contact = () => {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
 
   // SEO meta tags for contact page
   usePageMeta(
@@ -33,12 +42,38 @@ const Contact = () => {
     "Get in touch with Tax Queen for expert nomad tax services. Book a discovery call or send a message to start your tax journey."
   );
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Message sent!",
-      description: "We'll get back to you within 24-48 hours.",
-    });
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        toast({
+          title: "Message sent!",
+          description: "We'll get back to you within 24-48 hours.",
+        });
+        setFormData({ name: "", email: "", subject: "", message: "" });
+      } else {
+        throw new Error("Failed to send");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const credentials = [
@@ -72,9 +107,6 @@ const Contact = () => {
 
             {/* Content */}
             <div className="space-y-6">
-              <Badge variant="outline" className="text-primary border-primary">
-                Let's Connect
-              </Badge>
               <h1 className="text-4xl md:text-5xl font-bold text-foreground">
                 Let's Start Your Tax Journey
               </h1>
@@ -115,11 +147,28 @@ const Contact = () => {
                   <form onSubmit={handleFormSubmit} className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="name">Name</Label>
-                      <Input id="name" placeholder="Your name" required className="h-11" />
+                      <Input 
+                        id="name" 
+                        placeholder="Your name" 
+                        required 
+                        className="h-11"
+                        value={formData.name}
+                        onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                        disabled={isSubmitting}
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email">Email</Label>
-                      <Input id="email" type="email" placeholder="your@email.com" required className="h-11" />
+                      <Input 
+                        id="email" 
+                        type="email" 
+                        placeholder="your@email.com" 
+                        required 
+                        className="h-11"
+                        value={formData.email}
+                        onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                        disabled={isSubmitting}
+                      />
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="subject">Subject</Label>
@@ -127,6 +176,9 @@ const Contact = () => {
                         id="subject" 
                         className="flex h-11 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                         required
+                        value={formData.subject}
+                        onChange={(e) => setFormData(prev => ({ ...prev, subject: e.target.value }))}
+                        disabled={isSubmitting}
                       >
                         <option value="">Select a topic...</option>
                         <option value="tax-prep">Tax Preparation</option>
@@ -143,9 +195,14 @@ const Contact = () => {
                         placeholder="Tell me about your situation..." 
                         rows={4}
                         required
+                        value={formData.message}
+                        onChange={(e) => setFormData(prev => ({ ...prev, message: e.target.value }))}
+                        disabled={isSubmitting}
                       />
                     </div>
-                    <Button type="submit" className="w-full h-11">Send Message</Button>
+                    <Button type="submit" className="w-full h-11" disabled={isSubmitting}>
+                      {isSubmitting ? "Sending..." : "Send Message"}
+                    </Button>
                   </form>
                 </div>
               </div>
@@ -177,9 +234,13 @@ const Contact = () => {
               Take The Quiz
             </p>
           </div>
-          <GlobalQuiz isEmbedded={true} />
+          <div className="max-w-4xl mx-auto">
+            <div className="rounded-2xl shadow-lg border border-border overflow-hidden h-[620px]">
+              <GlobalQuiz isEmbedded={true} />
+            </div>
+          </div>
         </div>
-        </section>
+      </section>
       </main>
       <Footer />
     </div>
