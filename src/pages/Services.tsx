@@ -42,8 +42,8 @@ const ServicesContent = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-
-      {/* Hero Section - Container with Rounded Image */}
+      <main id="main-content">
+        {/* Hero Section - Container with Rounded Image */}
       <section className="pt-24 pb-8 md:pt-28 md:pb-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative rounded-2xl overflow-hidden h-[280px] md:h-[320px]">
@@ -167,8 +167,8 @@ const ServicesContent = () => {
             </Button>
           </div>
         </div>
-      </section>
-
+        </section>
+      </main>
       <Footer />
     </div>
   );

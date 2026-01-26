@@ -51,8 +51,8 @@ const Contact = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-      
-      {/* Hero Introduction Section */}
+      <main id="main-content">
+        {/* Hero Introduction Section */}
       <section className="pt-32 pb-20 bg-gradient-to-b from-primary/5 to-background">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -179,8 +179,8 @@ const Contact = () => {
           </div>
           <GlobalQuiz isEmbedded={true} />
         </div>
-      </section>
-
+        </section>
+      </main>
       <Footer />
     </div>
   );

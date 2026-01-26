@@ -61,8 +61,8 @@ const About = () => {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
-
-      {/* Section 1: Hero Banner */}
+      <main id="main-content" className="flex-1">
+        {/* Section 1: Hero Banner */}
       <section className="pt-24 lg:pt-28">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative rounded-2xl overflow-hidden h-[280px] md:h-[320px]">
@@ -403,8 +403,7 @@ const About = () => {
           </motion.div>
         </div>
       </section>
-
-
+      </main>
       <Footer />
     </div>
   );

@@ -26,7 +26,7 @@ const Navbar = () => {
     >
       <nav className="container mx-auto px-4 h-full flex items-center justify-between">
         {/* Logo + Wordmark */}
-        <a href="/" className="flex items-center gap-3">
+        <a href="/" className="flex items-center gap-3" aria-label="Tax Queen - Return to homepage">
           <img 
             src={logoTaxQueenMain} 
             alt="Tax Queen" 
