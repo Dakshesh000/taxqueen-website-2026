@@ -5,6 +5,7 @@ import ChatDrawer from "./ChatDrawer";
 const CompassChatButton = forwardRef<HTMLButtonElement>((_, ref) => {
   const [isWiggling, setIsWiggling] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const [showGreeting, setShowGreeting] = useState(false);
 
   // Wiggle needle periodically to attract attention (only when chat is closed)
   useEffect(() => {
@@ -18,8 +19,53 @@ const CompassChatButton = forwardRef<HTMLButtonElement>((_, ref) => {
     return () => clearInterval(wiggleInterval);
   }, [isOpen]);
 
+  // Show greeting once per session after delay
+  useEffect(() => {
+    const hasSeenGreeting = sessionStorage.getItem('chatGreetingSeen');
+    if (hasSeenGreeting || isOpen) return;
+
+    const showTimer = setTimeout(() => {
+      setShowGreeting(true);
+    }, 3000);
+
+    const hideTimer = setTimeout(() => {
+      setShowGreeting(false);
+      sessionStorage.setItem('chatGreetingSeen', 'true');
+    }, 9000);
+
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(hideTimer);
+    };
+  }, [isOpen]);
+
+  const dismissGreeting = () => {
+    setShowGreeting(false);
+    sessionStorage.setItem('chatGreetingSeen', 'true');
+  };
+
   return (
     <>
+      {/* Greeting Bubble */}
+      {showGreeting && !isOpen && (
+        <div className="fixed bottom-24 right-6 z-50 max-w-[240px] animate-fade-in-up">
+          <div className="bg-background rounded-2xl shadow-lg border border-border p-3 relative">
+            <button
+              onClick={dismissGreeting}
+              className="absolute -top-2 -right-2 w-5 h-5 bg-muted rounded-full flex items-center justify-center text-xs text-muted-foreground hover:bg-muted/80"
+              aria-label="Dismiss"
+            >
+              ×
+            </button>
+            <p className="text-sm text-foreground">
+              Hey there, fellow traveler! 🧭 Need help navigating nomad taxes?
+            </p>
+          </div>
+          {/* Speech bubble tail */}
+          <div className="absolute -bottom-2 right-8 w-4 h-4 bg-background border-r border-b border-border rotate-45 transform" />
+        </div>
+      )}
+
       <button
         ref={ref}
         onClick={() => setIsOpen(true)}

@@ -7,6 +7,7 @@ import { QuizProvider } from "@/contexts/QuizContext";
 import { lazy, Suspense } from "react";
 import { ErrorBoundary, PageLoader } from "@/components/common";
 import GlobalQuiz from "@/components/quiz/GlobalQuiz";
+import { CompassChatButton } from "@/components/common";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
@@ -54,6 +55,7 @@ const App = () => (
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
+            <CompassChatButton />
           </BrowserRouter>
         </ErrorBoundary>
       </QuizProvider>
