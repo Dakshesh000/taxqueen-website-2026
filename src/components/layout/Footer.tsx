@@ -78,18 +78,6 @@ const Footer = () => {
           </p>
         </div>
 
-        {/* Contact - simple text format */}
-        <div className="text-center mb-6">
-          <p className="text-sm font-semibold text-primary-foreground mb-1">Contact Us</p>
-          <a 
-            href={BOOKING_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors pl-4 inline-block"
-          >
-            Book a Discovery Call
-          </a>
-        </div>
 
         {/* Newsletter - simple inline form */}
         <form onSubmit={handleNewsletterSubmit} className="flex gap-2 mb-6">
@@ -118,34 +106,44 @@ const Footer = () => {
               const isExternal = "external" in item && item.external;
               const isAnchor = item.href.startsWith("#");
               
-              return (
-                <li key={item.href}>
-                  {isExternal ? (
-                    <a
-                      href={item.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
-                    >
-                      {item.label}
-                    </a>
-                  ) : isAnchor ? (
-                    <a
-                      href={item.href}
-                      className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
-                    >
-                      {item.label}
-                    </a>
-                  ) : (
-                    <Link
-                      to={item.href}
-                      className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
-                    >
-                      {item.label}
-                    </Link>
-                  )}
-                </li>
-              );
+                  return (
+                    <li key={item.href}>
+                      {isExternal ? (
+                        <a
+                          href={item.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
+                        >
+                          {item.label}
+                        </a>
+                      ) : isAnchor ? (
+                        <a
+                          href={item.href}
+                          className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
+                        >
+                          {item.label}
+                        </a>
+                      ) : (
+                        <Link
+                          to={item.href}
+                          className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block"
+                        >
+                          {item.label}
+                        </Link>
+                      )}
+                      {item.label === "Contact" && (
+                        <a
+                          href={BOOKING_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block pl-4 text-sm"
+                        >
+                          Book a Call
+                        </a>
+                      )}
+                    </li>
+                  );
             })}
           </ul>
         </nav>
@@ -154,7 +152,7 @@ const Footer = () => {
 
       {/* Desktop Layout */}
       <div className="hidden md:block container mx-auto px-4 py-12 sm:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
           {/* Newsletter Column */}
           <div className="space-y-4 order-last lg:order-last">
             <h4 className="font-semibold uppercase tracking-wide">Stay Updated</h4>
@@ -203,70 +201,49 @@ const Footer = () => {
                   const isExternal = "external" in item && item.external;
                   const isAnchor = item.href.startsWith("#");
                   
-                  return (
-                    <li key={item.href}>
-                      {isExternal ? (
-                        <a
-                          href={item.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                        >
-                          {item.label}
-                        </a>
-                      ) : isAnchor ? (
-                        <a
-                          href={item.href}
-                          className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                        >
-                          {item.label}
-                        </a>
-                      ) : (
-                        <Link
-                          to={item.href}
-                          className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-                        >
-                          {item.label}
-                        </Link>
-                      )}
-                    </li>
-                  );
+                    return (
+                      <li key={item.href}>
+                        {isExternal ? (
+                          <a
+                            href={item.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                          >
+                            {item.label}
+                          </a>
+                        ) : isAnchor ? (
+                          <a
+                            href={item.href}
+                            className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                          >
+                            {item.label}
+                          </a>
+                        ) : (
+                          <Link
+                            to={item.href}
+                            className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+                          >
+                            {item.label}
+                          </Link>
+                        )}
+                        {item.label === "Contact" && (
+                          <a
+                            href={BOOKING_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors pl-4 block mt-1"
+                          >
+                            Book a Call
+                          </a>
+                        )}
+                      </li>
+                    );
                 })}
               </ul>
             </nav>
           </div>
 
-          {/* Contact Column */}
-          <div className="space-y-4">
-            <h4 className="font-semibold uppercase tracking-wide">Contact</h4>
-            <div className="space-y-3">
-              <a 
-                href={BOOKING_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
-              >
-                <Calendar className="w-4 h-4" />
-                Book a Discovery Call
-              </a>
-              <p className="text-sm text-primary-foreground/80">{brand.email}</p>
-            </div>
-            {/* Legal Links */}
-            <div className="pt-4 space-y-2 border-t border-primary-foreground/20">
-              <Link 
-                to="/terms" 
-                className="block text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors"
-              >
-                Terms of Service
-              </Link>
-              <Link 
-                to="/privacy" 
-                className="block text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors"
-              >
-                Privacy Policy
-              </Link>
-            </div>
-          </div>
         </div>
       </div>
 
