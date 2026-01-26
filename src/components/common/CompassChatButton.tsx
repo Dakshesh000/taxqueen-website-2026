@@ -31,7 +31,7 @@ const CompassChatButton = forwardRef<HTMLButtonElement>((_, ref) => {
     const hideTimer = setTimeout(() => {
       setShowGreeting(false);
       sessionStorage.setItem('chatGreetingSeen', 'true');
-    }, 9000);
+    }, 15000);
 
     return () => {
       clearTimeout(showTimer);
@@ -49,20 +49,20 @@ const CompassChatButton = forwardRef<HTMLButtonElement>((_, ref) => {
       {/* Greeting Bubble */}
       {showGreeting && !isOpen && (
         <div className="fixed bottom-24 right-6 z-50 max-w-[240px] animate-fade-in-up">
-          <div className="bg-background rounded-2xl shadow-lg border border-border p-3 relative">
+          <div className="bg-primary rounded-2xl shadow-lg border border-primary/30 p-3 relative">
             <button
               onClick={dismissGreeting}
-              className="absolute -top-2 -right-2 w-5 h-5 bg-muted rounded-full flex items-center justify-center text-xs text-muted-foreground hover:bg-muted/80"
+              className="absolute -top-2 -right-2 w-5 h-5 bg-white/20 rounded-full flex items-center justify-center text-xs text-primary-foreground hover:bg-white/30"
               aria-label="Dismiss"
             >
               ×
             </button>
-            <p className="text-sm text-foreground">
+            <p className="text-sm text-primary-foreground">
               Hey there, fellow traveler! 🧭 Need help navigating nomad taxes?
             </p>
           </div>
           {/* Speech bubble tail */}
-          <div className="absolute -bottom-2 right-8 w-4 h-4 bg-background border-r border-b border-border rotate-45 transform" />
+          <div className="absolute -bottom-2 right-8 w-4 h-4 bg-primary border-r border-b border-primary/30 rotate-45 transform" />
         </div>
       )}
 
