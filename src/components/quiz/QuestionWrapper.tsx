@@ -7,7 +7,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import TravelCompass from "./TravelCompass";
-import { QUIZ_CONTENT_MIN_HEIGHT, QUIZ_CONTENT_MIN_HEIGHT_MOBILE } from "@/constants/layout";
 
 interface QuestionWrapperProps {
   title: string;
@@ -64,13 +63,7 @@ const QuestionWrapper = ({
 
   return (
     <div 
-      className={`
-        relative w-full overflow-hidden md:rounded-2xl
-        ${fixedHeight 
-          ? 'min-h-[480px] md:min-h-[520px]' 
-          : 'min-h-[340px] sm:min-h-[380px] md:min-h-[420px]'
-        }
-      `}
+      className="relative w-full h-full flex-1 overflow-hidden md:rounded-2xl flex flex-col"
     >
       {/* Blurred LQIP placeholder - shows instantly */}
       {placeholderImage ? (
@@ -96,17 +89,10 @@ const QuestionWrapper = ({
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/70 via-foreground/60 to-foreground/80" />
       </div>
 
-      {/* Content */}
+      {/* Content - centered vertically and horizontally */}
       <div 
         ref={contentRef}
-        className={`
-          relative z-10 flex flex-col items-center justify-start
-          px-3 sm:px-4 py-5 sm:py-6 md:py-8 text-center
-          ${fixedHeight 
-            ? 'min-h-[480px] md:min-h-[520px] overflow-y-auto' 
-            : 'min-h-[340px] sm:min-h-[380px] md:min-h-[420px]'
-          }
-        `}
+        className="relative z-10 flex flex-col items-center justify-center flex-1 px-4 py-6 md:py-8 text-center overflow-y-auto"
       >
         {/* Custom Compass Icon with Animation */}
         <div className={`mb-4 p-3 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 ${showAnimation ? "animate-needle-wiggle" : ""}`}>
