@@ -134,7 +134,7 @@ const Footer = () => {
                           {item.label}
                         </Link>
                       )}
-                      {item.label === "Contact" && (
+                      {item.label === "Portal" && (
                         <a
                           href={BOOKING_URL}
                           target="_blank"
@@ -231,7 +231,7 @@ const Footer = () => {
                             {item.label}
                           </Link>
                         )}
-                        {item.label === "Contact" && (
+                        {item.label === "Portal" && (
                         <a
                           href={BOOKING_URL}
                           target="_blank"

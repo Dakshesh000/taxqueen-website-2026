@@ -22,7 +22,7 @@ import Footer from "@/components/layout/Footer";
 import { HeroSection, SocialProofSection } from "@/components/sections";
 import AboutSection from "@/components/sections/AboutSection";
 import FeaturedInSection from "@/components/sections/FeaturedInSection";
-import CompassChatButton from "@/components/CompassChatButton";
+import { CompassChatButton } from "@/components/common";
 import usePageMeta from "@/hooks/usePageMeta";
 
 // Lazy load below-fold sections to reduce initial JS bundle (~68KB savings)
