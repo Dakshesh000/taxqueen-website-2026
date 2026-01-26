@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { forwardRef, useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import ChatDrawer from "./ChatDrawer";
 
-const CompassChatButton = () => {
+const CompassChatButton = forwardRef<HTMLButtonElement>((_, ref) => {
   const [isWiggling, setIsWiggling] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -21,6 +21,7 @@ const CompassChatButton = () => {
   return (
     <>
       <button
+        ref={ref}
         onClick={() => setIsOpen(true)}
         className={cn(
           "fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full",
@@ -97,6 +98,8 @@ const CompassChatButton = () => {
       <ChatDrawer isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </>
   );
-};
+});
+
+CompassChatButton.displayName = "CompassChatButton";
 
 export default CompassChatButton;
