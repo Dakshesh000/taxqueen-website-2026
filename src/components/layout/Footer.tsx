@@ -137,7 +137,7 @@ const Footer = () => {
                           href={BOOKING_URL}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block pl-4 text-sm"
+                          className="text-primary-foreground/80 hover:text-primary-foreground transition-colors py-1 block text-sm"
                         >
                           Book a Call
                         </a>
@@ -228,14 +228,14 @@ const Footer = () => {
                           </Link>
                         )}
                         {item.label === "Contact" && (
-                          <a
-                            href={BOOKING_URL}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors pl-4 block mt-1"
-                          >
-                            Book a Call
-                          </a>
+                        <a
+                          href={BOOKING_URL}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors block mt-1"
+                        >
+                          Book a Call
+                        </a>
                         )}
                       </li>
                     );
