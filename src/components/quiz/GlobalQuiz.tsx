@@ -38,7 +38,8 @@ import SingleSelectQuestion from "@/components/quiz/questions/SingleSelectQuesti
 import SliderQuestion from "@/components/quiz/questions/SliderQuestion";
 import ContactForm from "@/components/quiz/questions/ContactForm";
 import ExpatQuestion from "@/components/quiz/questions/ExpatQuestion";
-import { supabase } from "@/integrations/supabase/client";
+// Formspree endpoint for quiz submissions
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xojdevbj";
 import { useToast } from "@/hooks/use-toast";
 import { useQuiz } from "@/contexts/QuizContext";
 import useImagePreloader from "@/hooks/useImagePreloader";
@@ -112,7 +113,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [showResults, setShowResults] = useState(false);
   const [isQualified, setIsQualified] = useState(false);
-  const [sessionId, setSessionId] = useState<string>("");
+  
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [emailError, setEmailError] = useState<string>("");
   const [phoneError, setPhoneError] = useState<string>("");
@@ -142,7 +143,6 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
       setIsSubmitting(false);
       setEmailError("");
       setPhoneError("");
-      setSessionId(crypto.randomUUID());
 
       if (prefillUsTax === "usTaxYes") {
         // User answered Yes to US Tax - start at step 1 (income sources)
@@ -256,19 +256,6 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
     }
   };
 
-  const saveResponse = async (questionKey: string, answerValue: unknown) => {
-    if (!sessionId) return;
-    
-    try {
-      await supabase.from("quiz_responses").insert({
-        session_id: sessionId,
-        question_key: questionKey,
-        answer_value: answerValue as any,
-      });
-    } catch (err) {
-      console.error("Error saving response:", err);
-    }
-  };
 
   const calculateQualification = (): { qualified: boolean; reasons: string[] } => {
     const reasons: string[] = [];
@@ -334,41 +321,40 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
     setIsSubmitting(true);
 
     try {
-      const responsePromises = [
-        saveResponse("usTaxObligations", answers.usTaxObligations),
-        saveResponse("incomeSources", answers.incomeSources),
-        saveResponse("expatCountry", answers.expatCountry),
-        saveResponse("isExpat", answers.isExpat),
-        saveResponse("nomadicLife", answers.nomadicLife),
-        saveResponse("situations", answers.situations),
-        saveResponse("financialTracking", answers.financialTracking),
-        saveResponse("lookingFor", answers.lookingFor),
-        saveResponse("urgency", answers.urgency),
-      ];
-      await Promise.all(responsePromises);
-
       const { qualified, reasons } = calculateQualification();
 
-      const { error } = await supabase.from("quiz_leads").insert({
-        session_id: sessionId,
-        name: answers.name,
-        email: answers.email,
-        phone: answers.phone || null,
-        is_qualified: qualified,
-        qualification_score: qualified ? 100 : 0,
-        qualification_reasons: reasons,
-        status: "new",
+      // Submit to Formspree
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify({
+          // Contact info
+          name: answers.name,
+          email: answers.email,
+          phone: answers.phone,
+          
+          // Qualification result
+          qualified: qualified ? "Yes" : "No",
+          qualification_reasons: reasons.join(", "),
+          
+          // Quiz answers (formatted for readability in email)
+          us_tax_obligations: answers.usTaxObligations ? "Yes" : "No",
+          income_sources: answers.incomeSources.join(", ") || "None selected",
+          expat_country: answers.expatCountry || "Not an expat",
+          is_expat: answers.isExpat ? "Yes" : "No",
+          nomadic_life: answers.nomadicLife.join(", ") || "None selected",
+          situations: answers.situations.join(", ") || "None selected",
+          financial_tracking: answers.financialTracking || "Not specified",
+          looking_for: answers.lookingFor.join(", ") || "None selected",
+          urgency: urgencyLabels[answers.urgency],
+        }),
       });
 
-      if (error) {
-        console.error("Error saving lead:", error);
-        toast({
-          title: "Submission Error",
-          description: "There was a problem saving your information. Please try again.",
-          variant: "destructive",
-        });
-        setIsSubmitting(false);
-        return;
+      if (!response.ok) {
+        throw new Error("Failed to submit");
       }
 
       setIsQualified(qualified);
@@ -376,7 +362,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
     } catch (err) {
       console.error("Error submitting quiz:", err);
       toast({
-        title: "Submission Error", 
+        title: "Submission Error",
         description: "Something went wrong. Please try again.",
         variant: "destructive",
       });
@@ -704,12 +690,6 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
   const isOpen = isEmbedded || isQuizOpen;
   const handleClose = isEmbedded ? () => setShowResults(false) : closeQuiz;
 
-  // Initialize embedded quiz
-  useEffect(() => {
-    if (isEmbedded && !sessionId) {
-      setSessionId(crypto.randomUUID());
-    }
-  }, [isEmbedded, sessionId]);
 
   const quizContent = (
     <div className="flex flex-col h-full md:h-auto">
