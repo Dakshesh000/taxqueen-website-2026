@@ -70,6 +70,8 @@ const Footer = () => {
           <img 
             src={logoTaxQueen} 
             alt="Tax Queen Logo" 
+            width={120}
+            height={48}
             className="h-12 w-auto brightness-0 invert mx-auto mb-3"
             loading="lazy"
           />
@@ -184,6 +186,8 @@ const Footer = () => {
             <img 
               src={logoTaxQueen} 
               alt="Tax Queen Logo" 
+              width={120}
+              height={48}
               className="h-10 sm:h-12 w-auto brightness-0 invert"
               loading="lazy"
             />

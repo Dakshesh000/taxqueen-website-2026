@@ -75,21 +75,14 @@ const HeroSection = () => {
   const videoTranslateY = isLocked ? (isMobile ? -180 : -280) : -scrollProgress * (isMobile ? 180 : 280);
   const textTranslateY = scrollProgress * 150;
 
-  // Mobile video dimensions: smoothly interpolate from 70% to 100% based on scroll
-  const mobileStart = 70;
-  const mobileEnd = 100;
-  const mobileVideoWidth = isMobile 
-    ? (isLocked ? mobileEnd : mobileStart + (mobileEnd - mobileStart) * scrollProgress)
-    : null;
-  const mobileVideoHeight = isMobile 
-    ? (isLocked ? mobileEnd : mobileStart + (mobileEnd - mobileStart) * scrollProgress)
-    : null;
+  // GPU-composited scale animation (avoids layout recalculation)
+  // Mobile: scale from 0.7 to 1.0 as user scrolls
+  const mobileScale = isMobile 
+    ? (isLocked ? 1 : 0.7 + 0.3 * scrollProgress)
+    : 1;
   
-  // Mobile: show rounded corners while expanding, remove when fully expanded
-  const mobileFullyExpanded = isMobile && (isLocked || (mobileVideoWidth && mobileVideoWidth >= 99));
-  
-  // Mobile: start with no negative margin, progressively add it as user scrolls
-  const mobileMarginTop = isMobile ? -64 * scrollProgress : undefined;
+  // Mobile: show rounded corners while scaling up, remove when fully expanded
+  const mobileFullyExpanded = isMobile && (isLocked || mobileScale >= 0.99);
 
   return (
     <section 
@@ -137,27 +130,28 @@ const HeroSection = () => {
         </div>
       </div>
 
-      {/* Video/Image Frame - Width & height animate 70%→100% on mobile */}
+      {/* Video/Image Frame - GPU-composited scale animation */}
       <div 
-        className={`relative mx-auto transition-all duration-300 ease-out will-change-transform ${
-          isMobile ? 'z-[60]' : 'z-20'
+        className={`relative mx-auto transition-transform duration-300 ease-out will-change-transform ${
+          isMobile ? 'z-[60] w-full' : 'z-20'
         }`}
         style={{
+          // Only GPU-composited properties: transform (translateY + scale)
+          transform: `translateY(${videoTranslateY}px) scale(${mobileScale})`,
+          transformOrigin: 'center top',
+          // Desktop padding (static, not animated)
           padding: isMobile ? 0 : `${videoPadding}px`,
-          transform: `translateY(${videoTranslateY}px)`,
-          width: isMobile ? `${mobileVideoWidth}%` : undefined,
-          maxWidth: isMobile ? `${mobileVideoWidth}%` : `calc(100% - ${videoPadding * 2}px)`,
-          marginTop: mobileMarginTop,
+          maxWidth: isMobile ? '100%' : `calc(100% - ${videoPadding * 2}px)`,
         }}
       >
         <div 
           className={`relative w-full ${
             !isMobile && (isLocked ? 'h-screen' : 'h-[70vh] sm:h-[80vh] xl:h-[85vh] 2xl:h-[88vh]')
-          } overflow-hidden shadow-lift-lg transition-all duration-300`}
+          } overflow-hidden shadow-lift-lg transition-[border-radius] duration-300`}
           style={{
             // Use 100dvh on mobile when locked for true full-screen (accounts for browser chrome)
             height: isMobile 
-              ? (isLocked ? '100dvh' : `${mobileVideoHeight}vh`)
+              ? (isLocked ? '100dvh' : '100vh')
               : undefined,
             // Rounded corners during expansion, none when fully expanded
             borderRadius: isMobile 
