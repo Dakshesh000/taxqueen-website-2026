@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { cn } from "@/lib/utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface ParallaxDividerProps {
   image: string;
@@ -17,9 +18,11 @@ const ParallaxDivider = ({
   className 
 }: ParallaxDividerProps) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [overlayOpacity, setOverlayOpacity] = useState(0.5);
+  const [overlayOpacity, setOverlayOpacity] = useState(0.35);
   const [isIOS, setIsIOS] = useState(false);
   const sectionRef = useRef<HTMLElement>(null);
+  const rafRef = useRef<number | null>(null);
+  const isMobile = useIsMobile();
 
   // Detect iOS for background-attachment fix
   useEffect(() => {
@@ -28,7 +31,6 @@ const ParallaxDivider = ({
 
   // Preload image early and lazy load when section approaches viewport
   useEffect(() => {
-    // Preload the image immediately
     const img = new Image();
     img.src = image;
     img.onload = () => setIsVisible(true);
@@ -40,7 +42,7 @@ const ParallaxDivider = ({
           observer.disconnect();
         }
       },
-      { rootMargin: "500px" } // Preload 500px before visible
+      { rootMargin: "500px" }
     );
 
     if (sectionRef.current) {
@@ -50,43 +52,58 @@ const ParallaxDivider = ({
     return () => observer.disconnect();
   }, [image]);
 
-  // Dynamic overlay opacity based on scroll position
+  // Optimized scroll handler using requestAnimationFrame
+  const updateOverlay = useCallback(() => {
+    if (!sectionRef.current) return;
+
+    const rect = sectionRef.current.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const sectionCenter = rect.top + rect.height / 2;
+    const viewportCenter = viewportHeight / 2;
+
+    const distanceFromCenter = Math.abs(sectionCenter - viewportCenter);
+    const maxDistance = viewportHeight / 2 + rect.height / 2;
+    const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
+
+    // Smoother easing for mobile
+    const eased = 1 - Math.pow(1 - normalizedDistance, 2);
+    const opacity = 0.15 + (eased * 0.35);
+    setOverlayOpacity(opacity);
+  }, []);
+
+  // Dynamic overlay opacity based on scroll position - disabled on mobile for performance
   useEffect(() => {
+    // On mobile, use static overlay for better performance
+    if (isMobile) {
+      setOverlayOpacity(0.35); // Static mid-range opacity
+      return;
+    }
+
     const handleScroll = () => {
-      if (!sectionRef.current) return;
-
-      const rect = sectionRef.current.getBoundingClientRect();
-      const viewportHeight = window.innerHeight;
-      const sectionCenter = rect.top + rect.height / 2;
-      const viewportCenter = viewportHeight / 2;
-
-      // Calculate distance from center (0 = perfectly centered)
-      const distanceFromCenter = Math.abs(sectionCenter - viewportCenter);
-      const maxDistance = viewportHeight / 2 + rect.height / 2;
-
-      // Normalize to 0-1 range, where 0 = center, 1 = far from center
-      const normalizedDistance = Math.min(distanceFromCenter / maxDistance, 1);
-
-      // Map to opacity: center = 0.15 (reduced), edges = 0.5 (full)
-      // Using easeOutQuad for smoother transition
-      const eased = 1 - Math.pow(1 - normalizedDistance, 2);
-      const opacity = 0.15 + (eased * 0.35);
-      setOverlayOpacity(opacity);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+      rafRef.current = requestAnimationFrame(updateOverlay);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll(); // Initial calculation
 
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (rafRef.current) {
+        cancelAnimationFrame(rafRef.current);
+      }
+    };
+  }, [isMobile, updateOverlay]);
 
   return (
     <section 
       ref={sectionRef}
       className={cn(
-        "relative bg-cover bg-center",
-        // Use bg-scroll on iOS (bg-fixed doesn't work), bg-fixed on desktop
-        isIOS ? "bg-scroll" : "bg-fixed",
+        "relative bg-cover bg-center will-change-auto",
+        // Use bg-scroll on iOS and mobile (bg-fixed causes issues), bg-fixed on desktop
+        isIOS || isMobile ? "bg-scroll" : "bg-fixed",
         height,
         className
       )}
@@ -95,9 +112,12 @@ const ParallaxDivider = ({
         backgroundColor: !isVisible ? "hsl(var(--muted))" : undefined
       }}
     >
-      {/* Dynamic dark overlay - opacity changes based on scroll position */}
+      {/* Dark overlay - static on mobile, dynamic on desktop */}
       <div 
-        className="absolute inset-0 transition-opacity duration-150"
+        className={cn(
+          "absolute inset-0",
+          isMobile ? "" : "transition-opacity duration-150"
+        )}
         style={{ backgroundColor: `rgba(0, 0, 0, ${overlayOpacity})` }}
       />
       

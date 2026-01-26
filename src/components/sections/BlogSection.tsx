@@ -83,7 +83,17 @@ const BlogSection = () => {
             ))}
           </CarouselContent>
           
-          {/* Navigation Arrows - hidden on mobile, visible on md+ */}
+          {/* Mobile Navigation - Below carousel */}
+          <div className="flex md:hidden justify-center gap-4 mt-6">
+            <CarouselPrevious className="relative static translate-x-0 translate-y-0 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-10 h-10 shadow-md">
+              <ChevronLeft className="w-5 h-5" />
+            </CarouselPrevious>
+            <CarouselNext className="relative static translate-x-0 translate-y-0 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-10 h-10 shadow-md">
+              <ChevronRight className="w-5 h-5" />
+            </CarouselNext>
+          </div>
+          
+          {/* Desktop Navigation Arrows */}
           <CarouselPrevious className="hidden md:flex left-0 -translate-x-14 top-[14%] -translate-y-0 bg-primary text-primary-foreground hover:bg-primary/90 border-none w-12 h-12 shadow-lg">
             <ChevronLeft className="w-6 h-6" />
           </CarouselPrevious>

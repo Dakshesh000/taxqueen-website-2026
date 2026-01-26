@@ -1,27 +1,25 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { ChevronDown } from "lucide-react";
+import { Calendar } from "lucide-react";
 import { brand, navigation } from "@/config/brand";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { logoTaxQueen } from "@/assets";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
+
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xkorjqrg";
+const BOOKING_URL = "https://bookme.name/taxqueen";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const [email, setEmail] = useState("");
-  const [linksOpen, setLinksOpen] = useState(false);
-  const [contactOpen, setContactOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
     if (!email || !email.includes("@")) {
       toast({
         title: "Invalid email",
@@ -30,27 +28,66 @@ const Footer = () => {
       });
       return;
     }
-    toast({
-      title: "Thanks for subscribing!",
-      description: "You'll receive tax tips & updates in your inbox.",
-    });
-    setEmail("");
+
+    setIsSubmitting(true);
+    
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: JSON.stringify({ email }),
+      });
+      
+      if (response.ok) {
+        toast({
+          title: "Thanks for subscribing!",
+          description: "You'll receive tax tips & updates in your inbox.",
+        });
+        setEmail("");
+      } else {
+        throw new Error("Failed to subscribe");
+      }
+    } catch (error) {
+      toast({ 
+        title: "Subscription failed", 
+        description: "Please try again later.",
+        variant: "destructive" 
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
     <footer className="bg-primary text-primary-foreground">
       {/* Mobile Layout - Clean & Simple */}
-      <div className="md:hidden container mx-auto px-4 py-6">
-        {/* Brand - centered, compact */}
-        <div className="text-center mb-5">
+      <div className="md:hidden container mx-auto px-4 py-8">
+        {/* Brand - centered, larger */}
+        <div className="text-center mb-6">
           <img 
             src={logoTaxQueen} 
             alt="Tax Queen Logo" 
-            className="h-8 w-auto brightness-0 invert mx-auto mb-2"
+            className="h-12 w-auto brightness-0 invert mx-auto mb-3"
             loading="lazy"
           />
-          <p className="text-xs text-primary-foreground/70">{brand.description}</p>
+          <p className="text-sm text-primary-foreground/80 max-w-xs mx-auto leading-relaxed">
+            {brand.description}
+          </p>
         </div>
+
+        {/* Book a Call CTA */}
+        <a 
+          href={BOOKING_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 mb-6 py-3 px-6 bg-primary-foreground text-primary rounded-full font-semibold hover:bg-primary-foreground/90 transition-colors shadow-lg"
+        >
+          <Calendar className="w-5 h-5" />
+          Book a Discovery Call
+        </a>
 
         {/* Newsletter - simple inline form */}
         <form onSubmit={handleNewsletterSubmit} className="flex gap-2 mb-6">
@@ -59,20 +96,22 @@ const Footer = () => {
             placeholder="Enter email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="bg-primary-foreground text-foreground placeholder:text-muted-foreground border-none h-10 flex-1 text-sm"
+            className="bg-primary-foreground text-foreground placeholder:text-muted-foreground border-none h-11 flex-1 text-sm"
             aria-label="Email address for newsletter"
+            disabled={isSubmitting}
           />
           <Button
             type="submit"
-            className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold h-10 px-4 text-sm"
+            disabled={isSubmitting}
+            className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold h-11 px-5 text-sm"
           >
-            Subscribe
+            {isSubmitting ? "..." : "Subscribe"}
           </Button>
         </form>
 
         {/* Links - 2-column grid */}
         <nav className="mb-6" aria-label="Footer navigation">
-          <ul className="grid grid-cols-2 gap-x-8 gap-y-2 text-sm">
+          <ul className="grid grid-cols-2 gap-x-8 gap-y-3 text-sm">
             {navigation.map((item) => {
               const isExternal = "external" in item && item.external;
               const isAnchor = item.href.startsWith("#");
@@ -109,9 +148,15 @@ const Footer = () => {
           </ul>
         </nav>
 
-        {/* Contact - simple line */}
-        <div className="text-center text-xs text-primary-foreground/70 pt-4 border-t border-primary-foreground/20">
-          <p>{brand.email}</p>
+        {/* Legal Links */}
+        <div className="flex justify-center gap-4 text-xs text-primary-foreground/60 mb-4">
+          <Link to="/terms" className="hover:text-primary-foreground transition-colors">
+            Terms of Service
+          </Link>
+          <span className="text-primary-foreground/40">•</span>
+          <Link to="/privacy" className="hover:text-primary-foreground transition-colors">
+            Privacy Policy
+          </Link>
         </div>
       </div>
 
@@ -132,12 +177,14 @@ const Footer = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 className="bg-primary-foreground text-foreground placeholder:text-muted-foreground border-none h-11 flex-1"
                 aria-label="Email address for newsletter"
+                disabled={isSubmitting}
               />
               <Button
                 type="submit"
+                disabled={isSubmitting}
                 className="bg-primary-foreground text-primary hover:bg-primary-foreground/90 font-semibold h-11"
               >
-                Subscribe
+                {isSubmitting ? "Subscribing..." : "Subscribe"}
               </Button>
             </form>
           </div>
@@ -200,10 +247,33 @@ const Footer = () => {
           {/* Contact Column */}
           <div className="space-y-4">
             <h4 className="font-semibold uppercase tracking-wide">Contact</h4>
-            <address className="not-italic space-y-2 text-sm text-primary-foreground/80">
-              <p>{brand.email}</p>
-              {brand.phone && <p>{brand.phone}</p>}
-            </address>
+            <div className="space-y-3">
+              <a 
+                href={BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors"
+              >
+                <Calendar className="w-4 h-4" />
+                Book a Discovery Call
+              </a>
+              <p className="text-sm text-primary-foreground/80">{brand.email}</p>
+            </div>
+            {/* Legal Links */}
+            <div className="pt-4 space-y-2 border-t border-primary-foreground/20">
+              <Link 
+                to="/terms" 
+                className="block text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors"
+              >
+                Terms of Service
+              </Link>
+              <Link 
+                to="/privacy" 
+                className="block text-sm text-primary-foreground/60 hover:text-primary-foreground transition-colors"
+              >
+                Privacy Policy
+              </Link>
+            </div>
           </div>
         </div>
       </div>

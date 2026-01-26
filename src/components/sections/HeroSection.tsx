@@ -17,9 +17,9 @@ const HeroSection = () => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const lockPoint = isMobile ? 200 : 280;
+      // Mobile uses lower lock point for scroll snap
+      const lockPoint = isMobile ? 180 : 280;
       const maxScroll = window.innerHeight * 0.5;
-      const snapThreshold = 120;
       
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current);
@@ -33,13 +33,18 @@ const HeroSection = () => {
         const progress = Math.min(scrollY / maxScroll, 1);
         setScrollProgress(progress);
         
-        if (scrollY > lockPoint - snapThreshold && scrollY < lockPoint) {
-          scrollTimeoutRef.current = setTimeout(() => {
-            window.scrollTo({
-              top: lockPoint,
-              behavior: 'smooth'
-            });
-          }, 150);
+        // Native CSS scroll-snap handles snapping on mobile
+        // Only use JS snap assist on desktop
+        if (!isMobile) {
+          const snapThreshold = 100;
+          if (scrollY > lockPoint - snapThreshold && scrollY < lockPoint) {
+            scrollTimeoutRef.current = setTimeout(() => {
+              window.scrollTo({
+                top: lockPoint,
+                behavior: 'smooth'
+              });
+            }, 150);
+          }
         }
       }
     };
@@ -53,17 +58,17 @@ const HeroSection = () => {
     };
   }, [isMobile]);
 
-  // Mobile: full-bleed video with no padding, height animates from 70vh to 100vh
+  // Mobile: full-bleed video with no padding, height animates from 70vh to 100dvh
   // Desktop: animated padding based on scroll
   const minPadding = isMobile ? 0 : 16;
   const maxPadding = isMobile ? 0 : 56;
   const videoPadding = minPadding + (maxPadding - minPadding) * (1 - scrollProgress);
-  const videoTranslateY = isLocked ? (isMobile ? -200 : -280) : -scrollProgress * (isMobile ? 200 : 280);
+  const videoTranslateY = isLocked ? (isMobile ? -180 : -280) : -scrollProgress * (isMobile ? 180 : 280);
   const textTranslateY = scrollProgress * 150;
 
   // Mobile video dimensions: smoothly interpolate from 70% to 100% based on scroll
-  const mobileStart = 70; // Start at 70% width and 70vh height
-  const mobileEnd = 100;  // End at 100% width and 100vh height
+  const mobileStart = 70;
+  const mobileEnd = 100;
   const mobileVideoWidth = isMobile 
     ? (isLocked ? mobileEnd : mobileStart + (mobileEnd - mobileStart) * scrollProgress)
     : null;
@@ -74,12 +79,17 @@ const HeroSection = () => {
   // Mobile: show rounded corners while expanding, remove when fully expanded
   const mobileFullyExpanded = isMobile && (isLocked || (mobileVideoWidth && mobileVideoWidth >= 99));
   
-  // Mobile: start with no negative margin (no overlap with Learn More button), 
-  // progressively add it as user scrolls. 0 at top → -64px when scrolled
+  // Mobile: start with no negative margin, progressively add it as user scrolls
   const mobileMarginTop = isMobile ? -64 * scrollProgress : undefined;
 
   return (
-    <section className="relative min-h-[110vh] bg-white">
+    <section 
+      className="relative min-h-[110vh] bg-white"
+      style={{
+        // Enable scroll snap on mobile for smooth stopping points
+        scrollSnapAlign: isMobile ? 'start' : undefined,
+      }}
+    >
       {/* Text Content Section */}
       <div 
         className={`${isLocked ? 'relative' : 'sticky top-0'} z-10 pt-32 pb-12 transition-transform duration-300 ease-out`}
@@ -126,11 +136,8 @@ const HeroSection = () => {
         style={{
           padding: isMobile ? 0 : `${videoPadding}px`,
           transform: `translateY(${videoTranslateY}px)`,
-          // Mobile: width animates from 70% to 100%
-          // Desktop: uses padding-based animation
           width: isMobile ? `${mobileVideoWidth}%` : undefined,
           maxWidth: isMobile ? `${mobileVideoWidth}%` : `calc(100% - ${videoPadding * 2}px)`,
-          // Mobile: dynamic margin - starts at 0, goes to -64px as user scrolls
           marginTop: mobileMarginTop,
         }}
       >
@@ -139,7 +146,10 @@ const HeroSection = () => {
             !isMobile && (isLocked ? 'h-screen' : 'h-[70vh] sm:h-[80vh] xl:h-[85vh] 2xl:h-[88vh]')
           } overflow-hidden shadow-lift-lg transition-all duration-300`}
           style={{
-            height: isMobile ? `${mobileVideoHeight}vh` : undefined,
+            // Use 100dvh on mobile when locked for true full-screen (accounts for browser chrome)
+            height: isMobile 
+              ? (isLocked ? '100dvh' : `${mobileVideoHeight}vh`)
+              : undefined,
             // Rounded corners during expansion, none when fully expanded
             borderRadius: isMobile 
               ? (mobileFullyExpanded ? '0px' : '16px') 
