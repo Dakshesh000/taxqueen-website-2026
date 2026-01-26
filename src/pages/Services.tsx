@@ -1,3 +1,14 @@
+/**
+ * Services Page
+ * 
+ * Displays Tax Queen service offerings including:
+ * - Tax Preparation
+ * - Tax Strategy/Planning
+ * - Mini Sessions
+ * 
+ * Features embedded quiz for service recommendation.
+ */
+
 import { HelpCircle, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Navbar from "@/components/layout/Navbar";
@@ -10,9 +21,16 @@ import ServicesCards from "@/components/sections/ServicesCards";
 import ParallaxDivider from "@/components/ui/ParallaxDivider";
 import { QuizProvider, useQuiz } from "@/contexts/QuizContext";
 import { servicesHero, heatherPortrait, servicesCta } from "@/assets";
+import usePageMeta from "@/hooks/usePageMeta";
 
 const ServicesContent = () => {
   const { openQuiz } = useQuiz();
+
+  // SEO meta tags for services page
+  usePageMeta(
+    "Tax Services for Digital Nomads | Tax Queen",
+    "Professional tax preparation, strategy, and planning services designed for digital nomads, RV travelers, and location-independent professionals."
+  );
 
   const painPoints = [
     "Staring at spreadsheets wondering what counts as a deduction",
@@ -31,7 +49,9 @@ const ServicesContent = () => {
           <div className="relative rounded-2xl overflow-hidden h-[280px] md:h-[320px]">
             <img
               src={servicesHero}
-              alt="Digital nomad working from van"
+              alt="Digital nomad working from van with mountain views"
+              width={1200}
+              height={800}
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-foreground/50" />
@@ -78,7 +98,9 @@ const ServicesContent = () => {
               <div className="rounded-2xl overflow-hidden shadow-xl">
                 <img
                   src={heatherPortrait}
-                  alt="Heather - Tax Queen"
+                  alt="Heather - Tax Queen, Enrolled Agent and Certified Tax Coach"
+                  width={600}
+                  height={800}
                   className="w-full h-auto object-cover max-h-[420px] object-top"
                 />
               </div>

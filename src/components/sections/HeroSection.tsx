@@ -150,6 +150,8 @@ const HeroSection = () => {
           <img
             src={heroVideoThumbnail}
             alt="Aerial view of RV adventure - hero video thumbnail"
+            width={1920}
+            height={1080}
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${isVideoLoaded ? 'opacity-0' : 'opacity-100'}`}
             loading="eager"
             fetchPriority="high"
@@ -158,6 +160,7 @@ const HeroSection = () => {
           {/* Video - fades in when loaded */}
           <video
             src="/videos/hero-background.mp4"
+            poster={heroVideoThumbnail}
             autoPlay
             muted
             loop
