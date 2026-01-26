@@ -23,7 +23,6 @@ const HeroSection = () => {
       ticking = true;
       requestAnimationFrame(() => {
         const scrollY = window.scrollY;
-        // Mobile uses lower lock point for scroll snap
         const lockPoint = isMobile ? 180 : 280;
         const maxScroll = window.innerHeight * 0.5;
         
@@ -31,26 +30,21 @@ const HeroSection = () => {
           clearTimeout(scrollTimeoutRef.current);
         }
         
-        if (scrollY >= lockPoint) {
-          setIsLocked(true);
-          setScrollProgress(1);
-        } else {
-          setIsLocked(false);
-          const progress = Math.min(scrollY / maxScroll, 1);
-          setScrollProgress(progress);
-          
-          // Native CSS scroll-snap handles snapping on mobile
-          // Only use JS snap assist on desktop
-          if (!isMobile) {
-            const snapThreshold = 100;
-            if (scrollY > lockPoint - snapThreshold && scrollY < lockPoint) {
-              scrollTimeoutRef.current = setTimeout(() => {
-                window.scrollTo({
-                  top: lockPoint,
-                  behavior: 'smooth'
-                });
-              }, 150);
-            }
+        // Calculate new values first (no DOM reads after state changes)
+        const newIsLocked = scrollY >= lockPoint;
+        const newProgress = newIsLocked ? 1 : Math.min(scrollY / maxScroll, 1);
+        
+        // Batch state updates to reduce re-renders
+        setIsLocked(newIsLocked);
+        setScrollProgress(newProgress);
+        
+        // Desktop scroll snap assist (no DOM reads here)
+        if (!isMobile && !newIsLocked) {
+          const snapThreshold = 100;
+          if (scrollY > lockPoint - snapThreshold && scrollY < lockPoint) {
+            scrollTimeoutRef.current = setTimeout(() => {
+              window.scrollTo({ top: lockPoint, behavior: 'smooth' });
+            }, 150);
           }
         }
         

@@ -465,7 +465,7 @@ const ComprehensiveFAQSection = () => {
                 onClick={toggleExpanded}
                 className="mt-6 text-primary font-medium hover:underline transition-colors"
               >
-                {isExpanded ? "Show Less" : `See More (${remainingCount} more questions)`}
+                {isExpanded ? "Show fewer FAQ questions" : `View ${remainingCount} more FAQ questions`}
               </button>
             )}
 
@@ -477,7 +477,7 @@ const ComprehensiveFAQSection = () => {
                   onClick={() => setSearchQuery("")}
                   className="text-primary hover:underline mt-2"
                 >
-                  Clear search
+                  Reset FAQ search
                 </button>
               </div>
             )}
