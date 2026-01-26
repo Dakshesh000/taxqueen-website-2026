@@ -8,6 +8,8 @@ interface InlineVideoPlayerProps {
   alt: string;
   className?: string;
   aspectRatio?: "video" | "square";
+  /** If true, loads thumbnail eagerly (use for above-fold content) */
+  isAboveFold?: boolean;
 }
 
 const InlineVideoPlayer = ({ 
@@ -15,7 +17,8 @@ const InlineVideoPlayer = ({
   videoSrc, 
   alt, 
   className,
-  aspectRatio = "video" 
+  aspectRatio = "video",
+  isAboveFold = false
 }: InlineVideoPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -48,9 +51,11 @@ const InlineVideoPlayer = ({
         <img 
           src={thumbnail} 
           alt={alt} 
-          width={1920}
-          height={1080}
+          width={aspectRatio === "square" ? 800 : 1920}
+          height={aspectRatio === "square" ? 800 : 1080}
           className="w-full h-full object-cover"
+          loading={isAboveFold ? "eager" : "lazy"}
+          fetchPriority={isAboveFold ? "high" : "auto"}
         />
         
         {/* Bottom Edge Play Bar */}

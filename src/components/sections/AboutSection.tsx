@@ -110,6 +110,7 @@ const AboutSection = () => {
               alt="Heather - The Tax Queen"
               className="w-[280px] h-[280px] md:w-[320px] md:h-[320px] lg:w-[350px] lg:h-[350px] xl:w-[400px] xl:h-[400px] rounded-full shadow-lift-lg"
               aspectRatio="square"
+              isAboveFold={false}
             />
           </div>
 
