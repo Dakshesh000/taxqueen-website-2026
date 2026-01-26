@@ -63,7 +63,7 @@ const QuestionWrapper = ({
 
   return (
     <div 
-      className="relative w-full h-full flex-1 overflow-hidden md:rounded-2xl flex flex-col"
+      className="relative w-full h-full overflow-hidden md:rounded-2xl flex flex-col"
     >
       {/* Blurred LQIP placeholder - shows instantly */}
       {placeholderImage ? (
@@ -92,7 +92,7 @@ const QuestionWrapper = ({
       {/* Content - centered vertically and horizontally */}
       <div 
         ref={contentRef}
-        className="relative z-10 flex flex-col items-center justify-center flex-1 px-4 py-6 md:py-8 text-center overflow-y-auto"
+        className="relative z-10 flex flex-col items-center justify-center h-full px-4 py-6 md:py-8 text-center overflow-y-auto"
       >
         {/* Custom Compass Icon with Animation */}
         <div className={`mb-4 p-3 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 ${showAnimation ? "animate-needle-wiggle" : ""}`}>
@@ -134,8 +134,8 @@ const QuestionWrapper = ({
           </p>
         )}
 
-        {/* Question Content */}
-        <div className="w-full max-w-lg flex-1">
+        {/* Question Content - no flex-1 to keep centered */}
+        <div className="w-full max-w-lg">
           {children}
         </div>
       </div>

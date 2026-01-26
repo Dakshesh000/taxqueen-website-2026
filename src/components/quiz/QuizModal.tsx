@@ -1,7 +1,6 @@
 import { ReactNode, useEffect, useState, useRef } from "react";
 import { X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface QuizModalProps {
   isOpen: boolean;
@@ -78,7 +77,7 @@ const QuizModal = ({ isOpen, onClose, children, hasEngaged = false }: QuizModalP
             role="dialog"
             aria-modal="true"
             aria-labelledby="quiz-modal-title"
-            className="fixed inset-0 z-50 flex items-center justify-center md:p-4 bg-foreground/80 backdrop-blur-sm"
+            className="fixed inset-0 z-[70] flex items-center justify-center md:p-4 bg-foreground/80 backdrop-blur-sm"
             onClick={onClose}
           >
             <motion.div
@@ -87,10 +86,10 @@ const QuizModal = ({ isOpen, onClose, children, hasEngaged = false }: QuizModalP
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
               className={`
-                relative bg-background shadow-lift-lg flex flex-col overflow-hidden
+                relative shadow-lift-lg flex flex-col overflow-hidden
                 w-[95%] max-w-2xl rounded-3xl
                 h-[90dvh] max-h-[calc(90dvh-env(safe-area-inset-top)-env(safe-area-inset-bottom))]
-                md:h-auto md:w-full
+                md:h-auto md:w-full md:bg-background
                 ${hasEngaged ? 'md:min-h-[620px] md:max-h-[90vh]' : 'md:max-h-[90vh]'}
               `}
               onClick={(e) => e.stopPropagation()}
@@ -105,13 +104,9 @@ const QuizModal = ({ isOpen, onClose, children, hasEngaged = false }: QuizModalP
                 <X className="w-5 h-5" />
               </button>
 
-              {/* Mobile: Scrollable content area that fills screen */}
-              <div className="flex-1 overflow-hidden md:overflow-visible">
-                <ScrollArea className="h-full md:h-auto">
-                  <div className="pb-[env(safe-area-inset-bottom)]">
-                    {children}
-                  </div>
-                </ScrollArea>
+              {/* Content fills entire modal - background image comes from QuestionWrapper */}
+              <div className="flex-1 flex flex-col overflow-hidden h-full">
+                {children}
               </div>
             </motion.div>
           </motion.div>

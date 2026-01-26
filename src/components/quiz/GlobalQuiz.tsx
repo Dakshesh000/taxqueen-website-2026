@@ -705,14 +705,16 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
 
 
   const quizContent = (
-    <div className="flex flex-col h-full">
+    <div className="relative flex flex-col h-full min-h-full">
+      {/* Progress bar - absolutely positioned overlay */}
       {!showResults && currentStep > 0 && (
-        <div className="flex-shrink-0">
+        <div className="absolute top-0 left-0 right-0 z-20 bg-gradient-to-b from-black/40 to-transparent pt-2 pb-6">
           <QuizProgress currentStep={currentStep} totalSteps={TOTAL_STEPS - 1} />
         </div>
       )}
       
-      <div className="flex-1 min-h-0">
+      {/* Content fills entire modal */}
+      <div className="flex-1 min-h-0 h-full">
         {showResults ? (
           <QuizResults
             isQualified={isQualified}
