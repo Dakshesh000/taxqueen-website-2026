@@ -16,7 +16,7 @@ export { default as heatherWhyWorkWithMe } from './heather/why-work-with-me.jpg'
 export { default as heatherAboutCta } from './heather/about-cta.jpg';
 
 // Services Images
-export { default as servicesHero } from './services/services-hero.jpg';
+export { default as servicesHero } from './services/services-hero-new.webp';
 export { default as servicesCta } from './services/services-cta.webp';
 export { default as taxPreparation } from './services/tax-preparation-new-2.jpg';
 

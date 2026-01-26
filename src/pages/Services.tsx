@@ -49,7 +49,7 @@ const ServicesContent = () => {
           <div className="relative rounded-2xl overflow-hidden h-[280px] md:h-[320px]">
             <img
               src={servicesHero}
-              alt="Digital nomad working from van with mountain views"
+              alt="White RV motorhome with camping chairs at vibrant sunset"
               width={1200}
               height={800}
               className="absolute inset-0 w-full h-full object-cover"
