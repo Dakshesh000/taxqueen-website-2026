@@ -19,7 +19,7 @@ import ComparisonSection from "@/components/sections/ComparisonSection";
 import ServicesTestimonialsCarousel from "@/components/sections/ServicesTestimonialsCarousel";
 import ServicesCards from "@/components/sections/ServicesCards";
 import ParallaxDivider from "@/components/ui/ParallaxDivider";
-import { QuizProvider, useQuiz } from "@/contexts/QuizContext";
+import { useQuiz } from "@/contexts/QuizContext";
 import { servicesHero, heatherPortrait, taxQueenInVan } from "@/assets";
 import usePageMeta from "@/hooks/usePageMeta";
 
@@ -175,11 +175,7 @@ const ServicesContent = () => {
 };
 
 const Services = () => {
-  return (
-    <QuizProvider>
-      <ServicesContent />
-    </QuizProvider>
-  );
+  return <ServicesContent />;
 };
 
 export default Services;

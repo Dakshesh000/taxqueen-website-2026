@@ -59,7 +59,7 @@ export const navigation = [
   { label: "Services", href: "/services" },
   { label: "About", href: "/about" },
   { label: "Tools", href: "/tools" },
-  { label: "Articles", href: "#articles" },
+  { label: "Articles", href: "/#articles" },
   { label: "Portal", href: "https://portal.tax-queen.com/login", external: true },
   { label: "Contact", href: "/contact" },
 ] as const;

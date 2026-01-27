@@ -74,7 +74,7 @@ const FAQSection = () => {
             </div>
 
             <a
-              href="#full-faq"
+              href="/#full-faq"
               className="inline-block mt-8 text-sm text-primary underline hover:text-primary/80 transition-colors text-right w-full"
             >
               View our complete FAQ
@@ -123,7 +123,7 @@ const FAQSection = () => {
         </Accordion>
 
         <a
-          href="#full-faq"
+          href="/#full-faq"
           className="inline-block mt-8 text-sm text-primary underline hover:text-primary/80 transition-colors"
         >
           View our complete FAQ

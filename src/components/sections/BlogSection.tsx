@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { 
   workingAtBeach, 
   rvTopView3, 
@@ -66,30 +66,26 @@ const BlogSection = () => {
                 key={index} 
                 className="pl-4 basis-full sm:basis-1/2 lg:basis-1/3"
               >
-                <article 
-                  className="flex flex-col gap-3 group cursor-pointer h-full"
-                >
+                <article className="flex flex-col gap-3 h-full">
                   <div className="rounded-lg overflow-hidden aspect-video mb-2 relative">
                     <img 
                       src={post.image} 
                       alt={post.title}
                       width={400}
                       height={225}
-                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      className="w-full h-full object-cover"
                       loading="lazy"
                     />
                   </div>
-                  <h3 className="text-lg font-semibold text-foreground leading-tight group-hover:text-primary transition-colors">
+                  <h3 className="text-lg font-semibold text-foreground leading-tight">
                     {post.title}
                   </h3>
                   <p className="text-muted-foreground text-sm leading-relaxed flex-grow">
                     {post.excerpt}
                   </p>
-                  {/* Descriptive link text for SEO */}
-                  <div className="flex items-center gap-2 text-primary font-medium text-sm mt-auto">
-                    <span>Read: {post.title.length > 30 ? post.title.substring(0, 30) + '...' : post.title}</span>
-                    <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
-                  </div>
+                  <span className="text-primary font-medium text-sm mt-auto">
+                    Coming Soon
+                  </span>
                 </article>
               </CarouselItem>
             ))}
