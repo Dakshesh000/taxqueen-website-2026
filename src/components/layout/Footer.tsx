@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { logToSheet } from "@/lib/sheetLogger";
 import { Link } from "react-router-dom";
 import { Calendar } from "lucide-react";
 import { brand, navigation } from "@/config/brand";
@@ -46,6 +47,8 @@ const Footer = () => {
           title: "Thanks for subscribing!",
           description: "You'll receive tax tips & updates in your inbox.",
         });
+        // Log to Google Sheet (fire and forget)
+        logToSheet("newsletter", { email });
         setEmail("");
       } else {
         throw new Error("Failed to subscribe");

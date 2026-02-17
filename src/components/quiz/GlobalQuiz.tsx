@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { logToSheet } from "@/lib/sheetLogger";
 import { Button } from "@/components/ui/button";
 import {
   Building,
@@ -359,6 +360,24 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
       if (!response.ok) {
         throw new Error("Failed to submit");
       }
+
+      // Log to Google Sheet (fire and forget)
+      logToSheet("quiz", {
+        name: answers.name,
+        email: answers.email,
+        phone: answers.phone,
+        qualified: qualified ? "Yes" : "No",
+        qualification_reasons: reasons.join(", "),
+        us_tax_obligations: answers.usTaxObligations ? "Yes" : "No",
+        income_sources: answers.incomeSources.join(", ") || "None selected",
+        expat_country: answers.expatCountry || "Not an expat",
+        is_expat: answers.isExpat ? "Yes" : "No",
+        nomadic_life: answers.nomadicLife.join(", ") || "None selected",
+        situations: answers.situations.join(", ") || "None selected",
+        financial_tracking: answers.financialTracking || "Not specified",
+        looking_for: answers.lookingFor.join(", ") || "None selected",
+        urgency: urgencyLabels[answers.urgency],
+      });
 
       setIsQualified(qualified);
       setShowResults(true);

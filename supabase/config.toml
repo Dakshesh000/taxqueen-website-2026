@@ -2,3 +2,6 @@ project_id = "dxmyjlkdznioglcujzsh"
 
 [functions.chat]
 verify_jwt = false
+
+[functions.log-submission]
+verify_jwt = false
