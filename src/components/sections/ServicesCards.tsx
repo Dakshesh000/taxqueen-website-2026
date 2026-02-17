@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import { FileText, Sparkles, Compass, LucideIcon } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useQuiz } from "@/contexts/QuizContext";
 
@@ -101,6 +102,7 @@ ServiceCard.displayName = "ServiceCard";
 
 const ServicesCards = () => {
   const { openQuiz } = useQuiz();
+  const navigate = useNavigate();
 
   const services = [
     {
@@ -148,6 +150,7 @@ const ServicesCards = () => {
       valueProp: "Get a plan in place and a tax advisor to keep you on track.",
       price: "Starts at $175 for 1040",
       ctaText: "Get Started",
+      href: "/services/tax-maintenance",
     },
   ];
 
@@ -170,7 +173,7 @@ const ServicesCards = () => {
             <ServiceCard
               key={service.title}
               {...service}
-              onGetStarted={() => openQuiz()}
+              onGetStarted={() => service.href ? navigate(service.href) : openQuiz()}
             />
           ))}
         </div>
