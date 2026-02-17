@@ -1,150 +1,137 @@
+## 8-Point Website Update Plan
 
+### 1. Tablet Portrait Navbar - Use Hamburger Menu at Larger Breakpoint
 
-## Comprehensive Website Bug & Error Audit
+**Problem:** At tablet portrait widths (768px-1024px), the desktop nav with 6 links + CTA button gets cramped.
 
-### Critical Bug Identified: Services Page "Get Started" Buttons
+**Fix:** Change the breakpoint for showing the desktop nav from `md` (768px) to `lg` (1024px). This means tablet portrait users will get the mobile hamburger menu instead.
 
-**Root Cause Analysis:**
+**Files:** `src/components/layout/Navbar.tsx`
 
-After extensive code review, I found the **Services page has a DUPLICATE `QuizProvider` wrapper** (line 179 in `src/pages/Services.tsx`) while the app already has a global `QuizProvider` in `src/App.tsx` (line 29). This creates **two separate React contexts**:
+**Changes:**
 
-1. The global `QuizProvider` in `App.tsx` wraps:
-   - `GlobalQuiz` component (line 33) - this is the modal quiz
-   - All routes including the Services page
-
-2. The Services page creates its **own nested** `QuizProvider` (line 179):
-   - The `ServicesCards` component calls `useQuiz()` 
-   - This reads from the **inner/nested provider** (not the global one)
-   - When `openQuiz()` is called, it updates the **inner provider's state**
-   - But the `GlobalQuiz` modal reads from the **outer/global provider**
-   - Result: The modal never opens because the global state isn't updated
-
-**The Fix:** Remove the redundant `QuizProvider` wrapper from `src/pages/Services.tsx`.
+- Replace all `md:` prefixes for nav visibility with `lg:` (lines 43, 59, 70, 80)
+- `hidden md:flex` becomes `hidden lg:flex`
+- `hidden md:block` becomes `hidden lg:block`
+- `md:hidden` becomes `lg:hidden`
 
 ---
 
-### Complete Bug Audit - All Issues Found
+### 2. Quiz Mobile - Fix "Which of These Apply to You?" Title Overlap
 
-#### Priority 1: Critical (Broken Functionality)
+**Problem:** On mobile, the progress bar (absolutely positioned with gradient overlay at the top) overlaps the question heading on step 4 (the 6-option multi-select).
 
-| Bug | Location | Issue | Fix |
-|-----|----------|-------|-----|
-| **Service Card Buttons Not Working** | `src/pages/Services.tsx:179-181` | Nested `QuizProvider` creates isolated context - `openQuiz()` updates wrong provider | Remove the `QuizProvider` wrapper from Services page |
-| **Services Page CTA Button Not Working** | `src/pages/Services.tsx:164` | Same issue - the "Get Started" button in the parallax CTA section also uses the nested context | Fixed by removing the nested provider |
+**Fix:** Add top padding to the content area in `QuestionWrapper.tsx` to account for the progress bar height when it's visible, without changing the design.
 
-#### Priority 2: High (Broken Navigation/Links)
+**Files:** `src/components/quiz/QuestionWrapper.tsx`
 
-| Bug | Location | Issue | Fix |
-|-----|----------|-------|-----|
-| **"Articles" nav link broken** | `src/config/brand.ts:62` | Links to `#articles` but that section only exists on homepage - clicking from other pages does nothing | Change to `/articles` route or `/#articles` for proper navigation |
-| **"View complete FAQ" link broken** | `src/components/sections/FAQSection.tsx:77, 126` | Links to `#full-faq` but the `ComprehensiveFAQSection` has `id="full-faq"` but it may not scroll correctly | Verify the target element exists and add smooth scroll behavior |
-| **Blog articles not clickable** | `src/components/sections/BlogSection.tsx:69-95` | Blog cards appear clickable (hover effects) but have no actual links - the "Read" text is decorative only | Add proper `href` links to blog posts or remove clickable appearance |
+**Changes:**
 
-#### Priority 3: Medium (Missing Configuration)
-
-| Bug | Location | Issue | Fix |
-|-----|----------|-------|-----|
-| **Empty social links** | `src/config/brand.ts:18-23` | All social media URLs are empty strings - any social icons would link to nothing | Populate with actual social URLs or remove social sections |
-| **Empty booking URL** | `src/config/brand.ts:35-37` | `calendlyUrl` is empty and `enabled: false` - booking disabled | Update with actual booking URL if needed |
-| **Multiple Formspree endpoints** | Footer, Contact, Quiz | Three different endpoints - need to verify all are correctly configured in Formspree account | Audit Formspree dashboard to ensure all forms are active |
-
-#### Priority 4: Low (Code Quality/Maintainability)
-
-| Bug | Location | Issue | Fix |
-|-----|----------|-------|-----|
-| **Redundant QuizProvider import** | `src/pages/Services.tsx:22` | Imports `QuizProvider` which should be removed | Remove import after fixing the context issue |
-| **forwardRef warnings** | Console (intermittent) | Some components passed to routing may trigger ref warnings | Add `forwardRef` to Contact, Navbar, Footer if needed |
-| **Tailwind CDN warning** | Console | "cdn.tailwindcss.com should not be used in production" | This is from preview environment, not production - can ignore |
+- Accept a new prop or detect that the progress bar is shown (steps > 0)
+- Add `pt-16 md:pt-20` to the content container when progress bar is visible, giving room for the overlaid progress bar
+- Since `QuestionWrapper` doesn't know about the step, the simplest approach is to add a `showProgressBar` prop passed from `GlobalQuiz.tsx`
+- In `GlobalQuiz.tsx`, pass `showProgressBar={currentStep > 0}` to each `QuestionWrapper`
+- In `QuestionWrapper.tsx`, when `showProgressBar` is true, add extra top padding (`pt-20`) to the scrollable content area
 
 ---
 
-### Technical Implementation Plan
+### 3. Quiz Contact Form - Stricter Email + Phone Validation
 
-**File 1: `src/pages/Services.tsx`**
+**Problem:** Current regex is too permissive. Need real email validation and phone locked to +1 followed by exactly 10 digits.
 
-Remove the nested `QuizProvider` wrapper:
+**Files:** `src/components/quiz/GlobalQuiz.tsx`, `src/components/quiz/questions/ContactForm.tsx`
 
-```tsx
-// BEFORE (broken):
-const Services = () => {
-  return (
-    <QuizProvider>
-      <ServicesContent />
-    </QuizProvider>
-  );
-};
+**Changes in GlobalQuiz.tsx:**
 
-// AFTER (fixed):
-const Services = () => {
-  return <ServicesContent />;
-};
-```
+- Update `EMAIL_REGEX` to require at least 2-char TLD and disallow consecutive dots
+- Replace `PHONE_REGEX` with a strict US phone regex: `/^\+1\s?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/`
+- Update `validatePhone` error message to: "Please enter a valid US phone number (+1 followed by 10 digits)"
+- Note that users should be able to edit the extension if need be by typing...it can take upto 3 caracters
+- Update `validateEmail` to also check for common disposable email domains (optional) or at minimum enforce stricter format...make sure a real entry never gets barred
 
-Also remove the unused import:
-```tsx
-// Remove from imports:
-import { QuizProvider, useQuiz } from "@/contexts/QuizContext";
-// Change to:
-import { useQuiz } from "@/contexts/QuizContext";
-```
+**Changes in ContactForm.tsx:**
 
-**File 2: `src/config/brand.ts`**
-
-Fix the Articles navigation link:
-```tsx
-// BEFORE:
-{ label: "Articles", href: "#articles" },
-
-// AFTER (option A - link to homepage section):
-{ label: "Articles", href: "/#articles" },
-
-// AFTER (option B - create dedicated route):
-{ label: "Articles", href: "/articles" },
-```
-
-**File 3: `src/components/sections/FAQSection.tsx`**
-
-Update the "View complete FAQ" link to work across pages:
-```tsx
-// BEFORE:
-<a href="#full-faq" ...>
-
-// AFTER:
-<a href="/#full-faq" ...>
-```
-
-**File 4: `src/components/sections/BlogSection.tsx`**
-
-Either add real links to blog posts or remove the clickable appearance:
-```tsx
-// Option A: Add links (if blog posts exist)
-<a href="/blog/llc-vs-scorp" className="flex flex-col gap-3 group cursor-pointer h-full">
-
-// Option B: Remove clickable styling (if no blog yet)
-<article className="flex flex-col gap-3 h-full">
-  // Remove group, cursor-pointer, hover effects
-```
+- Auto-prepend "+1 " on phone field (already done)
+- Add `maxLength` attribute to phone input to prevent excess digits
+- The phone field should enforce format: after "+1 " only allow 10 more digits
 
 ---
 
-### Summary Table
+### 4. About Page - Parallax Image List
 
-| Category | Count | Details |
-|----------|-------|---------|
-| **Critical (Broken)** | 2 | Service card buttons, CTA button on Services page |
-| **High (Navigation)** | 3 | Articles link, FAQ link, Blog cards |
-| **Medium (Config)** | 3 | Social links, Booking URL, Formspree |
-| **Low (Code Quality)** | 3 | Redundant imports, forwardRef, CDN warning |
-| **TOTAL** | 11 issues |
+The About page parallax divider currently uses `heatherMission` (imported as `mission.webp` from `src/assets/heather/`).
+
+I'll update `src/pages/About.tsx` line 286. with the image named: `woman-working-views.jpg`
 
 ---
 
-### Files to Modify
+### 5. Newsletter "Stay Updated" Form - Already Working
 
-| File | Changes |
-|------|---------|
-| `src/pages/Services.tsx` | Remove `QuizProvider` wrapper and update import |
-| `src/config/brand.ts` | Change `#articles` to `/#articles` for cross-page navigation |
-| `src/components/sections/FAQSection.tsx` | Change `#full-faq` links to `/#full-faq` |
-| `src/components/sections/BlogSection.tsx` | Add real hrefs or remove click styling |
+The footer newsletter form is **already functional**. It submits to Formspree endpoint `https://formspree.io/f/xkorjqrg` (line 11 of Footer.tsx). It includes:
 
+- Email validation
+- Loading states
+- Success/error toast notifications
+
+Formspree automatically sends email notifications to the account owner when a submission is received. No code changes needed -- just verify the Formspree form `xkorjqrg` is configured in your Formspree dashboard to send notification emails to your inbox.
+
+---
+
+### 6. Service Cards - Add Pricing
+
+**Files:** `src/components/sections/ServicesCards.tsx`
+
+**Changes:**
+
+- Add a `price` field to each service object
+- Tax Preparation: "Starts at $425"
+- Mini Tax Plan: "Starts at $675"
+- Tax Strategy: "Starts at $175 for 1040" (will become "Tax Maintenance Plan" per item 8)
+- Add `price` prop to `ServiceCardProps` interface
+- Render the price between the value proposition and the CTA button, styled as a prominent text element
+
+---
+
+### 7. Testimonials Section - Reduce Height by 50%
+
+**Files:** `src/components/sections/TestimonialsSection.tsx`
+
+**Changes:**
+
+- Change `max-h-[700px]` to `max-h-[350px]`
+- Change `xl:max-h-[800px]` to `xl:max-h-[400px]`
+- Change `2xl:max-h-[850px]` to `2xl:max-h-[425px]`
+- Reduce vertical padding from `py-20` to `py-10`
+- Reduce header margin from `mb-12` to `mb-6`
+
+---
+
+### 8. Rename "Tax Strategy" to "Tax Maintenance Plan"
+
+**All locations found that need updating:**
+
+
+| File                                        | Line | Current Text                                         | New Text                                                        |
+| ------------------------------------------- | ---- | ---------------------------------------------------- | --------------------------------------------------------------- |
+| `src/components/sections/ServicesCards.tsx` | 130  | `title: "Tax Strategy"`                              | `title: "Tax Maintenance Plan"`                                 |
+| `src/pages/Services.tsx`                    | 6    | Comment: `Tax Strategy/Planning`                     | `Tax Maintenance Plan`                                          |
+| `src/pages/Contact.tsx`                     | 187  | `<option value="tax-strategy">Tax Strategy</option>` | `<option value="tax-maintenance">Tax Maintenance Plan</option>` |
+
+
+Note: References to "tax strategy" in FAQ answers, Tools page CTA, and general descriptions are about the concept of tax strategy (not the service name), so those remain unchanged.
+
+---
+
+### Files to Modify Summary
+
+
+| File                                              | Changes                                                             |
+| ------------------------------------------------- | ------------------------------------------------------------------- |
+| `src/components/layout/Navbar.tsx`                | Change nav breakpoint from `md` to `lg`                             |
+| `src/components/quiz/QuestionWrapper.tsx`         | Add `showProgressBar` prop, add top padding when true               |
+| `src/components/quiz/GlobalQuiz.tsx`              | Pass `showProgressBar` prop, update phone regex to strict US format |
+| `src/components/quiz/questions/ContactForm.tsx`   | Add maxLength to phone input                                        |
+| `src/components/sections/ServicesCards.tsx`       | Add pricing, rename "Tax Strategy" to "Tax Maintenance Plan"        |
+| `src/components/sections/TestimonialsSection.tsx` | Reduce max heights by 50%, reduce padding                           |
+| `src/pages/Services.tsx`                          | Update comment reference                                            |
+| `src/pages/Contact.tsx`                           | Rename dropdown option                                              |
