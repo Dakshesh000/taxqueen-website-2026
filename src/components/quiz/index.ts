@@ -16,7 +16,7 @@ export { default as ExpatQuestion } from './questions/ExpatQuestion';
 export { default as MultiSelectQuestion } from './questions/MultiSelectQuestion';
 export { default as SingleSelectQuestion } from './questions/SingleSelectQuestion';
 export { default as SliderQuestion } from './questions/SliderQuestion';
-export { default as TextInputQuestion } from './questions/TextInputQuestion';
+
 export { default as YesNoQuestion } from './questions/YesNoQuestion';
 
 // Types and utilities

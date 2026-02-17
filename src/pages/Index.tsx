@@ -31,7 +31,7 @@ const ProcessStepsSection = lazy(() => import("@/components/sections/ProcessStep
 const ComparisonSection = lazy(() => import("@/components/sections/ComparisonSection"));
 const TestimonialsSection = lazy(() => import("@/components/sections/TestimonialsSection"));
 const ComprehensiveFAQSection = lazy(() => import("@/components/sections/ComprehensiveFAQSection"));
-const BlogSection = lazy(() => import("@/components/sections/BlogSection"));
+
 const ParallaxDivider = lazy(() => import("@/components/ui/ParallaxDivider"));
 
 // Parallax images (imported eagerly for lazy component props)
@@ -89,9 +89,6 @@ const Index = () => {
         </Suspense>
         <Suspense fallback={<SectionFallback />}>
           <ComprehensiveFAQSection />
-        </Suspense>
-        <Suspense fallback={<SectionFallback />}>
-          <BlogSection />
         </Suspense>
       </main>
       <Footer />
