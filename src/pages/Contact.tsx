@@ -6,6 +6,7 @@
  */
 
 import { useState } from "react";
+import { logToSheet } from "@/lib/sheetLogger";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -63,6 +64,8 @@ const Contact = () => {
           title: "Message sent!",
           description: "We'll get back to you within 24-48 hours.",
         });
+        // Log to Google Sheet (fire and forget)
+        logToSheet("contact", { ...formData });
         setFormData({ name: "", email: "", subject: "", message: "" });
       } else {
         throw new Error("Failed to send");
