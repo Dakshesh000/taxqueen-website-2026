@@ -11,7 +11,7 @@ interface QuizResultsProps {
 const QuizResults = ({ isQualified, userName, onClose }: QuizResultsProps) => {
   if (isQualified) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px] p-6 text-center">
+      <div className="flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px] p-6 text-center bg-background rounded-2xl">
         {/* Celebration Icon */}
         <div className="mb-6 p-4 rounded-full bg-primary/20 animate-pulse">
           <Sparkles className="w-12 h-12 text-primary" />
@@ -55,7 +55,7 @@ const QuizResults = ({ isQualified, userName, onClose }: QuizResultsProps) => {
 
   // Not a fit / Non-qualified path
   return (
-    <div className="flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px] p-6 text-center">
+    <div className="flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px] p-6 text-center bg-background rounded-2xl">
       {/* Compass Icon */}
       <div className="mb-6 p-4 rounded-full bg-muted">
         <TravelCompass size="lg" />
