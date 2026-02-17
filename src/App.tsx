@@ -20,6 +20,7 @@ const DesignGuide = lazy(() => import("./pages/DesignGuide"));
 const QuizPreview = lazy(() => import("./pages/QuizPreview"));
 const Terms = lazy(() => import("./pages/Terms"));
 const Privacy = lazy(() => import("./pages/Privacy"));
+const TaxMaintenance = lazy(() => import("./pages/TaxMaintenance"));
 
 const queryClient = new QueryClient();
 
@@ -51,6 +52,7 @@ const App = () => (
                 <Route path="/quiz-preview" element={<QuizPreview />} />
                 <Route path="/terms" element={<Terms />} />
                 <Route path="/privacy" element={<Privacy />} />
+                <Route path="/services/tax-maintenance" element={<TaxMaintenance />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
