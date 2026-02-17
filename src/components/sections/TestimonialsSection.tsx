@@ -93,7 +93,7 @@ const column3Items: ColumnItem[] = [
 
 const TestimonialsSection = () => {
   return (
-    <section id="testimonials" className="py-20 bg-primary overflow-hidden">
+    <section id="testimonials" className="py-10 bg-primary overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Header */}
         <motion.div
@@ -101,7 +101,7 @@ const TestimonialsSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
           viewport={{ once: true }}
-          className="flex flex-col items-center justify-center max-w-2xl mx-auto mb-12"
+          className="flex flex-col items-center justify-center max-w-2xl mx-auto mb-6"
         >
           <p className="text-sm font-medium text-primary-foreground/80 uppercase tracking-wider mb-4">
             Testimonials
@@ -115,7 +115,7 @@ const TestimonialsSection = () => {
         </motion.div>
 
         {/* Scrolling Columns */}
-        <div className="flex justify-center gap-6 [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] max-h-[700px] xl:max-h-[800px] 2xl:max-h-[850px] overflow-hidden">
+        <div className="flex justify-center gap-6 [mask-image:linear-gradient(to_bottom,transparent,black_15%,black_85%,transparent)] max-h-[350px] xl:max-h-[400px] 2xl:max-h-[425px] overflow-hidden">
           <TestimonialsColumn items={column1Items} duration={25} />
           <TestimonialsColumn 
             items={column2Items} 

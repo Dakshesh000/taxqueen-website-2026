@@ -3,7 +3,7 @@
  * 
  * Displays Tax Queen service offerings including:
  * - Tax Preparation
- * - Tax Strategy/Planning
+ * - Tax Maintenance Plan
  * - Mini Sessions
  * 
  * Features embedded quiz for service recommendation.

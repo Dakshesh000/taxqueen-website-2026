@@ -98,11 +98,11 @@ interface QuizAnswers {
 
 const TOTAL_STEPS = 9;
 
-// Email validation regex
-const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+// Email validation regex - requires valid format, no consecutive dots, 2+ char TLD
+const EMAIL_REGEX = /^[a-zA-Z0-9](?:[a-zA-Z0-9._%+-]*[a-zA-Z0-9])?@[a-zA-Z0-9](?:[a-zA-Z0-9.-]*[a-zA-Z0-9])?\.(?!con$)[a-zA-Z]{2,}$/;
 
-// Phone validation regex - allows international formats with extensions
-const PHONE_REGEX = /^\+?[1-9]\d{0,2}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}(\s?(x|ext\.?|extension)\s?\d{1,5})?$/i;
+// Phone validation regex - +country code (1-3 digits) followed by exactly 10 digits
+const PHONE_REGEX = /^\+\d{1,3}\s?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
 
 interface GlobalQuizProps {
   isEmbedded?: boolean;
@@ -305,7 +305,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
     // Remove +1 prefix for validation if that's all there is
     const cleanedPhone = phone.replace(/^\+1\s*$/, "");
     if (!cleanedPhone || !PHONE_REGEX.test(phone)) {
-      setPhoneError("Please enter a valid phone number");
+      setPhoneError("Please enter a valid phone number (+1 followed by 10 digits)");
       return false;
     }
     setPhoneError("");
@@ -432,6 +432,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
             backgroundImage={vanSnowMountains}
             placeholderImage={vanSnowMountainsPlaceholder}
             fixedHeight={hasEngaged}
+            showProgressBar
           >
             <MultiSelectQuestion
               options={incomeOptions}
@@ -458,6 +459,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
             backgroundImage={rvCoastalDrive}
             placeholderImage={rvCoastalDrivePlaceholder}
             fixedHeight={hasEngaged}
+            showProgressBar
           >
             <ExpatQuestion
               value={answers.expatCountry}
@@ -496,6 +498,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
             backgroundImage={rvAutumnLeaves}
             placeholderImage={womanWorkingViewsPlaceholder}
             fixedHeight={hasEngaged}
+            showProgressBar
           >
             <MultiSelectQuestion
               options={nomadicLifeOptions}
@@ -528,6 +531,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
             backgroundImage={womanWorkingViews}
             placeholderImage={womanWorkingViewsPlaceholder}
             fixedHeight={hasEngaged}
+            showProgressBar
           >
             <MultiSelectQuestion
               options={situationOptions}
@@ -558,6 +562,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
             backgroundImage={truckDesert}
             placeholderImage={truckDesertPlaceholder}
             fixedHeight={hasEngaged}
+            showProgressBar
           >
             <SingleSelectQuestion
               options={financialTrackingOptions}
@@ -586,6 +591,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
             backgroundImage={workingAtBeach}
             placeholderImage={workingAtBeachPlaceholder}
             fixedHeight={hasEngaged}
+            showProgressBar
           >
             <MultiSelectQuestion
               options={lookingForOptions}
@@ -620,6 +626,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
             backgroundImage={campingByRiver}
             placeholderImage={campingByRiverPlaceholder}
             fixedHeight={hasEngaged}
+            showProgressBar
           >
             <SliderQuestion
               value={answers.urgency}
@@ -651,6 +658,7 @@ const GlobalQuiz = ({ isEmbedded = false }: GlobalQuizProps) => {
             backgroundImage={sunsetRvReflection}
             placeholderImage={sunsetRvReflectionPlaceholder}
             fixedHeight={hasEngaged}
+            showProgressBar
           >
             <ContactForm
               name={answers.name}

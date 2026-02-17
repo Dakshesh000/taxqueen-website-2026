@@ -94,6 +94,7 @@ const ContactForm = forwardRef<HTMLDivElement, ContactFormProps>(
                   value={phone}
                   onChange={(e) => handlePhoneChange(e.target.value)}
                   onFocus={handlePhoneFocus}
+                  maxLength={17}
                   placeholder="+1 (555) 123-4567"
                   className={`w-full pl-12 pr-6 py-3 h-12 text-base bg-primary-foreground/20 backdrop-blur-sm border-2 rounded-full text-primary-foreground placeholder:text-primary-foreground/60 focus:border-primary focus:bg-primary-foreground/30 transition-all ${
                     phoneError ? "border-red-400" : "border-primary-foreground/30"

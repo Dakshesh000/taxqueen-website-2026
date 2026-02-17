@@ -16,6 +16,7 @@ interface ServiceCardProps {
   features: string[];
   valueProp: string;
   qualifier?: string;
+  price: string;
   ctaText: string;
   onGetStarted: () => void;
 }
@@ -28,6 +29,7 @@ const ServiceCard = memo(({
   features, 
   valueProp, 
   qualifier, 
+  price,
   ctaText, 
   onGetStarted 
 }: ServiceCardProps) => (
@@ -78,8 +80,13 @@ const ServiceCard = memo(({
       )}
 
       {/* Value Proposition */}
-      <p className="text-foreground font-bold text-sm md:text-base mb-6">
+      <p className="text-foreground font-bold text-sm md:text-base mb-4">
         {valueProp}
+      </p>
+
+      {/* Pricing */}
+      <p className="text-primary font-bold text-lg md:text-xl mb-6">
+        {price}
       </p>
 
       {/* CTA Button - pushed to bottom */}
@@ -108,6 +115,7 @@ const ServicesCards = () => {
         "FBAR & FATCA compliance included",
       ],
       valueProp: "Avoid costly mistakes and take every deduction and credit.",
+      price: "Starts at $425",
       ctaText: "Get Started",
     },
     {
@@ -122,12 +130,13 @@ const ServicesCards = () => {
         "Follow-up call for Q&A",
       ],
       valueProp: "Stay on track with quarterly payments and avoid surprises.",
+      price: "Starts at $675",
       ctaText: "Get Started",
     },
     {
       image: taxStrategy1,
       icon: Sparkles,
-      title: "Tax Strategy",
+      title: "Tax Maintenance Plan",
       subtitle: "For business owners + freelancers who want a proactive plan.",
       features: [
         "Year-round tax optimization",
@@ -137,6 +146,7 @@ const ServicesCards = () => {
       ],
       qualifier: "*For high-income earners with business and/or rental property.",
       valueProp: "Get a plan in place and a tax advisor to keep you on track.",
+      price: "Starts at $175 for 1040",
       ctaText: "Get Started",
     },
   ];

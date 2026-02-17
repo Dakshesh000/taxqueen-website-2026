@@ -40,7 +40,7 @@ const Navbar = () => {
         </a>
 
         {/* Desktop Navigation */}
-        <ul className="hidden md:flex items-center gap-8">
+        <ul className="hidden lg:flex items-center gap-8">
           {navigation.map((item) => (
             <li key={item.href}>
               <a
@@ -56,7 +56,7 @@ const Navbar = () => {
         </ul>
 
         {/* CTA Button */}
-        <div className="hidden md:block">
+        <div className="hidden lg:block">
           <Button 
             variant="cta" 
             className={`transition-all duration-300 ${isScrolled ? "text-sm px-4 py-1" : ""}`}
@@ -68,7 +68,7 @@ const Navbar = () => {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden p-2"
+          className="lg:hidden p-2"
           onClick={() => setIsOpen(!isOpen)}
           aria-label="Toggle menu"
         >
@@ -78,7 +78,7 @@ const Navbar = () => {
 
       {/* Mobile Dropdown Menu */}
       <div 
-        className={`md:hidden bg-background border-b border-border overflow-hidden transition-all duration-300 ${
+        className={`lg:hidden bg-background border-b border-border overflow-hidden transition-all duration-300 ${
           isOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
         }`}
       >
