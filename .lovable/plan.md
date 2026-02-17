@@ -1,27 +1,29 @@
 
 
-## Update Webhook Secret to Make.com URL
+## Fix Transparent Quiz Results Card
 
-### What We're Doing
+### Problem
 
-Update the `GOOGLE_SHEET_WEBHOOK_URL` secret to point to your new Make.com webhook endpoint.
+When the quiz reaches the results screen (with the calendar), the content renders directly via `QuizResults` without the `QuestionWrapper` component that provides the background image. The modal card in `QuizModal` intentionally has no `bg-background` class (removed earlier so background images fill edge-to-edge). This means the results card has no solid background -- it appears transparent over the blurred website backdrop.
 
-### Steps
+### Solution
 
-1. Update the existing `GOOGLE_SHEET_WEBHOOK_URL` secret with your Make.com URL: `https://hook.eu2.make.com/erqm3fpxxq315o9du7uynld5iimxrnzp`
-2. Test the integration by sending a test payload to the `log-submission` edge function
+Add a solid `bg-background` class to the `QuizResults` container so the results card has a proper white/dark background regardless of whether a background image is present.
 
-### Payload Format (Already in Place)
+### Technical Details
 
-The edge function already sends this consistent shape to the webhook -- no code changes needed:
+**File: `src/components/quiz/QuizResults.tsx`**
 
-```text
-{
-  "type": "quiz" | "contact" | "newsletter",
-  "data": { ...form fields... },
-  "timestamp": "2026-02-17T..."
-}
-```
+- Line 14: Change the qualified result container from:
+  ```
+  <div className="flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px] p-6 text-center">
+  ```
+  to:
+  ```
+  <div className="flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px] p-6 text-center bg-background rounded-2xl">
+  ```
 
-This is exactly what Make.com needs to route submissions via a Router module based on the `type` field.
+- Line 58: Same change for the non-qualified result container.
+
+This gives both result screens a solid background and consistent rounded styling, matching the rest of the quiz card appearance.
 
