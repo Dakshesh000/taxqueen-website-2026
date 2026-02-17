@@ -123,13 +123,13 @@ const HeroSection = () => {
             </p>
 
             {/* Headline */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-tight uppercase">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-foreground leading-tight uppercase font-sans">
               TAXES FOR DIGITAL NOMADS.{" "}
               <span className="text-foreground">SIMPLIFIED.</span>
             </h1>
 
             {/* Tagline */}
-            <p className="text-lg sm:text-xl xl:text-2xl text-foreground max-w-2xl xl:max-w-3xl mx-auto">
+            <p className="text-lg sm:text-xl xl:text-2xl text-foreground max-w-2xl xl:max-w-3xl mx-auto font-sans">
               Your life is on the Road. Your Taxes shouldn't feel like a detour.
             </p>
 
