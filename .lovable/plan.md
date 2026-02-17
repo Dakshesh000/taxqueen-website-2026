@@ -1,135 +1,96 @@
 
 
-## Chatbot: Create Backend + Client-Ready Configuration
+## Lighthouse Score Recovery Plan (Services Page: 87 -> 95+)
 
-### What's Happening
+### Priority 1: Fix Font 404s (Performance + Best Practices)
 
-The chatbot UI works but has NO backend. Every message fails with a network error. We need to create the edge function that powers it, designed so your client can deploy it anywhere.
+**Problem:** CSS declares `@font-face` for `dm-sans-600.woff2` and `dm-sans-700.woff2` but only `dm-sans-400.woff2` and `dm-sans-500.woff2` exist in `public/fonts/`. The browser requests them, waits for the timeout, then falls back. This wastes ~5 seconds in the font chain and drops Best Practices from 100 to 96.
 
-### Architecture
+**Fix:** Remove the two `@font-face` declarations for weight 600 and 700 from `src/styles/index.css` (lines 74-88). Tailwind's `font-semibold` (600) and `font-bold` (700) will simply use the closest available weight (500) via the browser's font matching algorithm. Since DM Sans is a variable-weight-friendly family and 500 is already loaded, the visual difference is negligible.
 
-```text
-User types message
-       |
-       v
-ChatDrawer.tsx --> useChatStream.ts --> POST /functions/v1/chat
-                                              |
-                                              v
-                                    supabase/functions/chat/index.ts
-                                              |
-                                              v
-                                    Reads 3 environment variables:
-                                      - AI_API_URL (default: Lovable AI Gateway)
-                                      - AI_API_KEY (default: LOVABLE_API_KEY)
-                                      - AI_MODEL (default: google/gemini-3-flash-preview)
-                                              |
-                                              v
-                                    Prepends system prompt (editable at top of file)
-                                              |
-                                              v
-                                    Streams SSE response back to browser
-```
+**Files:** `src/styles/index.css` -- delete lines 74-88
 
-### How the Client Takes Over
+**Impact:** Eliminates 404 console errors, breaks the 5,245ms font chain, fixes Best Practices score.
 
-When deploying outside Lovable (e.g., on their own Supabase project or any Deno/Edge runtime):
+---
 
-1. **Set 3 environment variables:**
-   - `AI_API_KEY` -- Their OpenAI key, Google AI key, or any provider key
-   - `AI_API_URL` -- The completions endpoint (e.g., `https://api.openai.com/v1/chat/completions`)
-   - `AI_MODEL` -- The model name (e.g., `gpt-4o`, `gemini-2.5-flash`)
+### Priority 2: Preload LCP Hero Image (Performance)
 
-2. **Edit the system prompt:** Open `supabase/functions/chat/index.ts`, find the clearly marked `SYSTEM_PROMPT` section at the top, and change the text.
+**Problem:** The Services hero image (`services-hero-new.webp`) is loaded by JS-rendered React, so the browser can't discover it until JS executes. Resource load delay is 4,740ms.
 
-3. **Forms (Formspree):** Work on any domain with zero changes. Client just needs Formspree account access to manage notification emails.
+**Fix:** Add a `<link rel="preload">` in `index.html` for the services hero image. Since Vite hashes filenames, and we can't predict the hash, the best approach is to add `fetchpriority="high"` to the `<img>` tag in `src/pages/Services.tsx` so the browser prioritizes it once discovered.
 
-### Files to Create/Modify
+**Files:** `src/pages/Services.tsx` -- add `fetchPriority="high"` to the hero `<img>` tag (around line 52)
 
-#### 1. Shorten Greeting Bubble
+**Impact:** Estimated 2-3 second LCP improvement.
 
-**File:** `src/components/common/CompassChatButton.tsx`
-- Line 61: Change text from "Hey there, fellow traveler! (compass) Need help navigating nomad taxes?" to "Got tax questions? (compass)"
+---
 
-#### 2. Create Edge Function
+### Priority 3: Remove Unused Preconnect (Best Practices)
 
-**New file:** `supabase/functions/chat/index.ts`
+**Problem:** `index.html` line 6 has `<link rel="preconnect" href="https://api.dicebear.com" crossorigin>` but this connection is only used on pages with testimonials (not on initial load). It wastes a connection handshake on every page.
 
-The function will have this structure:
+**Fix:** Remove line 6 from `index.html`.
 
-```text
-// =============================================
-// CHATBOT CONFIGURATION - EDIT HERE
-// =============================================
+**Files:** `index.html` -- delete line 6
 
-SYSTEM_PROMPT = `...`   <-- Client edits this to change personality
-AI_API_URL = env var     <-- Defaults to Lovable AI, client can swap to OpenAI etc.
-AI_API_KEY = env var     <-- Defaults to LOVABLE_API_KEY
-AI_MODEL = env var       <-- Defaults to google/gemini-3-flash-preview
+**Impact:** Eliminates "unused preconnect" warning.
 
-// =============================================
-// END CONFIGURATION
-// =============================================
+---
 
-// ... rest of function (CORS, streaming, error handling)
-```
+### Priority 4: Fix Carousel Touch Targets (Accessibility)
 
-#### 3. System Prompt (Comprehensive, Best-Practice)
+**Problem:** Testimonial dot indicators are `w-2 h-2` (8x8px), below the 24x24px minimum for touch targets.
 
-The prompt will cover:
+**Fix:** Add minimum touch target sizing. Keep the visual dot small but wrap in a larger hit area using padding.
 
-**Identity and Tone:**
-- Name: Tax Queen AI Assistant (powered by Heather's expertise)
-- Personality: Warm, approachable, knowledgeable -- like chatting with a friend who happens to be a tax expert
-- Tone: Conversational but professional, uses plain language, avoids jargon
+**Files:** `src/components/sections/ServicesTestimonialsCarousel.tsx` -- update the dot buttons (line 163-172) to have `min-w-6 min-h-6` with flexbox centering, keeping the inner dot at `w-2 h-2`.
 
-**Behavioral Rules:**
-- Keep responses under 100 words (concise, scannable)
-- Use bullet points for lists, bold for key terms
-- Always end with a question or next step to keep conversation flowing
-- On the 2nd message, naturally ask for their first name to personalize
+Also apply the same fix to `src/components/sections/TestimonialsSection.tsx` if it has similar dots (it doesn't -- it uses auto-scrolling columns, no dots).
 
-**Scope and Boundaries:**
-- CAN discuss: General tax concepts for digital nomads, RV travelers, expats; business entity types (LLC, S-Corp); deduction categories; state domicile concepts; estimated tax basics; Tax Queen's services and pricing
-- CANNOT do: Give specific tax advice, file taxes, access tax records, guarantee outcomes, discuss other tax preparers
-- For specific situations: Redirect to booking a consultation
+**Impact:** Fixes accessibility touch target warning.
 
-**Legal Compliance:**
-- Include disclaimer on first response: "I provide general tax education, not personalized tax advice. For advice specific to your situation, book a consultation with Heather."
-- Never say "you should deduct X" -- instead say "digital nomads may be eligible for deductions like X"
+---
 
-**Service Awareness:**
-- Tax Preparation: Starts at $425
-- Mini Tax Plan: Starts at $675
-- Tax Maintenance Plan: Starts at $175 for 1040
-- Can explain what each service includes
-- Direct to quiz or contact page for next steps
+### Priority 5: Fix Heading Order (Accessibility)
 
-**Handling Edge Cases:**
-- Off-topic questions: Gently redirect -- "Great question! I'm specialized in nomad tax topics though. For that, I'd suggest..."
-- Frustrated users: Empathize, then offer to connect with Heather directly
-- Complex scenarios: "That's a nuanced situation -- exactly the kind of thing Heather specializes in. Want me to help you book a consultation?"
+**Problem:** Footer uses `<h4>` tags ("STAY UPDATED", "Quick Links") without preceding `<h3>`, breaking heading hierarchy.
 
-#### 4. Update Config
+**Fix:** Change the `<h4>` elements in `src/components/layout/Footer.tsx` (lines 160, 201) to `<h3>` tags. This maintains visual appearance (they use utility classes for styling) while fixing the semantic hierarchy.
 
-**File:** `supabase/config.toml`
-- Add `[functions.chat]` with `verify_jwt = false`
+**Files:** `src/components/layout/Footer.tsx` -- change `h4` to `h3` on lines 160 and 201
 
-### Client Handover Cheat Sheet
+**Impact:** Fixes heading order accessibility warning across all pages.
 
-| What | Where | How to Change |
-|------|-------|---------------|
-| Chatbot personality/rules | `supabase/functions/chat/index.ts` -- top of file | Edit the `SYSTEM_PROMPT` text |
-| AI provider | Environment variable `AI_API_URL` | Set to any OpenAI-compatible endpoint |
-| API key | Environment variable `AI_API_KEY` | Set to your provider's API key |
-| AI model | Environment variable `AI_MODEL` | Set to model name (e.g., `gpt-4o`) |
-| Form notifications | Formspree dashboard | Log in at formspree.io, manage forms |
-| Greeting bubble text | `src/components/common/CompassChatButton.tsx` line 61 | Edit the string |
+---
 
-### What This Means for Deployment
+### Priority 6: Lazy-load react-markdown (Unused JS)
 
-**On Lovable (current):** Works immediately. Uses pre-configured `LOVABLE_API_KEY`. No setup needed.
+**Problem:** `vendor-markdown` bundle (26 KiB) loads on every page but is only used by `ChatDrawer.tsx` (the chatbot). Most users on `/services` never open the chatbot.
 
-**On client's own Supabase:** They create the edge function, set the 3 env vars in their Supabase dashboard under Settings > Edge Functions > Secrets, and it works.
+**Fix:** Dynamically import `react-markdown` inside `ChatDrawer.tsx` using `React.lazy()` so it only loads when the chat drawer is opened.
 
-**On Vercel/Netlify/other:** They'd need to convert the edge function to their platform's serverless format (e.g., Vercel API route) and set env vars there. The logic stays identical.
+**Files:** `src/components/common/ChatDrawer.tsx` -- replace the static `import ReactMarkdown from "react-markdown"` with a lazy/dynamic import that loads on first render of the drawer.
+
+**Impact:** Saves 26 KiB of unused JS on every page that doesn't use the chatbot.
+
+---
+
+### Summary of Changes
+
+| File | Change | Issue Fixed |
+|------|--------|-------------|
+| `src/styles/index.css` | Remove `@font-face` for weights 600 and 700 | Font 404s, font chain delay, Best Practices |
+| `index.html` | Remove dicebear preconnect (line 6) | Unused preconnect warning |
+| `src/pages/Services.tsx` | Add `fetchPriority="high"` to hero img | LCP delay |
+| `src/components/sections/ServicesTestimonialsCarousel.tsx` | Enlarge dot button touch targets | Accessibility touch targets |
+| `src/components/layout/Footer.tsx` | Change `h4` to `h3` | Heading order |
+| `src/components/common/ChatDrawer.tsx` | Lazy-load react-markdown | Unused JS |
+
+### Not Addressed (and why)
+
+- **Hero image 665 KiB:** Requires re-exporting the WebP at lower quality outside Lovable. Can't be fixed in code -- the source image file needs to be replaced with a more compressed version.
+- **Cache headers (9,390 KiB):** The `_headers` file already sets 1-year cache. This is a hosting/CDN configuration issue, not a code issue. On Lovable preview, headers may not apply.
+- **Render-blocking CSS (100ms):** At 15.9 KiB, this is a standard Vite-generated CSS bundle. The `media="print"` trick risks FOUC (flash of unstyled content). The 100ms cost is acceptable for a styled first paint.
+- **Unused JS (39 KiB from index.js):** This is the main app bundle and can't be easily split further without over-engineering.
 
