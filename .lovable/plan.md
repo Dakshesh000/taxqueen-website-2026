@@ -1,29 +1,27 @@
 
+## Three Changes
 
-## Fix Transparent Quiz Results Card
+### 1. Articles link opens external blog
+**File: `src/config/brand.ts`** (line 62)
+- Change the Articles nav item from `{ label: "Articles", href: "/#articles" }` to `{ label: "Articles", href: "https://gray-kudu-450355.hostingersite.com/", external: true }`
+- This makes it open in a new tab, same as the Portal link
 
-### Problem
+### 2. Toast auto-dismiss after 5 seconds
+**File: `src/hooks/use-toast.ts`** (line 6)
+- Change `TOAST_REMOVE_DELAY` from `1000000` (roughly permanent) to `5000` (5 seconds)
+- This affects all toast notifications site-wide (contact form, newsletter, quiz, etc.)
 
-When the quiz reaches the results screen (with the calendar), the content renders directly via `QuizResults` without the `QuestionWrapper` component that provides the background image. The modal card in `QuizModal` intentionally has no `bg-background` class (removed earlier so background images fill edge-to-edge). This means the results card has no solid background -- it appears transparent over the blurred website backdrop.
+### 3. Font investigation
+The hero heading and tagline are already rendering in **DM Sans** -- the brand font is correctly configured in:
+- `tailwind.config.ts`: `fontFamily: { sans: ["DM Sans", ...] }`
+- `src/styles/index.css`: Self-hosted `@font-face` declarations for weights 400-700
+- `index.html`: Font files are preloaded
 
-### Solution
-
-Add a solid `bg-background` class to the `QuizResults` container so the results card has a proper white/dark background regardless of whether a background image is present.
+The fonts visible in the screenshot match DM Sans. If you're seeing a different font on your device, it may be a caching issue -- try a hard refresh (Ctrl+Shift+R / Cmd+Shift+R). No code changes needed here.
 
 ### Technical Details
 
-**File: `src/components/quiz/QuizResults.tsx`**
-
-- Line 14: Change the qualified result container from:
-  ```
-  <div className="flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px] p-6 text-center">
-  ```
-  to:
-  ```
-  <div className="flex flex-col items-center justify-center min-h-[400px] md:min-h-[500px] p-6 text-center bg-background rounded-2xl">
-  ```
-
-- Line 58: Same change for the non-qualified result container.
-
-This gives both result screens a solid background and consistent rounded styling, matching the rest of the quiz card appearance.
-
+| File | Line | Change |
+|---|---|---|
+| `src/config/brand.ts` | 62 | `href: "https://gray-kudu-450355.hostingersite.com/"`, add `external: true` |
+| `src/hooks/use-toast.ts` | 6 | `TOAST_REMOVE_DELAY = 5000` |
