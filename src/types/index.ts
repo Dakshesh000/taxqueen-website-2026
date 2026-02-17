@@ -86,18 +86,6 @@ export interface ProcessStep {
   icon: React.ComponentType<{ className?: string }>;
 }
 
-/**
- * Blog post structure
- * Used in BlogSection
- */
-export interface BlogPost {
-  title: string;
-  excerpt: string;
-  category: string;
-  image: string;
-  link: string;
-  date?: string;
-}
 
 /**
  * Credential/Certification structure
