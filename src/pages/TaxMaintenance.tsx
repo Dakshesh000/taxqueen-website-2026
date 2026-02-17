@@ -92,49 +92,8 @@ const TaxMaintenance = () => {
           </div>
         </section>
 
-        {/* Intro Content */}
-        <section className="py-12 md:py-16 bg-background">
-          <div className="container mx-auto px-4 max-w-4xl">
-            <div className="text-center space-y-6">
-              <h2 className="text-2xl md:text-3xl font-bold text-foreground uppercase">
-                Remove the Struggle. Hire Someone Else.
-              </h2>
-              <div className="space-y-4 text-muted-foreground text-lg leading-relaxed">
-                <p>Overwhelmed by all the forms?</p>
-                <p>
-                  Not sure what to take as deductions — and where to take them?
-                </p>
-                <p>
-                  Tax regulations change yearly, and even after hours of
-                  research, you might not get a clear answer to your questions.
-                </p>
-                <p>
-                  What if you make a costly mistake, or miss a credit available
-                  to you?
-                </p>
-                <p className="text-foreground font-semibold">
-                  By hiring a professional, you make sure you get it right the
-                  first time.
-                </p>
-              </div>
-              <div className="pt-4">
-                <p className="text-xl font-bold text-foreground uppercase mb-4">
-                  Ready to Work With Me?
-                </p>
-                <Button
-                  variant="cta"
-                  size="lg"
-                  onClick={() => openQuiz()}
-                >
-                  Get Started
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-
         {/* Pricing Cards */}
-        <section className="py-16 bg-section-blue">
+        <section className="py-16 bg-background">
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
               {packages.map((pkg) => (
