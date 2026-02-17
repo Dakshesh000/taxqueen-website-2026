@@ -16,6 +16,7 @@ interface QuestionWrapperProps {
   placeholderImage?: string;
   children: ReactNode;
   fixedHeight?: boolean;
+  showProgressBar?: boolean;
 }
 
 const QuestionWrapper = ({
@@ -26,6 +27,7 @@ const QuestionWrapper = ({
   placeholderImage,
   children,
   fixedHeight = false,
+  showProgressBar = false,
 }: QuestionWrapperProps) => {
   const [showAnimation, setShowAnimation] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -92,7 +94,7 @@ const QuestionWrapper = ({
       {/* Content - centered vertically and horizontally */}
       <div 
         ref={contentRef}
-        className="relative z-10 flex flex-col items-center justify-center h-full px-4 py-6 md:py-8 text-center overflow-y-auto"
+        className={`relative z-10 flex flex-col items-center justify-center h-full px-4 py-6 md:py-8 text-center overflow-y-auto ${showProgressBar ? "pt-16 md:pt-20" : ""}`}
       >
         {/* Custom Compass Icon with Animation */}
         <div className={`mb-4 p-3 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/30 ${showAnimation ? "animate-needle-wiggle" : ""}`}>

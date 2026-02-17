@@ -14,9 +14,9 @@ import {
   heatherStoryTab1,
   heatherStoryTab2,
   heatherStoryTab3,
-  heatherMission,
   heatherWhyWorkWithMe,
   heatherAboutCta,
+  womanWorkingViews as womanWorkingViewsAbout,
 } from "@/assets";
 import useImagePreloader from "@/hooks/useImagePreloader";
 
@@ -283,7 +283,7 @@ const About = () => {
 
       {/* Section 6: Parallax Divider */}
       <ParallaxDivider
-        image={heatherMission}
+        image={womanWorkingViewsAbout}
         text="My Mission"
         subtext="Helping you keep more of what you earn—so you can live more of the life you love"
       />

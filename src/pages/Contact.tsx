@@ -184,7 +184,7 @@ const Contact = () => {
                       >
                         <option value="">Select a topic...</option>
                         <option value="tax-prep">Tax Preparation</option>
-                        <option value="tax-strategy">Tax Strategy</option>
+                        <option value="tax-maintenance">Tax Maintenance Plan</option>
                         <option value="mini-session">Mini Session Question</option>
                         <option value="general">General Inquiry</option>
                         <option value="other">Other</option>

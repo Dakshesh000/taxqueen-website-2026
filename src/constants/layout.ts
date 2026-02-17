@@ -20,5 +20,5 @@ export const WIGGLE_INTERVAL_MS = 5000;
 export const WIGGLE_DURATION_MS = 1200;
 
 // Validation
-export const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-export const PHONE_REGEX = /^\+?[1-9]\d{0,2}[-.\s]?\(?\d{1,4}\)?[-.\s]?\d{1,4}[-.\s]?\d{1,9}(\s?(x|ext\.?|extension)\s?\d{1,5})?$/i;
+export const EMAIL_REGEX = /^[a-zA-Z0-9](?:[a-zA-Z0-9._%+-]*[a-zA-Z0-9])?@[a-zA-Z0-9](?:[a-zA-Z0-9.-]*[a-zA-Z0-9])?\.(?!con$)[a-zA-Z]{2,}$/;
+export const PHONE_REGEX = /^\+\d{1,3}\s?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/;
