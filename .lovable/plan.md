@@ -1,19 +1,29 @@
 
 
-## Link Tax Maintenance Card to Its Dedicated Page
+## Change Navbar and Footer Font to Proxima Nova Regular
 
-### What Changes
+### Overview
+Replace the font used in the Navbar menu links and the Footer with Proxima Nova Regular, while keeping DM Sans as the default font for the rest of the site.
 
-In `src/components/sections/ServicesCards.tsx`, the "Tax Maintenance Plan" card's "Get Started" button will navigate to `/services/tax-maintenance` instead of opening the quiz. The other two cards (Tax Preparation, Mini Tax Plan) remain unchanged and continue to open the quiz.
+### Steps
 
-### Technical Details
+1. **Add Proxima Nova font file**
+   - You'll need to provide a `proxima-nova-regular.woff2` file (or similar format). Since Proxima Nova is a commercial font, it needs to be licensed and added to `public/fonts/`.
+   - If you have the file, I'll place it at `public/fonts/proxima-nova-400.woff2`.
 
-**File: `src/components/sections/ServicesCards.tsx`**
+2. **Register the font in CSS** (`src/styles/index.css`)
+   - Add a new `@font-face` declaration for Proxima Nova alongside the existing DM Sans declarations.
 
-1. Import `useNavigate` from `react-router-dom`
-2. Add an optional `href` field to the service data objects
-3. Set `href: "/services/tax-maintenance"` on the Tax Maintenance Plan entry
-4. Update the `onGetStarted` handler in the map: if `href` exists, use `navigate(href)`; otherwise call `openQuiz()`
+3. **Add a Tailwind utility class** (`tailwind.config.ts`)
+   - Add a new font family entry: `proxima: ["Proxima Nova", "system-ui", "sans-serif"]`
+   - This enables using `font-proxima` in components.
 
-This single component is used on both the homepage and the Services page, so both are covered by this one change.
+4. **Apply to Navbar** (`src/components/layout/Navbar.tsx`)
+   - Add `font-proxima` to the desktop nav links and mobile menu links.
+
+5. **Apply to Footer** (`src/components/layout/Footer.tsx`)
+   - Add `font-proxima` to the footer's text elements.
+
+### Important Note
+Proxima Nova is a **commercial typeface** (by Mark Simonson Studio). You need a valid web font license and the `.woff2` file to proceed. If you have it, please upload the font file and I'll wire everything up. If you'd like a free alternative that looks similar (e.g., Montserrat), let me know.
 
