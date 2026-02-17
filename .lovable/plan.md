@@ -1,137 +1,135 @@
-## 8-Point Website Update Plan
-
-### 1. Tablet Portrait Navbar - Use Hamburger Menu at Larger Breakpoint
-
-**Problem:** At tablet portrait widths (768px-1024px), the desktop nav with 6 links + CTA button gets cramped.
-
-**Fix:** Change the breakpoint for showing the desktop nav from `md` (768px) to `lg` (1024px). This means tablet portrait users will get the mobile hamburger menu instead.
-
-**Files:** `src/components/layout/Navbar.tsx`
-
-**Changes:**
-
-- Replace all `md:` prefixes for nav visibility with `lg:` (lines 43, 59, 70, 80)
-- `hidden md:flex` becomes `hidden lg:flex`
-- `hidden md:block` becomes `hidden lg:block`
-- `md:hidden` becomes `lg:hidden`
-
----
-
-### 2. Quiz Mobile - Fix "Which of These Apply to You?" Title Overlap
-
-**Problem:** On mobile, the progress bar (absolutely positioned with gradient overlay at the top) overlaps the question heading on step 4 (the 6-option multi-select).
-
-**Fix:** Add top padding to the content area in `QuestionWrapper.tsx` to account for the progress bar height when it's visible, without changing the design.
-
-**Files:** `src/components/quiz/QuestionWrapper.tsx`
-
-**Changes:**
-
-- Accept a new prop or detect that the progress bar is shown (steps > 0)
-- Add `pt-16 md:pt-20` to the content container when progress bar is visible, giving room for the overlaid progress bar
-- Since `QuestionWrapper` doesn't know about the step, the simplest approach is to add a `showProgressBar` prop passed from `GlobalQuiz.tsx`
-- In `GlobalQuiz.tsx`, pass `showProgressBar={currentStep > 0}` to each `QuestionWrapper`
-- In `QuestionWrapper.tsx`, when `showProgressBar` is true, add extra top padding (`pt-20`) to the scrollable content area
-
----
-
-### 3. Quiz Contact Form - Stricter Email + Phone Validation
-
-**Problem:** Current regex is too permissive. Need real email validation and phone locked to +1 followed by exactly 10 digits.
-
-**Files:** `src/components/quiz/GlobalQuiz.tsx`, `src/components/quiz/questions/ContactForm.tsx`
-
-**Changes in GlobalQuiz.tsx:**
-
-- Update `EMAIL_REGEX` to require at least 2-char TLD and disallow consecutive dots
-- Replace `PHONE_REGEX` with a strict US phone regex: `/^\+1\s?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}$/`
-- Update `validatePhone` error message to: "Please enter a valid US phone number (+1 followed by 10 digits)"
-- Note that users should be able to edit the extension if need be by typing...it can take upto 3 caracters
-- Update `validateEmail` to also check for common disposable email domains (optional) or at minimum enforce stricter format...make sure a real entry never gets barred
-
-**Changes in ContactForm.tsx:**
-
-- Auto-prepend "+1 " on phone field (already done)
-- Add `maxLength` attribute to phone input to prevent excess digits
-- The phone field should enforce format: after "+1 " only allow 10 more digits
-
----
-
-### 4. About Page - Parallax Image List
-
-The About page parallax divider currently uses `heatherMission` (imported as `mission.webp` from `src/assets/heather/`).
-
-I'll update `src/pages/About.tsx` line 286. with the image named: `woman-working-views.jpg`
-
----
-
-### 5. Newsletter "Stay Updated" Form - Already Working
-
-The footer newsletter form is **already functional**. It submits to Formspree endpoint `https://formspree.io/f/xkorjqrg` (line 11 of Footer.tsx). It includes:
-
-- Email validation
-- Loading states
-- Success/error toast notifications
-
-Formspree automatically sends email notifications to the account owner when a submission is received. No code changes needed -- just verify the Formspree form `xkorjqrg` is configured in your Formspree dashboard to send notification emails to your inbox.
-
----
-
-### 6. Service Cards - Add Pricing
-
-**Files:** `src/components/sections/ServicesCards.tsx`
-
-**Changes:**
-
-- Add a `price` field to each service object
-- Tax Preparation: "Starts at $425"
-- Mini Tax Plan: "Starts at $675"
-- Tax Strategy: "Starts at $175 for 1040" (will become "Tax Maintenance Plan" per item 8)
-- Add `price` prop to `ServiceCardProps` interface
-- Render the price between the value proposition and the CTA button, styled as a prominent text element
-
----
-
-### 7. Testimonials Section - Reduce Height by 50%
-
-**Files:** `src/components/sections/TestimonialsSection.tsx`
-
-**Changes:**
-
-- Change `max-h-[700px]` to `max-h-[350px]`
-- Change `xl:max-h-[800px]` to `xl:max-h-[400px]`
-- Change `2xl:max-h-[850px]` to `2xl:max-h-[425px]`
-- Reduce vertical padding from `py-20` to `py-10`
-- Reduce header margin from `mb-12` to `mb-6`
-
----
-
-### 8. Rename "Tax Strategy" to "Tax Maintenance Plan"
-
-**All locations found that need updating:**
 
 
-| File                                        | Line | Current Text                                         | New Text                                                        |
-| ------------------------------------------- | ---- | ---------------------------------------------------- | --------------------------------------------------------------- |
-| `src/components/sections/ServicesCards.tsx` | 130  | `title: "Tax Strategy"`                              | `title: "Tax Maintenance Plan"`                                 |
-| `src/pages/Services.tsx`                    | 6    | Comment: `Tax Strategy/Planning`                     | `Tax Maintenance Plan`                                          |
-| `src/pages/Contact.tsx`                     | 187  | `<option value="tax-strategy">Tax Strategy</option>` | `<option value="tax-maintenance">Tax Maintenance Plan</option>` |
+## Chatbot: Create Backend + Client-Ready Configuration
 
+### What's Happening
 
-Note: References to "tax strategy" in FAQ answers, Tools page CTA, and general descriptions are about the concept of tax strategy (not the service name), so those remain unchanged.
+The chatbot UI works but has NO backend. Every message fails with a network error. We need to create the edge function that powers it, designed so your client can deploy it anywhere.
 
----
+### Architecture
 
-### Files to Modify Summary
+```text
+User types message
+       |
+       v
+ChatDrawer.tsx --> useChatStream.ts --> POST /functions/v1/chat
+                                              |
+                                              v
+                                    supabase/functions/chat/index.ts
+                                              |
+                                              v
+                                    Reads 3 environment variables:
+                                      - AI_API_URL (default: Lovable AI Gateway)
+                                      - AI_API_KEY (default: LOVABLE_API_KEY)
+                                      - AI_MODEL (default: google/gemini-3-flash-preview)
+                                              |
+                                              v
+                                    Prepends system prompt (editable at top of file)
+                                              |
+                                              v
+                                    Streams SSE response back to browser
+```
 
+### How the Client Takes Over
 
-| File                                              | Changes                                                             |
-| ------------------------------------------------- | ------------------------------------------------------------------- |
-| `src/components/layout/Navbar.tsx`                | Change nav breakpoint from `md` to `lg`                             |
-| `src/components/quiz/QuestionWrapper.tsx`         | Add `showProgressBar` prop, add top padding when true               |
-| `src/components/quiz/GlobalQuiz.tsx`              | Pass `showProgressBar` prop, update phone regex to strict US format |
-| `src/components/quiz/questions/ContactForm.tsx`   | Add maxLength to phone input                                        |
-| `src/components/sections/ServicesCards.tsx`       | Add pricing, rename "Tax Strategy" to "Tax Maintenance Plan"        |
-| `src/components/sections/TestimonialsSection.tsx` | Reduce max heights by 50%, reduce padding                           |
-| `src/pages/Services.tsx`                          | Update comment reference                                            |
-| `src/pages/Contact.tsx`                           | Rename dropdown option                                              |
+When deploying outside Lovable (e.g., on their own Supabase project or any Deno/Edge runtime):
+
+1. **Set 3 environment variables:**
+   - `AI_API_KEY` -- Their OpenAI key, Google AI key, or any provider key
+   - `AI_API_URL` -- The completions endpoint (e.g., `https://api.openai.com/v1/chat/completions`)
+   - `AI_MODEL` -- The model name (e.g., `gpt-4o`, `gemini-2.5-flash`)
+
+2. **Edit the system prompt:** Open `supabase/functions/chat/index.ts`, find the clearly marked `SYSTEM_PROMPT` section at the top, and change the text.
+
+3. **Forms (Formspree):** Work on any domain with zero changes. Client just needs Formspree account access to manage notification emails.
+
+### Files to Create/Modify
+
+#### 1. Shorten Greeting Bubble
+
+**File:** `src/components/common/CompassChatButton.tsx`
+- Line 61: Change text from "Hey there, fellow traveler! (compass) Need help navigating nomad taxes?" to "Got tax questions? (compass)"
+
+#### 2. Create Edge Function
+
+**New file:** `supabase/functions/chat/index.ts`
+
+The function will have this structure:
+
+```text
+// =============================================
+// CHATBOT CONFIGURATION - EDIT HERE
+// =============================================
+
+SYSTEM_PROMPT = `...`   <-- Client edits this to change personality
+AI_API_URL = env var     <-- Defaults to Lovable AI, client can swap to OpenAI etc.
+AI_API_KEY = env var     <-- Defaults to LOVABLE_API_KEY
+AI_MODEL = env var       <-- Defaults to google/gemini-3-flash-preview
+
+// =============================================
+// END CONFIGURATION
+// =============================================
+
+// ... rest of function (CORS, streaming, error handling)
+```
+
+#### 3. System Prompt (Comprehensive, Best-Practice)
+
+The prompt will cover:
+
+**Identity and Tone:**
+- Name: Tax Queen AI Assistant (powered by Heather's expertise)
+- Personality: Warm, approachable, knowledgeable -- like chatting with a friend who happens to be a tax expert
+- Tone: Conversational but professional, uses plain language, avoids jargon
+
+**Behavioral Rules:**
+- Keep responses under 100 words (concise, scannable)
+- Use bullet points for lists, bold for key terms
+- Always end with a question or next step to keep conversation flowing
+- On the 2nd message, naturally ask for their first name to personalize
+
+**Scope and Boundaries:**
+- CAN discuss: General tax concepts for digital nomads, RV travelers, expats; business entity types (LLC, S-Corp); deduction categories; state domicile concepts; estimated tax basics; Tax Queen's services and pricing
+- CANNOT do: Give specific tax advice, file taxes, access tax records, guarantee outcomes, discuss other tax preparers
+- For specific situations: Redirect to booking a consultation
+
+**Legal Compliance:**
+- Include disclaimer on first response: "I provide general tax education, not personalized tax advice. For advice specific to your situation, book a consultation with Heather."
+- Never say "you should deduct X" -- instead say "digital nomads may be eligible for deductions like X"
+
+**Service Awareness:**
+- Tax Preparation: Starts at $425
+- Mini Tax Plan: Starts at $675
+- Tax Maintenance Plan: Starts at $175 for 1040
+- Can explain what each service includes
+- Direct to quiz or contact page for next steps
+
+**Handling Edge Cases:**
+- Off-topic questions: Gently redirect -- "Great question! I'm specialized in nomad tax topics though. For that, I'd suggest..."
+- Frustrated users: Empathize, then offer to connect with Heather directly
+- Complex scenarios: "That's a nuanced situation -- exactly the kind of thing Heather specializes in. Want me to help you book a consultation?"
+
+#### 4. Update Config
+
+**File:** `supabase/config.toml`
+- Add `[functions.chat]` with `verify_jwt = false`
+
+### Client Handover Cheat Sheet
+
+| What | Where | How to Change |
+|------|-------|---------------|
+| Chatbot personality/rules | `supabase/functions/chat/index.ts` -- top of file | Edit the `SYSTEM_PROMPT` text |
+| AI provider | Environment variable `AI_API_URL` | Set to any OpenAI-compatible endpoint |
+| API key | Environment variable `AI_API_KEY` | Set to your provider's API key |
+| AI model | Environment variable `AI_MODEL` | Set to model name (e.g., `gpt-4o`) |
+| Form notifications | Formspree dashboard | Log in at formspree.io, manage forms |
+| Greeting bubble text | `src/components/common/CompassChatButton.tsx` line 61 | Edit the string |
+
+### What This Means for Deployment
+
+**On Lovable (current):** Works immediately. Uses pre-configured `LOVABLE_API_KEY`. No setup needed.
+
+**On client's own Supabase:** They create the edge function, set the 3 env vars in their Supabase dashboard under Settings > Edge Functions > Secrets, and it works.
+
+**On Vercel/Netlify/other:** They'd need to convert the edge function to their platform's serverless format (e.g., Vercel API route) and set env vars there. The logic stays identical.
+
