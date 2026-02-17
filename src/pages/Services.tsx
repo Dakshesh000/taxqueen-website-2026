@@ -52,6 +52,7 @@ const ServicesContent = () => {
               alt="White RV motorhome with camping chairs at vibrant sunset"
               width={1200}
               height={800}
+              fetchPriority="high"
               className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-foreground/50" />
