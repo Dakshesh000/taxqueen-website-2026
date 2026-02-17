@@ -3,7 +3,8 @@ import { X, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useChatStream } from "@/hooks/useChatStream";
 import { heatherChatAvatar } from "@/assets";
-import ReactMarkdown from "react-markdown";
+import { lazy, Suspense } from "react";
+const ReactMarkdown = lazy(() => import("react-markdown"));
 
 interface ChatDrawerProps {
   isOpen: boolean;
@@ -114,17 +115,19 @@ const ChatDrawer = forwardRef<HTMLDivElement, ChatDrawerProps>(
               >
                 {msg.role === "assistant" ? (
                   <div className="prose prose-sm max-w-none">
-                    <ReactMarkdown
-                      components={{
-                        p: ({ children }) => <p className="mb-2 last:mb-0 text-sm">{children}</p>,
-                        ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
-                        li: ({ children }) => <li className="text-sm">{children}</li>,
-                        strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
-                        em: ({ children }) => <em className="text-xs opacity-80 block mt-2">{children}</em>,
-                      }}
-                    >
-                      {msg.content}
-                    </ReactMarkdown>
+                    <Suspense fallback={<p className="text-sm">{msg.content}</p>}>
+                      <ReactMarkdown
+                        components={{
+                          p: ({ children }) => <p className="mb-2 last:mb-0 text-sm">{children}</p>,
+                          ul: ({ children }) => <ul className="list-disc list-inside mb-2 space-y-1">{children}</ul>,
+                          li: ({ children }) => <li className="text-sm">{children}</li>,
+                          strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
+                          em: ({ children }) => <em className="text-xs opacity-80 block mt-2">{children}</em>,
+                        }}
+                      >
+                        {msg.content}
+                      </ReactMarkdown>
+                    </Suspense>
                   </div>
                 ) : (
                   msg.content

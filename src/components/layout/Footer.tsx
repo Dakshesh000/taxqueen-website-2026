@@ -157,7 +157,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
           {/* Newsletter Column */}
           <div className="space-y-4 order-last lg:order-last">
-            <h4 className="font-semibold uppercase tracking-wide">Stay Updated</h4>
+            <h3 className="font-semibold uppercase tracking-wide text-base">Stay Updated</h3>
             <p className="text-sm text-primary-foreground/80">
               Get tax tips & updates delivered to your inbox.
             </p>
@@ -198,7 +198,7 @@ const Footer = () => {
 
           {/* Navigation Column */}
           <div className="space-y-4">
-            <h4 className="font-semibold uppercase tracking-wide">Quick Links</h4>
+            <h3 className="font-semibold uppercase tracking-wide text-base">Quick Links</h3>
             <nav aria-label="Footer navigation">
               <ul className="space-y-2">
                 {navigation.map((item) => {
