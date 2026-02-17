@@ -58,7 +58,7 @@ const CompassChatButton = forwardRef<HTMLButtonElement>((_, ref) => {
               ×
             </button>
             <p className="text-sm text-primary-foreground">
-              Hey there, fellow traveler! 🧭 Need help navigating nomad taxes?
+              Got tax questions? 🧭
             </p>
           </div>
           {/* Speech bubble tail */}
