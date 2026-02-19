@@ -11,7 +11,7 @@ Expert tax services for digital nomads, RV travelers, and location-independent p
 - **Routing:** React Router DOM v6
 - **State Management:** TanStack Query (React Query)
 - **Animations:** Framer Motion
-- **Backend:** Supabase (Lovable Cloud)
+- **Backend:** Supabase
 - **Forms:** React Hook Form + Zod validation
 
 ## 📁 Project Structure
@@ -64,10 +64,6 @@ npm run preview
 - **Performance:** Lazy loading, image optimization, code splitting
 - **Responsive:** Mobile-first design with breakpoints
 
-## 🔒 Admin Access
-
-Admin panel accessible at `/admin-login` for managing quiz leads.
-
 ## 🌐 SEO Files
 
 - `public/sitemap.xml` - XML sitemap for search engines
@@ -81,9 +77,3 @@ Admin panel accessible at `/admin-login` for managing quiz leads.
 3. Write TypeScript with proper types
 4. Test on mobile and desktop viewports
 5. Ensure accessibility compliance
-
----
-
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
-
-To deploy, visit [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click Share → Publish.
