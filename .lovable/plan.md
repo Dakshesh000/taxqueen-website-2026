@@ -1,29 +1,43 @@
 
+## Improve README.md to Industry Best Practices
 
-## Change Navbar and Footer Font to Proxima Nova Regular
+### What's Currently Missing
 
-### Overview
-Replace the font used in the Navbar menu links and the Footer with Proxima Nova Regular, while keeping DM Sans as the default font for the rest of the site.
+The README is clean and Lovable-free, but compared to a professional agency-quality project it's missing:
 
-### Steps
+1. A badge row (build status, license, tech versions) — signals a maintained, professional project
+2. A prerequisites section — tells a new developer what to install first
+3. An environment variables section — without this, a dev cloning the repo won't know how to configure the backend
+4. A full page/routes reference — useful for any developer who picks this up
+5. A deployment section — describes how to build and deploy without naming the platform
+6. A license/contact section — standard for all professional repos
 
-1. **Add Proxima Nova font file**
-   - You'll need to provide a `proxima-nova-regular.woff2` file (or similar format). Since Proxima Nova is a commercial font, it needs to be licensed and added to `public/fonts/`.
-   - If you have the file, I'll place it at `public/fonts/proxima-nova-400.woff2`.
+### What Changes
 
-2. **Register the font in CSS** (`src/styles/index.css`)
-   - Add a new `@font-face` declaration for Proxima Nova alongside the existing DM Sans declarations.
+**File: `README.md`** — full rewrite keeping all existing accurate content and adding:
 
-3. **Add a Tailwind utility class** (`tailwind.config.ts`)
-   - Add a new font family entry: `proxima: ["Proxima Nova", "system-ui", "sans-serif"]`
-   - This enables using `font-proxima` in components.
+- **Badges** at the top: React 18, TypeScript, Vite, Tailwind CSS
+- **Prerequisites** block: Node.js 18+, npm/bun
+- **Environment Variables** section explaining the `.env` file setup (using placeholder values, not real keys):
+  ```
+  VITE_SUPABASE_URL=your_project_url
+  VITE_SUPABASE_PUBLISHABLE_KEY=your_anon_key
+  VITE_SUPABASE_PROJECT_ID=your_project_id
+  ```
+- **Pages & Routes** table listing all 10 routes (`/`, `/about`, `/services`, `/contact`, `/tools`, `/services/tax-maintenance`, `/terms`, `/privacy`, etc.)
+- **Deployment** section: `npm run build` outputs to `dist/`, ready for any static host (Vercel, Netlify, Cloudflare Pages)
+- **License** section: placeholder MIT or "Proprietary — All Rights Reserved"
 
-4. **Apply to Navbar** (`src/components/layout/Navbar.tsx`)
-   - Add `font-proxima` to the desktop nav links and mobile menu links.
+### What Stays the Same
 
-5. **Apply to Footer** (`src/components/layout/Footer.tsx`)
-   - Add `font-proxima` to the footer's text elements.
+- Tech stack list
+- Project structure tree
+- Design system notes
+- Development commands
+- Key features
+- SEO files section
+- Contributing guidelines
 
-### Important Note
-Proxima Nova is a **commercial typeface** (by Mark Simonson Studio). You need a valid web font license and the `.woff2` file to proceed. If you have it, please upload the font file and I'll wire everything up. If you'd like a free alternative that looks similar (e.g., Montserrat), let me know.
+### No Breaking Changes
 
+This is documentation only — zero impact on the running application.
